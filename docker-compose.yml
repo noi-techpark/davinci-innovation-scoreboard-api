@@ -13,7 +13,7 @@ services:
     tty: true
 
   postgres:
-    image: postgres
+    image: postgres:11
     environment:
       POSTGRES_DB: innovation-scoreboard
       POSTGRES_USER: innovation-scoreboard

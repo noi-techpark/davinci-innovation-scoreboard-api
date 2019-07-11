@@ -1,6 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-
+import it.bz.davinci.innovationscoreboard.search.ElasticSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +25,13 @@ public class StatsController {
         statsCsvParser.parse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+//        try {
+//            ElasticSearch search = new ElasticSearch();
+//            search.open();
+//            search.index();
+//            search.close();
+//        } catch (IOException e) {}
 
         return "redirect:/admin";
     }

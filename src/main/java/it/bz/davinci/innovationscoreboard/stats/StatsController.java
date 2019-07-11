@@ -13,16 +13,16 @@ import java.io.IOException;
 @Controller
 public class StatsController {
 
-    private final StatsCsvParser statsCsvParser;
+    private final StatsService statsService;
 
     @Autowired
-    public StatsController(StatsCsvParser statsCsvParser) {
-        this.statsCsvParser = statsCsvParser;
+    public StatsController(StatsService statsService) {
+        this.statsService = statsService;
     }
 
     @PostMapping(value = "/upload/csv")
     public String upload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-        statsCsvParser.parse(file);
+        statsService.uploadData(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 

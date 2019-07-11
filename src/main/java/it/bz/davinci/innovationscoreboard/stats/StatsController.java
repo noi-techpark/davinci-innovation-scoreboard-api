@@ -26,7 +26,7 @@ public class StatsController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/hello";
+        return "redirect:/admin";
     }
 
 }

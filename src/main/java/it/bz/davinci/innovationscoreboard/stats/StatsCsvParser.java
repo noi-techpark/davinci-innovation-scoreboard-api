@@ -15,7 +15,7 @@ public class StatsCsvParser {
     public List<Stats> parse(MultipartFile file) throws IOException {
         try (Reader reader = new InputStreamReader(file.getInputStream())) {
             List<Stats> stats = new CsvToBeanBuilder<Stats>(reader)
-                    .withType(Stats.class).build().parse();
+                    .withSeparator('|').withType(Stats.class).build().parse();
 
             return stats;
         }

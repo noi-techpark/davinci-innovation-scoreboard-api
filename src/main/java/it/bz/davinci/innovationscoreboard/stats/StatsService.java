@@ -25,6 +25,8 @@ public class StatsService {
 
         List<Stats> stats = statsCsvParser.parse(file);
 
+        System.out.println("Test 1 - Count: " + stats.size());
+
         stats.stream().map(entry ->
                 EsStats.builder()
                         .firstName(entry.getFirstName())
@@ -32,6 +34,7 @@ public class StatsService {
                         .build()
         ).forEach(statsEsDao::index);
 
+        System.out.println("Test 2");
     }
 
 

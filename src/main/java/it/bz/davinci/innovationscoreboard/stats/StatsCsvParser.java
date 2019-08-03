@@ -12,16 +12,13 @@ import java.util.List;
 @Component
 public class StatsCsvParser {
 
-    public void parse(MultipartFile file) throws IOException {
-
+    public List<Stats> parse(MultipartFile file) throws IOException {
         try (Reader reader = new InputStreamReader(file.getInputStream())) {
             List<Stats> stats = new CsvToBeanBuilder<Stats>(reader)
-                    .withType(Stats.class).build().parse();
+                    .withSeparator('|').withType(Stats.class).build().parse();
 
-            System.out.println(stats);
-
+            return stats;
         }
-
     }
 
 }

@@ -47,11 +47,11 @@ public class ResearchAndDevelopmentEsDao {
         } catch (IOException e) {
             log.error("Failed to delete index document", e);
             return false;
-        } catch (ElasticsearchException exception) {
-            if (exception.status() == RestStatus.NOT_FOUND) {
+        } catch (ElasticsearchException e) {
+            if (e.status() == RestStatus.NOT_FOUND) {
                 return true;
             }
-            log.error("Failed to delete index document", exception);
+            log.error("Failed to delete index document", e);
             return false;
         }
 

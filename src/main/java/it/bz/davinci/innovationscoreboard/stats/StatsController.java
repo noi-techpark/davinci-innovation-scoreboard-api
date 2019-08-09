@@ -1,6 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-import it.bz.davinci.innovationscoreboard.search.ElasticSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,25 +12,18 @@ import java.io.IOException;
 @Controller
 public class StatsController {
 
-    private final StatsService statsService;
+    private final StatsImporter statsService;
 
     @Autowired
-    public StatsController(StatsService statsService) {
+    public StatsController(StatsImporter statsService) {
         this.statsService = statsService;
     }
 
     @PostMapping(value = "/upload/csv")
     public String upload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-        statsService.uploadData(file);
+        statsService.uploadFile(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-
-//        try {
-//            ElasticSearch search = new ElasticSearch();
-//            search.open();
-//            search.index();
-//            search.close();
-//        } catch (IOException e) {}
 
         return "redirect:/admin";
     }

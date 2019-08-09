@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.apache.http.entity.ContentType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -72,6 +73,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .claim("rol", roles)
                 .compact();
 
-        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+        try {
+            response.setContentType(ContentType.APPLICATION_JSON.toString());
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(
+                    objectMapper.writeValueAsString(new JWTTokenResponse(token))
+            );
+        } catch (IOException e) {
+            logger.error("Failed to write JWT token into body", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public class JWTTokenResponse {
+        private String token;
+
+        public JWTTokenResponse(String token) {
+            this.token = token;
+        }
+
+        public String getToken() {
+            return token;
+        }
     }
 }

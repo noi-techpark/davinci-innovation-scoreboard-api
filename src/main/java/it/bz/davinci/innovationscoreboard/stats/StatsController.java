@@ -1,31 +1,31 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
-@Controller
+@RestController
+@RequestMapping(value = "api/v1/stats")
 public class StatsController {
 
     private final StatsImporter statsService;
+    private final UploadHistoryService uploadHistoryService;
 
-    @Autowired
-    public StatsController(StatsImporter statsService) {
+    public StatsController(StatsImporter statsService, UploadHistoryService uploadHistoryService) {
         this.statsService = statsService;
+        this.uploadHistoryService = uploadHistoryService;
     }
 
     @PostMapping(value = "/upload/csv")
-    public String upload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
+    public void upload(@RequestParam("file") MultipartFile file) throws IOException {
         statsService.uploadFile(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+    }
 
-        return "redirect:/admin";
+    @GetMapping(value = "/upload/history")
+    public UploadHistoryResponseDto getHistory() {
+        return uploadHistoryService.getHistory();
     }
 
 }

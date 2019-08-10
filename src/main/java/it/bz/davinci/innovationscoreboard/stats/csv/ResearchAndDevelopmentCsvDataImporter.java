@@ -1,6 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
-import it.bz.davinci.innovationscoreboard.stats.StatsCsvParser;
 import it.bz.davinci.innovationscoreboard.stats.es.ResearchAndDevelopmentEsDao;
 import it.bz.davinci.innovationscoreboard.stats.mapper.ResearchAndDevelopmentMapper;
 import lombok.AllArgsConstructor;

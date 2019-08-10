@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.csv.ResearchAndDevelopmentCsv;
+import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvParser;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;

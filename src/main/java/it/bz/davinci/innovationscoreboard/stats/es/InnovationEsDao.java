@@ -16,46 +16,11 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Map;
 
-@Slf4j
 @Service
-@AllArgsConstructor
-public class InnovationEsDao {
+public class InnovationEsDao extends EsDao<InnovationEs> {
 
-    private final String INDEX_NAME = "innovation";
-    private final RestHighLevelClient esClient;
-    private final ObjectMapper objectMapper;
-
-
-    public void index(InnovationEs document) {
-        IndexRequest indexRequest = new IndexRequest(INDEX_NAME)
-                .source(objectMapper.convertValue(document, Map.class), XContentType.JSON);
-
-        try {
-            esClient.index(indexRequest, RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            log.error("Failed to index document", e);
-        }
-    }
-
-    public boolean cleanIndex() {
-
-        DeleteIndexRequest request = new DeleteIndexRequest(INDEX_NAME);
-        AcknowledgedResponse deleteIndexResponse;
-
-        try {
-            deleteIndexResponse = esClient.indices().delete(request, RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            log.error("Failed to delete index document", e);
-            return false;
-        } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.NOT_FOUND) {
-                return true;
-            }
-            log.error("Failed to delete index document", e);
-            return false;
-        }
-
-        return deleteIndexResponse.isAcknowledged();
+    public InnovationEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
+        super("innovation", esClient, objectMapper);
     }
 
 }

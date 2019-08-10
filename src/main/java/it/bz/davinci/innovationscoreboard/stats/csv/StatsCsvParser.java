@@ -1,4 +1,4 @@
-package it.bz.davinci.innovationscoreboard.stats;
+package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.web.multipart.MultipartFile;

@@ -8,5 +8,5 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class UploadHistoryResponseDto {
-    private List<UploadedStatsDto> uploadedStats;
+    private List<FileImportDto> uploadedStats;
 }

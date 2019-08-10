@@ -1,5 +1,9 @@
-package it.bz.davinci.innovationscoreboard.stats.domain;
+package it.bz.davinci.innovationscoreboard.stats.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,10 +12,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class FileImport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String source;
     private LocalDateTime importDate;

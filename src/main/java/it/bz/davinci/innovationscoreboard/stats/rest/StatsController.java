@@ -1,5 +1,7 @@
-package it.bz.davinci.innovationscoreboard.stats;
+package it.bz.davinci.innovationscoreboard.stats.rest;
 
+import it.bz.davinci.innovationscoreboard.stats.FileImportService;
+import it.bz.davinci.innovationscoreboard.stats.StatsImporter;
 import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,11 +13,11 @@ import java.io.IOException;
 public class StatsController {
 
     private final StatsImporter statsService;
-    private final UploadHistoryService uploadHistoryService;
+    private final FileImportService fileImportService;
 
-    public StatsController(StatsImporter statsService, UploadHistoryService uploadHistoryService) {
+    public StatsController(StatsImporter statsService, FileImportService fileImportService) {
         this.statsService = statsService;
-        this.uploadHistoryService = uploadHistoryService;
+        this.fileImportService = fileImportService;
     }
 
     @PostMapping(value = "/upload/csv")
@@ -25,7 +27,7 @@ public class StatsController {
 
     @GetMapping(value = "/upload/history")
     public UploadHistoryResponseDto getHistory() {
-        return uploadHistoryService.getHistory();
+        return fileImportService.findAll();
     }
 
 }

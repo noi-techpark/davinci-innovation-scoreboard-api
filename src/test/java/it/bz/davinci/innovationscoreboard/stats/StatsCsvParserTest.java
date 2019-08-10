@@ -18,7 +18,7 @@ public class StatsCsvParserTest {
     @Test
     public void successfulParsingByType() throws IOException {
 
-        MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment.csv")));
+        MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
 
 
         researchAndDevelopmentStatsCsvParser.parse(multipartFile);

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ResearchAndDevelopmentCsv {
 
-    public static final String SUPPORTED_HEADER = "\uFEFF\"ITTER107\",\"Territory\",\"TIPO_DATO_CIS\",\"Data type\",\"SETTISTSEC2010\",\"Institutional sector\",\"TIME\",\"Select time\",\"Value\",\"Flag Codes\",\"Flags\"";
+    public static final String SUPPORTED_HEADER = "\"ITTER107\",\"Territory\",\"TIPO_DATO_CIS\",\"Data type\",\"SETTISTSEC2010\",\"Institutional sector\",\"TIME\",\"Select time\",\"Value\",\"Flag Codes\",\"Flags\"";
 
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;

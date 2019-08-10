@@ -39,7 +39,7 @@ public class StatsImporterTest {
     public void givenSupportedFile_startUpload() throws IOException {
 
         when(researchAndDevelopmentEsDao.cleanIndex()).thenReturn(true);
-        MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment.csv")));
+        MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
         statsImporter.importFile(multipartFile);
 
         verify(researchAndDevelopmentEsDao, times(2)).index(any(ResearchAndDevelopmentEs.class));

@@ -1,8 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
-import it.bz.davinci.innovationscoreboard.stats.es.InnovationEs;
-import it.bz.davinci.innovationscoreboard.stats.es.ResearchAndDevelopmentEs;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

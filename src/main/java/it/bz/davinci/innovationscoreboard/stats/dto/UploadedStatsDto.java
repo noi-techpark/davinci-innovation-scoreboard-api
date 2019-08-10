@@ -1,6 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats.dto;
 
-import it.bz.davinci.innovationscoreboard.stats.domain.StatsStatus;
+import it.bz.davinci.innovationscoreboard.stats.domain.FileImport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
 public class UploadedStatsDto {
     private String source;
     private LocalDateTime date;
-    private StatsStatus status;
+    private FileImport.Status status;
 }

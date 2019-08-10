@@ -8,6 +8,7 @@ import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +26,10 @@ public class FileImportService {
                 .collect(Collectors.toList());
 
         return new UploadHistoryResponseDto(imports);
+    }
+
+    public FileImportDto save(FileImportDto fileImport) {
+        //fileImportRepository.save(FileImport)
+        return null;
     }
 }

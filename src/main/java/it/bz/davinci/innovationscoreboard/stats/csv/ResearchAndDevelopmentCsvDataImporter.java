@@ -20,7 +20,7 @@ public class ResearchAndDevelopmentCsvDataImporter implements StatsCsvDataImport
 
     @Async
     @Override
-    public void run(MultipartFile file) throws IOException {
+    public void run(MultipartFile file, int fileImportId) throws IOException {
         List<ResearchAndDevelopmentCsv> data = researchAndDevelopmentCsvStatsCsvParser.parse(file);
 
         boolean indexCleaned = researchAndDevelopmentEsDao.cleanIndex();

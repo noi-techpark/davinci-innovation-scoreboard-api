@@ -2,6 +2,8 @@ package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvDataImporter;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvImporterFactory;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -17,13 +20,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class StatsImporter {
 
     private final StatsCsvImporterFactory statsCsvImporterFactory;
+    private final FileImportService fileImportService;
 
-    public void importFile(MultipartFile file) throws IOException {
+    public FileImportDto importFile(MultipartFile file) throws IOException {
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream(), UTF_8))) {
             String csvHeader = bufferedReader.readLine();
             StatsCsvDataImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(csvHeader);
-            csvDataImporter.run(file);
+            final FileImportDto uploadedFile = fileImportService.save(FileImportDto.builder()
+                    .importDate(LocalDateTime.now())
+                    .source(file.getName())
+                    .status(FileImport.Status.UPLOADED)
+                    .build());
+            csvDataImporter.run(file, uploadedFile.getId());
+            return uploadedFile;
         }
 
     }

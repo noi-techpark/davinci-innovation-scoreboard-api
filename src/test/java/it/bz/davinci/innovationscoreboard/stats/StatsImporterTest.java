@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.csv.*;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,22 +30,26 @@ public class StatsImporterTest {
     @Mock
     private EmploymentDemographicCsvDataImporter employmentDemographicCsvDataImporter;
 
+    @Mock
+    private FileImportService fileImportService;
+
     private StatsImporter statsImporter;
 
     @Before
     public void setUp() {
         StatsCsvImporterFactory statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
-        statsImporter = new StatsImporter(statsCsvImporterFactory);
+        statsImporter = new StatsImporter(statsCsvImporterFactory, fileImportService);
     }
 
 
     @Test
     public void givenSupportedFile_startUpload() throws IOException {
 
+        when(fileImportService.save(any())).thenReturn(FileImportDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
         statsImporter.importFile(multipartFile);
 
-        verify(researchAndDevelopmentDataImporter, times(1)).run(multipartFile);
+        verify(researchAndDevelopmentDataImporter, times(1)).run(multipartFile, 1);
     }
 
     @Test(expected = UnsupportedOperationException.class)

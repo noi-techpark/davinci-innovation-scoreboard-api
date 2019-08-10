@@ -22,7 +22,7 @@ public class EmploymentDemographicCsvDataImporter implements StatsCsvDataImporte
 
     @Async
     @Override
-    public void run(MultipartFile file) throws IOException {
+    public void run(MultipartFile file, int fileImportId) throws IOException {
         List<EmploymentDemographicCsv> data = employmentDemographicCsvDataParser.parse(file);
 
         boolean indexCleaned = employmentDemographicEsDao.cleanIndex();

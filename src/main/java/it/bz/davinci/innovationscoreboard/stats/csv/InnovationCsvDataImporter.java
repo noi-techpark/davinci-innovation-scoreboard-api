@@ -22,7 +22,7 @@ public class InnovationCsvDataImporter implements StatsCsvDataImporter {
 
     @Async
     @Override
-    public void run(MultipartFile file) throws IOException {
+    public void run(MultipartFile file, int fileImportId) throws IOException {
         List<InnovationCsv> data = innovationCsvStatsCsvParser.parse(file);
 
         boolean indexCleaned = innovationEsDao.cleanIndex();

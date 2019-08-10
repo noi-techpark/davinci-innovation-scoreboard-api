@@ -22,13 +22,13 @@ import static org.mockito.Mockito.*;
 public class StatsImporterTest {
 
     @Mock
-    private ResearchAndDevelopmentCsvDataImporter researchAndDevelopmentDataImporter;
+    private ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter;
 
     @Mock
-    private InnovationCsvDataImporter innovationCsvDataImporter;
+    private InnovationCsvImporter innovationCsvDataImporter;
 
     @Mock
-    private EmploymentDemographicCsvDataImporter employmentDemographicCsvDataImporter;
+    private EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter;
 
     @Mock
     private FileImportService fileImportService;
@@ -49,7 +49,7 @@ public class StatsImporterTest {
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
         statsImporter.importFile(multipartFile);
 
-        verify(researchAndDevelopmentDataImporter, times(1)).run(multipartFile, 1);
+        verify(researchAndDevelopmentDataImporter, times(1)).importFile(multipartFile, 1);
     }
 
     @Test(expected = UnsupportedOperationException.class)

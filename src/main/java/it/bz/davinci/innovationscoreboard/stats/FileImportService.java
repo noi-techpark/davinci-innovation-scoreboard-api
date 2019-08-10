@@ -12,6 +12,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +29,23 @@ public class FileImportService {
         return new UploadHistoryResponseDto(imports);
     }
 
-    public FileImportDto save(FileImportDto fileImport) {
-        //fileImportRepository.save(FileImport)
-        return null;
+    public FileImportDto save(FileImportDto fileImportDto) {
+        FileImport fileImport;
+        if (Objects.isNull(fileImportDto.getId())) {
+            fileImport = new FileImport();
+        } else {
+            fileImport = fileImportRepository.getOne(fileImportDto.getId());
+        }
+
+        fileImport.setImportDate(fileImportDto.getImportDate());
+        fileImport.setSource(fileImportDto.getSource());
+        fileImport.setStatus(fileImportDto.getStatus());
+
+        return FileImportMapper.INSTANCE.toDto(fileImportRepository.save(fileImport));
+    }
+
+    public FileImportDto getById(int id) {
+        final FileImport result = fileImportRepository.getOne(id);
+        return FileImportMapper.INSTANCE.toDto(result);
     }
 }

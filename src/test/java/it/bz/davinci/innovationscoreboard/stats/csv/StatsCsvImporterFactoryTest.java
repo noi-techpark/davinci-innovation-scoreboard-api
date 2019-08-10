@@ -3,18 +3,19 @@ package it.bz.davinci.innovationscoreboard.stats.csv;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 public class StatsCsvImporterFactoryTest {
 
     private StatsCsvImporterFactory statsCsvImporterFactory;
+    private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvImporter(null, null);
+    private final InnovationCsvImporter innovationCsvDataImporter = new InnovationCsvImporter(null, null);;
+    private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvImporter(null, null);
+
 
     @Before
     public void setUp() {
-        ResearchAndDevelopmentCsvDataImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvDataImporter(null);
-        InnovationCsvDataImporter innovationCsvDataImporter = new InnovationCsvDataImporter(null);
-        EmploymentDemographicCsvDataImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvDataImporter(null);
         statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
     }
 
@@ -25,19 +26,19 @@ public class StatsCsvImporterFactoryTest {
 
     @Test
     public void returnsResearchAndDevelopmentDataImporter() {
-        final StatsCsvDataImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(ResearchAndDevelopmentCsv.SUPPORTED_HEADER);
-        assertThat(csvDataImporter, instanceOf(ResearchAndDevelopmentCsvDataImporter.class));
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(ResearchAndDevelopmentCsv.SUPPORTED_HEADER);
+        assertThat(csvDataImporter, equalTo(researchAndDevelopmentDataImporter));
     }
 
     @Test
     public void returnsInnovationDataImporter() {
-        final StatsCsvDataImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(InnovationCsv.SUPPORTED_HEADER);
-        assertThat(csvDataImporter, instanceOf(InnovationCsvDataImporter.class));
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(InnovationCsv.SUPPORTED_HEADER);
+        assertThat(csvDataImporter, equalTo(innovationCsvDataImporter));
     }
     @Test
     public void returnsEmploymentDemographicDataImporter() {
-        final StatsCsvDataImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(EmploymentDemographicCsv.SUPPORTED_HEADER);
-        assertThat(csvDataImporter, instanceOf(EmploymentDemographicCsvDataImporter.class));
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(EmploymentDemographicCsv.SUPPORTED_HEADER);
+        assertThat(csvDataImporter, equalTo(employmentDemographicCsvDataImporter));
     }
 
 

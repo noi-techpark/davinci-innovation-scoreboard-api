@@ -1,5 +1,8 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
+import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationEs;
+import it.bz.davinci.innovationscoreboard.stats.es.ResearchAndDevelopmentEs;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +13,11 @@ import java.util.Objects;
 @AllArgsConstructor
 public class StatsCsvImporterFactory {
 
-    private final ResearchAndDevelopmentCsvDataImporter researchAndDevelopmentDataImporter;
-    private final InnovationCsvDataImporter innovationCsvDataImporter;
-    private final EmploymentDemographicCsvDataImporter employmentDemographicCsvDataImporter;
+    private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter;
+    private final InnovationCsvImporter innovationCsvDataImporter;
+    private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter;
 
-    public StatsCsvDataImporter getCsvDataImporter(@NotNull String header) {
+    public StatsCsvImporter getCsvDataImporter(@NotNull String header) {
 
         if (Objects.isNull(header)) {
             throw new IllegalArgumentException("Header cannot be null");

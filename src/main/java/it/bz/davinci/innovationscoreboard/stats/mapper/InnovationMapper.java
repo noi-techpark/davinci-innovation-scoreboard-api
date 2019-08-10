@@ -8,10 +8,11 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface InnovationMapper {
+public interface InnovationMapper extends CsvMapper<InnovationCsv, InnovationEs> {
 
     InnovationMapper INSTANCE = Mappers.getMapper(InnovationMapper.class);
 
     @Mappings({})
-    public InnovationEs toEs(InnovationCsv innovationCsv);
+    @Override
+    InnovationEs toEs(InnovationCsv innovationCsv);
 }

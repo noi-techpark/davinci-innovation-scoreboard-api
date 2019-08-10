@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvDataImporter;
+import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvImporter;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvImporterFactory;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
@@ -26,13 +27,13 @@ public class StatsImporter {
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream(), UTF_8))) {
             String csvHeader = bufferedReader.readLine();
-            StatsCsvDataImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(csvHeader);
+            StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(csvHeader);
             final FileImportDto uploadedFile = fileImportService.save(FileImportDto.builder()
                     .importDate(LocalDateTime.now())
                     .source(file.getName())
                     .status(FileImport.Status.UPLOADED)
                     .build());
-            csvDataImporter.run(file, uploadedFile.getId());
+            csvDataImporter.importFile(file, uploadedFile.getId());
             return uploadedFile;
         }
 

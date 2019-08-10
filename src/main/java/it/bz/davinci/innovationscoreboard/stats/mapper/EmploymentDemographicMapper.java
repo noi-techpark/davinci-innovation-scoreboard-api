@@ -8,10 +8,11 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface EmploymentDemographicMapper {
+public interface EmploymentDemographicMapper extends CsvMapper<EmploymentDemographicCsv, EmploymentDemographicEs> {
 
     EmploymentDemographicMapper INSTANCE = Mappers.getMapper(EmploymentDemographicMapper.class);
 
     @Mappings({})
+    @Override
     EmploymentDemographicEs toEs(EmploymentDemographicCsv employmentDemographicCsv);
 }

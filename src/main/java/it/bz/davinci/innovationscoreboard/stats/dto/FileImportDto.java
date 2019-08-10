@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileImportDto {
-    private int id;
+    private Integer id;
     private String source;
     private LocalDateTime importDate;
     private FileImport.Status status;

@@ -20,7 +20,7 @@ public class StatsController {
 
     @PostMapping(value = "/upload/csv")
     public void upload(@RequestParam("file") MultipartFile file) throws IOException {
-        statsService.uploadFile(file);
+        statsService.importFile(file);
     }
 
     @GetMapping(value = "/upload/history")

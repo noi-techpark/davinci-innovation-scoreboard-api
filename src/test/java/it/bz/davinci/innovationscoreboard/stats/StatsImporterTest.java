@@ -1,9 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-import it.bz.davinci.innovationscoreboard.stats.es.InnovationEs;
-import it.bz.davinci.innovationscoreboard.stats.es.InnovationEsDao;
-import it.bz.davinci.innovationscoreboard.stats.es.ResearchAndDevelopmentEs;
-import it.bz.davinci.innovationscoreboard.stats.es.ResearchAndDevelopmentEsDao;
+import it.bz.davinci.innovationscoreboard.stats.es.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +31,16 @@ public class StatsImporterTest {
     @MockBean
     private InnovationEsDao innovationEsDao;
 
+    @MockBean
+    private EmploymentDemographicEsDao employmentDemographicEsDao;
+
 
     @Test
     public void givenSupportedFile_startUpload() throws IOException {
 
         when(researchAndDevelopmentEsDao.cleanIndex()).thenReturn(true);
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment.csv")));
-        statsImporter.uploadFile(multipartFile);
+        statsImporter.importFile(multipartFile);
 
         verify(researchAndDevelopmentEsDao, times(2)).index(any(ResearchAndDevelopmentEs.class));
     }
@@ -49,16 +49,26 @@ public class StatsImporterTest {
     public void givenUnsupportedFile_throwException() throws IOException {
 
         MultipartFile multipartFile = new MockMultipartFile("invalidResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/invalidResearchAndDevelopment.csv")));
-        statsImporter.uploadFile(multipartFile);
+        statsImporter.importFile(multipartFile);
     }
 
     @Test
-    public void givenInnovationSupportedFile_startUpload() throws IOException {
+    public void givenValidInnovationFile_startUpload() throws IOException {
 
         when(innovationEsDao.cleanIndex()).thenReturn(true);
         MultipartFile multipartFile = new MockMultipartFile("validInnovation.csv", new FileInputStream(new File("src/test/resources/csv/validInnovation.csv")));
-        statsImporter.uploadFile(multipartFile);
+        statsImporter.importFile(multipartFile);
 
         verify(innovationEsDao, times(2)).index(any(InnovationEs.class));
+    }
+
+    @Test
+    public void givenValidEmploymentDemographicFile_startUpload() throws IOException {
+
+        when(employmentDemographicEsDao.cleanIndex()).thenReturn(true);
+        MultipartFile multipartFile = new MockMultipartFile("validEmploymentDemographic.csv", new FileInputStream(new File("src/test/resources/csv/validEmploymentDemographic.csv")));
+        statsImporter.importFile(multipartFile);
+
+        verify(employmentDemographicEsDao, times(2)).index(any(EmploymentDemographicEs.class));
     }
 }

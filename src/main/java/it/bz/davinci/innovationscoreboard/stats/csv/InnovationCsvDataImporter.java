@@ -2,7 +2,6 @@ package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import it.bz.davinci.innovationscoreboard.stats.es.InnovationEsDao;
 import it.bz.davinci.innovationscoreboard.stats.mapper.InnovationMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,12 +10,15 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class InnovationCsvDataImporter implements StatsCsvDataImporter {
 
-    private final static StatsCsvParser<InnovationCsv> innovationCsvStatsCsvParser = new StatsCsvParser<>(InnovationCsv.class);
-
+    private final StatsCsvParser<InnovationCsv> innovationCsvStatsCsvParser;
     private final InnovationEsDao innovationEsDao;
+
+    public InnovationCsvDataImporter(InnovationEsDao innovationEsDao) {
+        this.innovationEsDao = innovationEsDao;
+        this.innovationCsvStatsCsvParser = new StatsCsvParser<>(InnovationCsv.class);
+    }
 
     @Async
     @Override

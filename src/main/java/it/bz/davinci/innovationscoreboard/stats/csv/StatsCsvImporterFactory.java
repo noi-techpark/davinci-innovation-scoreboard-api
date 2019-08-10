@@ -3,6 +3,7 @@ package it.bz.davinci.innovationscoreboard.stats.csv;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Component
@@ -11,8 +12,9 @@ public class StatsCsvImporterFactory {
 
     private final ResearchAndDevelopmentCsvDataImporter researchAndDevelopmentDataImporter;
     private final InnovationCsvDataImporter innovationCsvDataImporter;
+    private final EmploymentDemographicCsvDataImporter employmentDemographicCsvDataImporter;
 
-    public StatsCsvDataImporter getCsvDataImporter(String header) {
+    public StatsCsvDataImporter getCsvDataImporter(@NotNull String header) {
 
         if (Objects.isNull(header)) {
             throw new IllegalArgumentException("Header cannot be null");
@@ -23,6 +25,8 @@ public class StatsCsvImporterFactory {
                 return researchAndDevelopmentDataImporter;
             case InnovationCsv.SUPPORTED_HEADER:
                 return innovationCsvDataImporter;
+            case EmploymentDemographicCsv.SUPPORTED_HEADER:
+                return employmentDemographicCsvDataImporter;
             default:
                 throw new UnsupportedOperationException("No importer found for header information: " + header);
         }

@@ -18,8 +18,7 @@ public class StatsImporter {
 
     private final StatsCsvImporterFactory statsCsvImporterFactory;
 
-
-    public void uploadFile(MultipartFile file) throws IOException {
+    public void importFile(MultipartFile file) throws IOException {
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream(), UTF_8))) {
             String csvHeader = bufferedReader.readLine();

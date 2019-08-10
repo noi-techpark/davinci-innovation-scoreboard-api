@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StatsCsvParser<T> {
 
-    final Class<T> typeParameterClass;
+    private final Class<T> typeParameterClass;
 
     public StatsCsvParser(Class<T> typeParameterClass) {
         this.typeParameterClass = typeParameterClass;
@@ -20,7 +20,7 @@ public class StatsCsvParser<T> {
     public List<T> parse(MultipartFile file) throws IOException {
         try (Reader reader = new InputStreamReader(file.getInputStream())) {
             List<T> stats = new CsvToBeanBuilder<T>(reader)
-                    .withSeparator('|')
+                    .withSeparator(',')
                     .withType(typeParameterClass)
                     .build()
                     .parse();

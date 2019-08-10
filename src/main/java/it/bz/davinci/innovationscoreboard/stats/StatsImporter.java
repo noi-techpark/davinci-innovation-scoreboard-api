@@ -1,6 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvDataImporter;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvImporter;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvImporterFactory;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;

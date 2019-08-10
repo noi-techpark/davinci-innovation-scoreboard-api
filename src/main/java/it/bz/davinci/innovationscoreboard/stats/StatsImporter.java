@@ -30,7 +30,7 @@ public class StatsImporter {
             StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(csvHeader);
             final FileImportDto uploadedFile = fileImportService.save(FileImportDto.builder()
                     .importDate(LocalDateTime.now())
-                    .source(file.getName())
+                    .source(file.getOriginalFilename())
                     .status(FileImport.Status.UPLOADED)
                     .build());
             csvDataImporter.importFile(file, uploadedFile.getId());

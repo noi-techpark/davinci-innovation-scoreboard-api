@@ -7,11 +7,11 @@ services:
     volumes:
        - ./:/code
     working_dir: /code
-#    command: mvn spring-boot:run -Dspring-boot.run.profiles=localhost
+    # command: mvn spring-boot:run -Dspring-boot.run.profiles=localhost
     command: tail -f /dev/null
+    tty: true
     ports:
       - "8080:8080"
-    tty: true
 
   postgres:
     image: postgres:11

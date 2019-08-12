@@ -20,7 +20,8 @@ public class StatsCsvImporterFactory {
             throw new IllegalArgumentException("Header cannot be null");
         }
 
-        switch (header) {
+        String csvType = header.replaceAll("[\uFEFF-\uFFFF]", "");
+        switch (csvType.trim()) {
             case ResearchAndDevelopmentCsv.SUPPORTED_HEADER:
                 return researchAndDevelopmentDataImporter;
             case InnovationCsv.SUPPORTED_HEADER:
@@ -28,7 +29,7 @@ public class StatsCsvImporterFactory {
             case EmploymentDemographicCsv.SUPPORTED_HEADER:
                 return employmentDemographicCsvDataImporter;
             default:
-                throw new UnsupportedOperationException("No importer found for header information: " + header);
+                throw new UnsupportedOperationException("No importer found for header information: " + csvType);
         }
 
     }

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "api/v1/stats")
+@RequestMapping(value = "v1/stats")
 public class StatsController {
 
     private final StatsImporter statsService;

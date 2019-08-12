@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
         this.objectMapper = objectMapper;
 
-        setFilterProcessesUrl("/api/v1/authenticate");
+        setFilterProcessesUrl("/v1/authenticate");
     }
 
     @Override
@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Map<String, String> credentials = objectMapper
                     .readValue(request.getInputStream(), Map.class);
 
-            String username = credentials.get(SPRING_SECURITY_FORM_USERNAME_KEY);
+            String username = credentials.get("email");
             String password = credentials.get(SPRING_SECURITY_FORM_PASSWORD_KEY);
             Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 

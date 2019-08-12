@@ -47,7 +47,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         .setSigningKey(signingKey)
                         .parseClaimsJws(token.replace("Bearer ", ""));
 
-                String username = parsedToken
+                String email = parsedToken
                         .getBody()
                         .getSubject();
 
@@ -56,8 +56,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                         .map(authority -> new SimpleGrantedAuthority((String) authority))
                         .collect(Collectors.toList());
 
-                if (StringUtils.isNotEmpty(username)) {
-                    return new UsernamePasswordAuthenticationToken(username, null, authorities);
+                if (StringUtils.isNotEmpty(email)) {
+                    return new UsernamePasswordAuthenticationToken(email, null, authorities);
                 }
             } catch (ExpiredJwtException exception) {
                 log.warn("Request to parse expired JWT : {} failed : {}", token, exception.getMessage());

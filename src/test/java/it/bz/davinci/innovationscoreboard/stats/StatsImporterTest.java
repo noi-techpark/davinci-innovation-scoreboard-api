@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -49,7 +48,7 @@ public class StatsImporterTest {
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
         statsImporter.importFile(multipartFile);
 
-        verify(researchAndDevelopmentDataImporter, times(1)).importFile(multipartFile, 1);
+        verify(researchAndDevelopmentDataImporter, times(1)).importFile(anyString(), anyInt());
     }
 
     @Test(expected = UnsupportedOperationException.class)

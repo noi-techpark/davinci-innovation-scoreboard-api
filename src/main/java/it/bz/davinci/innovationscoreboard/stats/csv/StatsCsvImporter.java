@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -29,11 +30,13 @@ public class StatsCsvImporter<CSV, ES> {
 
     @Async
     @Transactional
-    public void importFile(MultipartFile file, int fileImportId) {
+    public void importFile(String fileName, int fileImportId) {
         FileImportDto fileImportState = fileImportService.getById(fileImportId);
         fileImportState.setStatus(FileImport.Status.PROCESSING);
         fileImportState = fileImportService.save(fileImportState);
+
         try {
+            File file = new File(fileName);
             List<CSV> data = statsCsvParser.parse(file);
 
             boolean indexCleaned = esDao.cleanIndex();
@@ -41,15 +44,16 @@ public class StatsCsvImporter<CSV, ES> {
             if (indexCleaned) {
                 data.forEach(record -> esDao.index(mapper.toEs(record)));
             } else {
-                log.error("Failed to clean index for file: " + file.getName());
+                log.error("Failed to clean index for file: " + fileImportState.getSource());
                 fileImportState.setStatus(FileImport.Status.ERROR);
                 fileImportService.save(fileImportState);
             }
 
             fileImportState.setStatus(FileImport.Status.SUCCESS);
             fileImportService.save(fileImportState);
+            file.delete();
         } catch (Exception e) {
-            log.error("Failed to import stats for file: " + file.getName(), e);
+            log.error("Failed to import stats for file: " + fileImportState.getSource(), e);
             fileImportState.setStatus(FileImport.Status.ERROR);
             fileImportService.save(fileImportState);
         }

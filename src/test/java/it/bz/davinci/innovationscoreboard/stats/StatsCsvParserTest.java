@@ -18,20 +18,18 @@ public class StatsCsvParserTest {
     @Test
     public void successfulParsingByType() throws IOException {
 
-        MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
+        File file = new File("src/test/resources/csv/validResearchAndDevelopment2.csv");
 
-
-        researchAndDevelopmentStatsCsvParser.parse(multipartFile);
+        researchAndDevelopmentStatsCsvParser.parse(file);
 
     }
 
     @Test
     public void unsuccessfulParsingByType() throws IOException {
 
-        MultipartFile multipartFile = new MockMultipartFile("invalidResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/invalidResearchAndDevelopment.csv")));
+        File file = new File("src/test/resources/csv/invalidResearchAndDevelopment.csv");
 
-
-        researchAndDevelopmentStatsCsvParser.parse(multipartFile);
+        researchAndDevelopmentStatsCsvParser.parse(file);
 
     }
 }

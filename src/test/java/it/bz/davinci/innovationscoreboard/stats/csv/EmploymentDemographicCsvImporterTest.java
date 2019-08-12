@@ -53,8 +53,7 @@ public class EmploymentDemographicCsvImporterTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldFailIfNoDBEntryIsPresent() throws IOException {
-        MultipartFile multipartFile = createFile("validResearchAndDevelopment2.csv");
-        employmentDemographicCsvImporter.importFile(multipartFile, 1);
+        employmentDemographicCsvImporter.importFile("src/test/resources/csv/validResearchAndDevelopment2.csv", 1);
     }
 
     @Test
@@ -65,7 +64,7 @@ public class EmploymentDemographicCsvImporterTest {
                 .importDate(LocalDateTime.now())
                 .status(FileImport.Status.UPLOADED).build());
 
-        employmentDemographicCsvImporter.importFile(multipartFile, uploadedFile.getId());
+        employmentDemographicCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
 
         verify(esDao, times(2)).index(Mockito.any(EmploymentDemographicEs.class));
         final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());

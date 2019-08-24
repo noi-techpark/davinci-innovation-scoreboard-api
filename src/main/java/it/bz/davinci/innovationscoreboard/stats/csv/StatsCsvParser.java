@@ -18,7 +18,7 @@ public class StatsCsvParser<T> {
     public List<T> parse(File file) throws IOException {
         try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
             List<T> stats = new CsvToBeanBuilder<T>(reader)
-                    .withSeparator(',')
+                    .withSeparator('|')
                     .withType(typeParameterClass)
                     .build()
                     .parse();

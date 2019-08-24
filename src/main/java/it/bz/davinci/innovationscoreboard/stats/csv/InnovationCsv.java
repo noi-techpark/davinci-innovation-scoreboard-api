@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 public class InnovationCsv {
 
-    public static final String SUPPORTED_HEADER = "\"ITTER107\",\"Territory\",\"TIPO_DATO_CIS\",\"Indicators\",\"ATECO_2007\",\"NACE 2007\",\"CLLVT\",\"Size classes of persons employed\",\"TIME\",\"Select time\",\"Value\",\"Flag Codes\",\"Flags\"";
+    public static final String SUPPORTED_HEADER = "\"ITTER107\"|\"Territory\"|\"VARICT\"|\"Data type\"|\"ATECO_2007\"|\"NACE 2007\"|\"CLLVT\"|\"Size classes of persons employed\"|\"TIME\"|\"Select time\"|\"Value\"|\"Flag Codes\"|\"Flags\"";
 
-    @CsvBindByName(column = "Territory")
-    private String territory;
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;
-    @CsvBindByName(column = "TIPO_DATO_CIS")
-    private String TIPO_DATO_CIS;
-    @CsvBindByName(column = "Indicators")
-    private String indicators;
+    @CsvBindByName(column = "Territory")
+    private String Territory;
+    @CsvBindByName(column = "VARICT")
+    private String VARICT;
+    @CsvBindByName(column = "Data type")
+    private String dataType;
     @CsvBindByName(column = "ATECO_2007")
     private String ATECO_2007;
     @CsvBindByName(column = "NACE 2007")

@@ -1,6 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats.es;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InnovationEs {
-    private String territory;
     private String ITTER107;
-    private String TIPO_DATO_CIS;
-    private String indicators;
+    private String Territory;
+    private String VARICT;
+    private String dataType;
     private String ATECO_2007;
     private String NACE_2007;
     private String CLLVT;

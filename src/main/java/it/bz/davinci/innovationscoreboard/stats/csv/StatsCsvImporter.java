@@ -51,7 +51,7 @@ public class StatsCsvImporter<CSV, ES> {
 
             fileImportState.setStatus(FileImport.Status.SUCCESS);
             fileImportService.save(fileImportState);
-            file.delete();
+            //file.delete();
         } catch (Exception e) {
             log.error("Failed to import stats for file: " + fileImportState.getSource(), e);
             fileImportState.setStatus(FileImport.Status.ERROR);

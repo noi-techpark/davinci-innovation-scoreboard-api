@@ -61,6 +61,16 @@ public class StatsImporterTest {
         verify(innovationCsvDataImporter, times(1)).importFile(anyString(), anyInt());
     }
 
+    @Test
+    public void givenValidEmploymentDemographicFile_startUpload() throws IOException {
+
+        when(fileImportService.save(any())).thenReturn(FileImportDto.builder().id(1).build());
+        MultipartFile multipartFile = new MockMultipartFile("validEmploymentDemographic.csv", new FileInputStream(new File("src/test/resources/csv/validEmploymentDemographic.csv")));
+        statsImporter.importFile(multipartFile);
+
+        verify(employmentDemographicCsvDataImporter, times(1)).importFile(anyString(), anyInt());
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void givenUnsupportedFile_throwException() throws IOException {
 

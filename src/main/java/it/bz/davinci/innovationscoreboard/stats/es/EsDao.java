@@ -19,9 +19,9 @@ import java.util.Map;
 @Slf4j
 public abstract class EsDao<T> {
 
-    private final String indexName;
-    private final RestHighLevelClient esClient;
-    private final ObjectMapper objectMapper;
+    protected final String indexName;
+    protected final RestHighLevelClient esClient;
+    protected final ObjectMapper objectMapper;
 
     public void index(T document) {
         IndexRequest indexRequest = new IndexRequest(indexName)

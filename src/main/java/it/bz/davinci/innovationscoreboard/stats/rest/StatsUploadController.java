@@ -11,12 +11,12 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "v1/stats")
-public class StatsController {
+public class StatsUploadController {
 
     private final StatsImporter statsService;
     private final FileImportService fileImportService;
 
-    public StatsController(StatsImporter statsService, FileImportService fileImportService) {
+    public StatsUploadController(StatsImporter statsService, FileImportService fileImportService) {
         this.statsService = statsService;
         this.fileImportService = fileImportService;
     }

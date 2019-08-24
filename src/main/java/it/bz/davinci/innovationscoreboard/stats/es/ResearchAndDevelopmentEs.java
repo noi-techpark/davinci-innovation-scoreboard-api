@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -38,7 +40,7 @@ public class ResearchAndDevelopmentEs {
     private String qualificationISCED;
     private String TIME;
     private String selectTime;
-    private Integer value;
+    private BigDecimal value;
     private String flagCodes;
     private String flags;
 }

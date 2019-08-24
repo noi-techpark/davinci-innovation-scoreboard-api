@@ -1,7 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;

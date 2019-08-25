@@ -29,9 +29,9 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "POPI"))
-                .filter(QueryBuilders.termQuery("ATECO_2007", "00100"))
-                .filter(QueryBuilders.termQuery("CLLVT", "W_GE10")));
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "POPI"))
+                .filter(QueryBuilders.termQuery("ATECO_2007.keyword", "00100"))
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10")));
         searchSourceBuilder.size(500);
         searchRequest.source(searchSourceBuilder);
 

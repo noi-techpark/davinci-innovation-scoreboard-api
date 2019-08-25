@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatisticsResponseDto {
-    private Map<String, List<StatisticsResponsePerYearDto>> statistics;
+    private Map<String, Collection<StatisticsResponsePerYearDto>> statistics;
 }

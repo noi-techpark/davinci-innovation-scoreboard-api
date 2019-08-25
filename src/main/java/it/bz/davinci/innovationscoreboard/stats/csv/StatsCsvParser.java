@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.apache.commons.io.input.BOMInputStream;
 
 import java.io.*;
 import java.util.List;
@@ -15,7 +16,7 @@ public class StatsCsvParser<T> {
     }
 
     public List<T> parse(File file) throws IOException {
-        try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
+        try (Reader reader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)))) {
             List<T> stats = new CsvToBeanBuilder<T>(reader)
                     .withSeparator('|')
                     .withType(typeParameterClass)

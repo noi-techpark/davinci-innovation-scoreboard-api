@@ -6,6 +6,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -26,12 +27,28 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
     }
 
     public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesDividedByTerritory() {
-        SearchRequest searchRequest = new SearchRequest(this.indexName);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.boolQuery()
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "POPI"))
                 .filter(QueryBuilders.termQuery("ATECO_2007.keyword", "00100"))
-                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10")));
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10"));
+
+        return searchByQuery(filter);
+    }
+
+    public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE() {
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "POPI"))
+                .filter(QueryBuilders.termQuery("ITTER107.keyword", "IT"))
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10"))
+                .filter(QueryBuilders.termQuery("FORMA_INNOVAZ.keyword", "ALL"));
+
+        return searchByQuery(filter);
+    }
+
+    private List<EmploymentDemographicEs> searchByQuery(BoolQueryBuilder query) {
+        SearchRequest searchRequest = new SearchRequest(this.indexName);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query);
         searchSourceBuilder.size(500);
         searchRequest.source(searchSourceBuilder);
 

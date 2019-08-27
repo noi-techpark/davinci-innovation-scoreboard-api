@@ -85,6 +85,16 @@ public class EnterprisesWithInnovationAggregator {
         return result;
     }
 
+    public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
+        StatisticsResponseDto result = new StatisticsResponseDto();
+        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(enterprisesWithInnovationActivitiesDividedByTerritory);
+
+        result.setStatistics(statistics);
+
+        return result;
+    }
+
     private Map<String, Collection<StatisticsResponsePerYearDto>> groupByATECO_2007(List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory) {
         return enterprisesWithInnovationActivitiesDividedByTerritory.stream()
                 .collect(Collectors.groupingBy(
@@ -181,4 +191,6 @@ public class EnterprisesWithInnovationAggregator {
                         }
                 ));
     }
+
+
 }

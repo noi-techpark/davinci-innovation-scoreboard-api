@@ -28,9 +28,14 @@ public class EnterprisesWithInnovationController {
         return enterprisesWithInnovationAggregator.getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE();
     }
 
-    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-devided-by-territory")
+    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-divided-by-territory")
     public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
         return enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory();
+    }
+
+    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-in-italy-divided-by-nace")
+    public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace() {
+        return enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
     }
 
 }

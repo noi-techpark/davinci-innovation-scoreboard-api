@@ -18,7 +18,7 @@ public class ResearchAndDevelopmentController {
         this.researchAndDevelopmentAggregator = researchAndDevelopmentAggregator;
     }
 
-    @GetMapping(value = "domestic-research-and-development-expenditure-in-house-divided-by-territory")
+    @GetMapping(value = "/domestic-research-and-development-expenditure-in-house-divided-by-territory")
     public StatisticsResponseDto getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory() {
         return researchAndDevelopmentAggregator.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory();
     }

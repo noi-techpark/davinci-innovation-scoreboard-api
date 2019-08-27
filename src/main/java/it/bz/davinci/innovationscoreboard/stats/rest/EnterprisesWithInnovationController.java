@@ -28,32 +28,32 @@ public class EnterprisesWithInnovationController {
         return enterprisesWithInnovationAggregator.getEnterprisesWithInnovationActivitiesInItalyDividedByNACE();
     }
 
-    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-divided-by-territory")
+    @GetMapping(value = "/enterprises-that-have-introduced-product-or-process-innovations-divided-by-territory")
     public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
         return enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory();
     }
 
-    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-in-italy-divided-by-nace")
+    @GetMapping(value = "/enterprises-that-have-introduced-product-or-process-innovations-in-italy-divided-by-nace")
     public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace() {
         return enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
     }
 
-    @GetMapping(value = "innovation-expenditure-divided-by-territory")
+    @GetMapping(value = "/innovation-expenditure-divided-by-territory")
     public StatisticsResponseDto getInnovationExpenditureDividedByTerritory() {
         return enterprisesWithInnovationAggregator.getInnovationExpenditureDividedByTerritory();
     }
 
-    @GetMapping(value = "innovation-expenditure-in-italy-divided-by-nace")
+    @GetMapping(value = "/innovation-expenditure-in-italy-divided-by-nace")
     public StatisticsResponseDto getInnovationExpenditureInItalyDividedByNace() {
         return enterprisesWithInnovationAggregator.getInnovationExpenditureInItalyDividedByNace();
     }
 
-    @GetMapping(value = "innovation-expenditure-per-number-of-persons-employed-divided-by-territory")
+    @GetMapping(value = "/innovation-expenditure-per-number-of-persons-employed-divided-by-territory")
     public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
         return enterprisesWithInnovationAggregator.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
     }
 
-    @GetMapping(value = "innovation-expenditure-per-number-of-persons-employed-in-italy-divided-by-nace")
+    @GetMapping(value = "/innovation-expenditure-per-number-of-persons-employed-in-italy-divided-by-nace")
     public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace() {
         return enterprisesWithInnovationAggregator.getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace();
     }

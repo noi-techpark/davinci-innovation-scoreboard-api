@@ -76,11 +76,11 @@ public class EnterprisesWithInnovationAggregator {
         return result;
     }
 
-    public StatisticsResponseDto getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE() {
+    public StatisticsResponseDto getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesInItalyDevidedByNACE = employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE();
+        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesInItalyDividedByNACE = employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesInItalyDividedByNACE();
 
-        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = enterprisesWithInnovationActivitiesInItalyDevidedByNACE.stream()
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = enterprisesWithInnovationActivitiesInItalyDividedByNACE.stream()
                 .collect(Collectors.groupingBy(
                         EmploymentDemographicEs::getITTER107))
                 .entrySet().stream().collect(Collectors.toMap(
@@ -111,7 +111,7 @@ public class EnterprisesWithInnovationAggregator {
                                     statisticsResponsePerYearDto.setGroups(new ArrayList<>());
                                 }
 
-                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "FORMA_INNOVAZ".equals(group.getId())).findFirst();
+                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "ATECO_2007".equals(group.getId())).findFirst();
 
                                 if (first.isPresent()) {
                                     first.get().getValues().put(entry.getATECO_2007(), entry.getValue());
@@ -223,7 +223,7 @@ public class EnterprisesWithInnovationAggregator {
                                     statisticsResponsePerYearDto.setGroups(new ArrayList<>());
                                 }
 
-                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "FORMA_INNOVAZ".equals(group.getId())).findFirst();
+                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "ATECO_2007".equals(group.getId())).findFirst();
 
                                 if (first.isPresent()) {
                                     first.get().getValues().put(entry.getATECO_2007(), entry.getValue());

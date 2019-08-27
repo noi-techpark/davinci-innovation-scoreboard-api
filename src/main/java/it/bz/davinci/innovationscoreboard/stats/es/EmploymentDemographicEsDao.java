@@ -35,7 +35,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE() {
+    public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "POPI"))
                 .filter(QueryBuilders.termQuery("ITTER107.keyword", "IT"))

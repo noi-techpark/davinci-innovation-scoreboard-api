@@ -45,11 +45,20 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
+    public List<EmploymentDemographicEs> getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "PTCS"))
+                .filter(QueryBuilders.termQuery("ATECO_2007.keyword", "00100"))
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10"));
+
+        return searchByQuery(filter);
+    }
+
     private List<EmploymentDemographicEs> searchByQuery(BoolQueryBuilder query) {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(query);
-        searchSourceBuilder.size(500);
+        searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
 
         try {
@@ -74,4 +83,5 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
 
         return result;
     }
+
 }

@@ -28,5 +28,9 @@ public class EnterprisesWithInnovationController {
         return enterprisesWithInnovationAggregator.getEnterprisesWithInnovationActivitiesInItalyDevidedByNACE();
     }
 
+    @GetMapping(value = "enterprises-that-have-introduced-product-or-process-innovations-devided-by-territory")
+    public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
+        return enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory();
+    }
 
 }

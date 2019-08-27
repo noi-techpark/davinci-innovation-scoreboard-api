@@ -33,10 +33,20 @@ public class ResearchAndDevelopmentEsDao extends EsDao<ResearchAndDevelopmentEs>
         return searchByQuery(filter);
     }
 
+    public List<ResearchAndDevelopmentEs> getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory() {
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "DRDEIM"))
+                .filter(QueryBuilders.termQuery("ATTIVEC_CSC.keyword", "ALL"))
+                .filter(QueryBuilders.termQuery("SETTISTSEC2010_B.keyword", "S1"));
+
+        return searchByQuery(filter);
+    }
+
     private List<ResearchAndDevelopmentEs> searchByQuery(BoolQueryBuilder query) {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(query);
+        searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
 
         try {

@@ -73,6 +73,16 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
+    public List<EmploymentDemographicEs> getInnovationExpenditureInItalyDividedByNace() {
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "RALLX"))
+                .filter(QueryBuilders.termQuery("ITTER107.keyword", "IT"))
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10"))
+                .filter(QueryBuilders.termQuery("FORMA_INNOVAZ.keyword", "ALL"));
+
+        return searchByQuery(filter);
+    }
+
     private List<EmploymentDemographicEs> searchByQuery(BoolQueryBuilder query) {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();

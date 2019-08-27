@@ -43,4 +43,9 @@ public class EnterprisesWithInnovationController {
         return enterprisesWithInnovationAggregator.getInnovationExpenditureDividedByTerritory();
     }
 
+    @GetMapping(value = "innovation-expenditure-in-italy-divided-by-nace")
+    public StatisticsResponseDto getInnovationExpenditureInItalyDividedByNace() {
+        return enterprisesWithInnovationAggregator.getInnovationExpenditureInItalyDividedByNace();
+    }
+
 }

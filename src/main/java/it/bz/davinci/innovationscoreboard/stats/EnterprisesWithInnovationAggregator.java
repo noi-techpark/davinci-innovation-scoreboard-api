@@ -32,58 +32,11 @@ public class EnterprisesWithInnovationAggregator {
     }
 
 
-
     public StatisticsResponseDto getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
         StatisticsResponseDto result = new StatisticsResponseDto();
         final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesInItalyDividedByNACE = employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesInItalyDividedByNACE();
 
-        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = enterprisesWithInnovationActivitiesInItalyDividedByNACE.stream()
-                .collect(Collectors.groupingBy(
-                        EmploymentDemographicEs::getITTER107))
-                .entrySet().stream().collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        row -> {
-                            HashMap<String, StatisticsResponsePerYearDto> statisticsPerYear = new HashMap<>();
-                            row.getValue().forEach(entry -> {
-
-                                if (isNull(entry.getValue())) {
-                                    return;
-                                }
-
-                                StatisticsResponsePerYearDto statisticsResponsePerYearDto;
-                                if (statisticsPerYear.containsKey(entry.getTIME())) {
-                                    statisticsResponsePerYearDto = statisticsPerYear.get(entry.getTIME());
-                                } else {
-                                    statisticsResponsePerYearDto = new StatisticsResponsePerYearDto();
-                                    statisticsResponsePerYearDto.setTotal(BigDecimal.ZERO);
-                                    statisticsResponsePerYearDto.setYear(entry.getTIME());
-                                    statisticsPerYear.put(entry.getTIME(), statisticsResponsePerYearDto);
-                                }
-
-                                final BigDecimal total = statisticsResponsePerYearDto.getTotal().add(entry.getValue());
-                                statisticsResponsePerYearDto.setTotal(total);
-
-
-                                if (isNull(statisticsResponsePerYearDto.getGroups())) {
-                                    statisticsResponsePerYearDto.setGroups(new ArrayList<>());
-                                }
-
-                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "ATECO_2007".equals(group.getId())).findFirst();
-
-                                if (first.isPresent()) {
-                                    first.get().getValues().put(entry.getATECO_2007(), entry.getValue());
-                                } else {
-                                    StatisticsResponseGroupDto groupDto = new StatisticsResponseGroupDto();
-                                    groupDto.setId("ATECO_2007");
-                                    HashMap<String, BigDecimal> values = new HashMap<>();
-                                    values.put(entry.getATECO_2007(), entry.getValue());
-                                    groupDto.setValues(values);
-                                    statisticsResponsePerYearDto.getGroups().add(groupDto);
-                                }
-                            });
-                            return statisticsPerYear.values();
-                        }
-                ));
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(enterprisesWithInnovationActivitiesInItalyDividedByNACE);
 
         result.setStatistics(statistics);
 
@@ -104,7 +57,36 @@ public class EnterprisesWithInnovationAggregator {
         StatisticsResponseDto result = new StatisticsResponseDto();
         final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
 
-        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = enterprisesWithInnovationActivitiesDividedByTerritory.stream()
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(enterprisesWithInnovationActivitiesDividedByTerritory);
+
+        result.setStatistics(statistics);
+
+        return result;
+    }
+
+    public StatisticsResponseDto getInnovationExpenditureDividedByTerritory() {
+        StatisticsResponseDto result = new StatisticsResponseDto();
+        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getInnovationExpenditureDividedByTerritory();
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(enterprisesWithInnovationActivitiesDividedByTerritory);
+
+        result.setStatistics(statistics);
+
+        return result;
+    }
+
+    public StatisticsResponseDto getInnovationExpenditureInItalyDividedByNace() {
+        StatisticsResponseDto result = new StatisticsResponseDto();
+        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getInnovationExpenditureInItalyDividedByNace();
+
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(enterprisesWithInnovationActivitiesDividedByTerritory);
+
+        result.setStatistics(statistics);
+
+        return result;
+    }
+
+    private Map<String, Collection<StatisticsResponsePerYearDto>> groupByATECO_2007(List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory) {
+        return enterprisesWithInnovationActivitiesDividedByTerritory.stream()
                 .collect(Collectors.groupingBy(
                         EmploymentDemographicEs::getITTER107))
                 .entrySet().stream().collect(Collectors.toMap(
@@ -151,21 +133,6 @@ public class EnterprisesWithInnovationAggregator {
                             return statisticsPerYear.values();
                         }
                 ));
-
-
-        result.setStatistics(statistics);
-
-        return result;
-    }
-
-    public StatisticsResponseDto getInnovationExpenditureDividedByTerritory() {
-        StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getInnovationExpenditureDividedByTerritory();
-        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(enterprisesWithInnovationActivitiesDividedByTerritory);
-
-        result.setStatistics(statistics);
-
-        return result;
     }
 
     private Map<String, Collection<StatisticsResponsePerYearDto>> groupByFORMA_INNOVAZ(List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory) {
@@ -214,6 +181,4 @@ public class EnterprisesWithInnovationAggregator {
                         }
                 ));
     }
-
-
 }

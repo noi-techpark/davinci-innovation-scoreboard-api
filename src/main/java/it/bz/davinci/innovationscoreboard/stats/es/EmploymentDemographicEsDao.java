@@ -64,6 +64,15 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
+    public List<EmploymentDemographicEs> getInnovationExpenditureDividedByTerritory() {
+        final BoolQueryBuilder filter = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "RALLX"))
+                .filter(QueryBuilders.termQuery("ATECO_2007.keyword", "00100"))
+                .filter(QueryBuilders.termQuery("CLLVT.keyword", "W_GE10"));
+
+        return searchByQuery(filter);
+    }
+
     private List<EmploymentDemographicEs> searchByQuery(BoolQueryBuilder query) {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -93,5 +102,4 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
 
         return result;
     }
-
 }

@@ -87,8 +87,19 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
-        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(enterprisesWithInnovationActivitiesDividedByTerritory);
+        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(data);
+
+        result.setStatistics(statistics);
+
+        return result;
+    }
+
+    public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace() {
+        StatisticsResponseDto result = new StatisticsResponseDto();
+        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace();
+
+        final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(data);
 
         result.setStatistics(statistics);
 

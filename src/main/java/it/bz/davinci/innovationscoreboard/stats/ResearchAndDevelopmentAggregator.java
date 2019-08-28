@@ -63,25 +63,28 @@ public class ResearchAndDevelopmentAggregator {
                                 }
 
                                 statisticsResponsePerYearDto.setYear(entry.getTIME());
-                                statisticsResponsePerYearDto.setTotal(statisticsResponsePerYearDto.getTotal().add(entry.getValue()));
 
-                                if (isNull(statisticsResponsePerYearDto.getGroups())) {
-                                    statisticsResponsePerYearDto.setGroups(new ArrayList<>());
-                                }
-
-                                final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "SETTISTSEC2010".equals(group.getId())).findFirst();
-
-                                if (first.isPresent()) {
-                                    first.get().getValues().put(entry.getSETTISTSEC2010(), entry.getValue());
+                                if ("S1".equals(entry.getSETTISTSEC2010())) {
+                                    statisticsResponsePerYearDto.setTotal(entry.getValue());
                                 } else {
-                                    StatisticsResponseGroupDto groupDto = new StatisticsResponseGroupDto();
-                                    groupDto.setId("SETTISTSEC2010");
-                                    HashMap<String, BigDecimal> values = new HashMap<>();
-                                    values.put(entry.getSETTISTSEC2010(), entry.getValue());
-                                    groupDto.setValues(values);
-                                    statisticsResponsePerYearDto.getGroups().add(groupDto);
-                                }
 
+                                    if (isNull(statisticsResponsePerYearDto.getGroups())) {
+                                        statisticsResponsePerYearDto.setGroups(new ArrayList<>());
+                                    }
+
+                                    final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "SETTISTSEC2010".equals(group.getId())).findFirst();
+
+                                    if (first.isPresent()) {
+                                        first.get().getValues().put(entry.getSETTISTSEC2010(), entry.getValue());
+                                    } else {
+                                        StatisticsResponseGroupDto groupDto = new StatisticsResponseGroupDto();
+                                        groupDto.setId("SETTISTSEC2010");
+                                        HashMap<String, BigDecimal> values = new HashMap<>();
+                                        values.put(entry.getSETTISTSEC2010(), entry.getValue());
+                                        groupDto.setValues(values);
+                                        statisticsResponsePerYearDto.getGroups().add(groupDto);
+                                    }
+                                }
                             });
 
                             return statisticsPerYear.values();

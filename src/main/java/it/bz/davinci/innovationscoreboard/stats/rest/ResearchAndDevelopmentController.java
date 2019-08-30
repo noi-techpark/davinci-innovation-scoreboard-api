@@ -18,6 +18,11 @@ public class ResearchAndDevelopmentController {
         this.researchAndDevelopmentAggregator = researchAndDevelopmentAggregator;
     }
 
+    @GetMapping(value = "/research-and-development-personnel-in-house-divided-by-territory")
+    public StatisticsResponseDto getResearchAndDevelopmentPersonnelInHouseDividedByTerritory() {
+        return researchAndDevelopmentAggregator.getResearchAndDevelopmentPersonnelInHouseDividedByTerritory();
+    }
+
     @GetMapping(value = "/domestic-research-and-development-expenditure-in-house-divided-by-territory")
     public StatisticsResponseDto getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory() {
         return researchAndDevelopmentAggregator.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory();

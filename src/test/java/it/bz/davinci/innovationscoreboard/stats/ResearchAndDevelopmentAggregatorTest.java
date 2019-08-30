@@ -93,6 +93,37 @@ public class ResearchAndDevelopmentAggregatorTest {
         ));
     }
 
+    @Test
+    public void givenDataWithEmptyEntryValue_returnNullAsTotalValue() throws IOException {
+        when(researchAndDevelopmentEsDao.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory())
+                .thenReturn(generateData("src/test/resources/csv/research-and-development/domestic-research-and-development-with-empty-value.csv"));
+
+        final StatisticsResponseDto result = researchAndDevelopmentAggregator.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory();
+
+        final StatisticsResponsePerYearDto itf2015 = result.getStatistics().get("ITF").stream()
+                .filter(statisticsResponsePerYearDto -> statisticsResponsePerYearDto.getYear().equals("2015"))
+                .findFirst()
+                .get();
+
+        assertThat(itf2015.getTotal(), equalTo(null));
+    }
+
+    @Test
+    public void givenDataValidEntryValue_returnTotalValue() throws IOException {
+        when(researchAndDevelopmentEsDao.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory())
+                .thenReturn(generateData("src/test/resources/csv/research-and-development/domestic-research-and-development-with-empty-value.csv"));
+
+        final StatisticsResponseDto result = researchAndDevelopmentAggregator.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory();
+
+        final StatisticsResponsePerYearDto itf2014 = result.getStatistics().get("ITF").stream()
+                .filter(statisticsResponsePerYearDto -> statisticsResponsePerYearDto.getYear().equals("2014"))
+                .findFirst()
+                .get();
+
+        assertThat(itf2014.getTotal(), equalTo(BigDecimal.valueOf(2622460000L)));
+    }
+
+
     private List<StatisticsResponseGroupDto> createGroups(Map<String, BigDecimal> sexistatValues, Map<String, BigDecimal> profiloProfValues, Map<String, BigDecimal> SETTISTSEC2010Values) {
         List<StatisticsResponseGroupDto> result = new ArrayList<>();
         StatisticsResponseGroupDto sexistat = new StatisticsResponseGroupDto();

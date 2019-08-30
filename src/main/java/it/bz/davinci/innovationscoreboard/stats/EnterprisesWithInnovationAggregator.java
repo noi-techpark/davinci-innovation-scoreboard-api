@@ -116,25 +116,24 @@ public class EnterprisesWithInnovationAggregator {
                             HashMap<String, StatisticsResponsePerYearDto> statisticsPerYear = new HashMap<>();
                             row.getValue().forEach(entry -> {
 
-                                if (isNull(entry.getValue())) {
-                                    return;
-                                }
-
-                                final BigDecimal entryValue = entry.getValue().multiply(multiplier);
+                                final BigDecimal entryValue = isNull(entry.getValue()) ? null : entry.getValue().multiply(multiplier);
 
                                 StatisticsResponsePerYearDto statisticsResponsePerYearDto;
                                 if (statisticsPerYear.containsKey(entry.getTIME())) {
                                     statisticsResponsePerYearDto = statisticsPerYear.get(entry.getTIME());
                                 } else {
                                     statisticsResponsePerYearDto = new StatisticsResponsePerYearDto();
-                                    statisticsResponsePerYearDto.setTotal(BigDecimal.ZERO);
                                     statisticsResponsePerYearDto.setYear(entry.getTIME());
+                                    statisticsResponsePerYearDto.setTotal(BigDecimal.ZERO);
                                     statisticsPerYear.put(entry.getTIME(), statisticsResponsePerYearDto);
                                 }
 
-                                final BigDecimal total = statisticsResponsePerYearDto.getTotal().add(entryValue);
-                                statisticsResponsePerYearDto.setTotal(total);
-
+                                if (isNull(entryValue)) {
+                                    statisticsResponsePerYearDto.setTotal(null);
+                                } else if (!isNull(statisticsResponsePerYearDto.getTotal())) {
+                                    final BigDecimal total = statisticsResponsePerYearDto.getTotal().add(entryValue);
+                                    statisticsResponsePerYearDto.setTotal(total);
+                                }
 
                                 if (isNull(statisticsResponsePerYearDto.getGroups())) {
                                     statisticsResponsePerYearDto.setGroups(new ArrayList<>());
@@ -177,7 +176,7 @@ public class EnterprisesWithInnovationAggregator {
                                 }
 
                                 statisticsResponsePerYearDto.setYear(entry.getTIME());
-                                final BigDecimal entryValue = entry.getValue().multiply(multiplier);
+                                final BigDecimal entryValue = isNull(entry.getValue()) ? null : entry.getValue().multiply(multiplier);
 
                                 if ("ALL".equals(entry.getFORMA_INNOVAZ())) {
                                     statisticsResponsePerYearDto.setTotal(entryValue);

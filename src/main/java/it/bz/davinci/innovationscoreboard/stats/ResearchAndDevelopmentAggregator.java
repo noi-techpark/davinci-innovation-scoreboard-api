@@ -33,9 +33,7 @@ public class ResearchAndDevelopmentAggregator {
                             HashMap<String, StatisticsResponsePerYearDto> statisticsPerYear = new HashMap<>();
                             row.getValue().forEach(entry -> {
 
-                                if (isNull(entry.getValue())) {
-                                    return;
-                                }
+                                final BigDecimal entryValue = entry.getValue();
 
                                 StatisticsResponsePerYearDto statisticsResponsePerYearDto;
                                 if (statisticsPerYear.containsKey(entry.getTIME())) {
@@ -49,7 +47,7 @@ public class ResearchAndDevelopmentAggregator {
                                 statisticsResponsePerYearDto.setYear(entry.getTIME());
 
                                 if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getProfessionalStatus()) && "total".equals(entry.getGender()) && "total".equals(entry.getQualificationISCED())) {
-                                    statisticsResponsePerYearDto.setTotal(entry.getValue());
+                                    statisticsResponsePerYearDto.setTotal(entryValue);
                                 } else {
 
                                     if (isNull(statisticsResponsePerYearDto.getGroups())) {
@@ -57,12 +55,13 @@ public class ResearchAndDevelopmentAggregator {
                                     }
 
                                     if ("total".equals(entry.getProfessionalStatus()) && "total".equals(entry.getGender()) && "total".equals(entry.getQualificationISCED())) {
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SETTISTSEC2010", entry.getSETTISTSEC2010(), entry.getValue());
+                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SETTISTSEC2010", entry.getSETTISTSEC2010(), entryValue);
                                     } else if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getGender()) && "total".equals(entry.getQualificationISCED())) {
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", entry.getPROFILO_PROF(), entry.getValue());
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", "others", statisticsResponsePerYearDto.getTotal().subtract(entry.getValue()));
+                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", entry.getPROFILO_PROF(), entryValue);
+                                        BigDecimal othersValue = isNull(entryValue) ? null : statisticsResponsePerYearDto.getTotal().subtract(entryValue);
+                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", "others", othersValue);
                                     } else if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getProfessionalStatus()) && "total".equals(entry.getQualificationISCED())) {
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SEXISTAT1", entry.getSEXISTAT1(), entry.getValue());
+                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SEXISTAT1", entry.getSEXISTAT1(), entryValue);
                                     }
                                 }
                             });
@@ -109,9 +108,7 @@ public class ResearchAndDevelopmentAggregator {
                             HashMap<String, StatisticsResponsePerYearDto> statisticsPerYear = new HashMap<>();
                             row.getValue().forEach(entry -> {
 
-                                if (isNull(entry.getValue())) {
-                                    return;
-                                }
+                                BigDecimal groupValue = isNull(entry.getValue()) ? null : entry.getValue().multiply(multiplier);
 
                                 StatisticsResponsePerYearDto statisticsResponsePerYearDto;
                                 if (statisticsPerYear.containsKey(entry.getTIME())) {
@@ -124,7 +121,6 @@ public class ResearchAndDevelopmentAggregator {
 
                                 statisticsResponsePerYearDto.setYear(entry.getTIME());
                                 String groupIdentifier = entry.getSETTISTSEC2010();
-                                BigDecimal groupValue = entry.getValue().multiply(multiplier);
 
                                 if ("S1".equals(groupIdentifier)) {
                                     statisticsResponsePerYearDto.setTotal(groupValue);

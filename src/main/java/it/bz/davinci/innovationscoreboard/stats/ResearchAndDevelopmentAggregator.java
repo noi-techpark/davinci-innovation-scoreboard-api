@@ -115,7 +115,6 @@ public class ResearchAndDevelopmentAggregator {
                                     statisticsResponsePerYearDto = statisticsPerYear.get(entry.getTIME());
                                 } else {
                                     statisticsResponsePerYearDto = new StatisticsResponsePerYearDto();
-                                    statisticsResponsePerYearDto.setTotal(BigDecimal.ZERO);
                                     statisticsPerYear.put(entry.getTIME(), statisticsResponsePerYearDto);
                                 }
 

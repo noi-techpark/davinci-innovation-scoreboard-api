@@ -123,7 +123,6 @@ public class ResearchAndDevelopmentAggregatorTest {
         assertThat(itf2014.getTotal(), equalTo(BigDecimal.valueOf(2622460000L)));
     }
 
-
     private List<StatisticsResponseGroupDto> createGroups(Map<String, BigDecimal> sexistatValues, Map<String, BigDecimal> profiloProfValues, Map<String, BigDecimal> SETTISTSEC2010Values) {
         List<StatisticsResponseGroupDto> result = new ArrayList<>();
         StatisticsResponseGroupDto sexistat = new StatisticsResponseGroupDto();

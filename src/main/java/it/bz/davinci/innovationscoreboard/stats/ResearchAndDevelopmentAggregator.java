@@ -94,12 +94,12 @@ public class ResearchAndDevelopmentAggregator {
         StatisticsResponseDto result = new StatisticsResponseDto();
 
         final List<ResearchAndDevelopmentEs> data = researchAndDevelopmentEsDao.getDomesticResearchAndDevelopmentExpenditureInHouseDividedByTerritory();
-        final Map<String, Collection<StatisticsResponsePerYearDto>> groupedStats = groupBySETTISTSEC2010(data);
+        final Map<String, Collection<StatisticsResponsePerYearDto>> groupedStats = groupBySETTISTSEC2010(data, BigDecimal.valueOf(1000));
         result.setStatistics(groupedStats);
         return result;
     }
 
-    private Map<String, Collection<StatisticsResponsePerYearDto>> groupBySETTISTSEC2010(List<ResearchAndDevelopmentEs> data) {
+    private Map<String, Collection<StatisticsResponsePerYearDto>> groupBySETTISTSEC2010(List<ResearchAndDevelopmentEs> data, BigDecimal multiplier) {
         return data.stream()
                 .collect(Collectors.groupingBy(
                         ResearchAndDevelopmentEs::getITTER107))
@@ -124,7 +124,7 @@ public class ResearchAndDevelopmentAggregator {
 
                                 statisticsResponsePerYearDto.setYear(entry.getTIME());
                                 String groupIdentifier = entry.getSETTISTSEC2010();
-                                BigDecimal groupValue = entry.getValue();
+                                BigDecimal groupValue = entry.getValue().multiply(multiplier);
 
                                 if ("S1".equals(groupIdentifier)) {
                                     statisticsResponsePerYearDto.setTotal(groupValue);

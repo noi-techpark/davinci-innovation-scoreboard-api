@@ -131,7 +131,6 @@ public class ResearchAndDevelopmentAggregator {
 
                                     final Optional<StatisticsResponseGroupDto> first = statisticsResponsePerYearDto.getGroups().stream().filter(group -> "SETTISTSEC2010".equals(group.getId())).findFirst();
 
-
                                     if (first.isPresent()) {
                                         first.get().getValues().put(groupIdentifier, groupValue);
                                     } else {

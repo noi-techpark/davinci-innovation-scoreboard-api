@@ -14,6 +14,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
 
+import javax.management.Query;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,12 @@ public class ResearchAndDevelopmentEsDao extends EsDao<ResearchAndDevelopmentEs>
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS.keyword", "DRDEIM"))
                 .filter(QueryBuilders.termQuery("ATTIVEC_CSC.keyword", "ALL"))
-                .filter(QueryBuilders.termQuery("SETTISTSEC2010_B.keyword", "S1"));
+                .filter(QueryBuilders.termQuery("SETTISTSEC2010_B.keyword", "S1"))
+                .filter(QueryBuilders.termQuery("TIPENTSPE.keyword", "99"))
+                .filter(QueryBuilders.termQuery("SEXISTAT1.keyword", "9"))
+                .filter(QueryBuilders.termQuery("TITOLO_STUDIO.keyword", "99"))
+                .filter(QueryBuilders.termQuery("CORSO_LAUREA.keyword", "ALL"))
+                .filter(QueryBuilders.termQuery("flagCodes.keyword", ""));
 
         return scrollByQuery(filter);
     }
@@ -76,12 +82,11 @@ public class ResearchAndDevelopmentEsDao extends EsDao<ResearchAndDevelopmentEs>
             SearchHit[] searchHits = searchResponse.getHits().getHits();
 
             while (searchHits != null && searchHits.length > 0) {
-
+                result.addAll(parseSearchResponse(searchResponse));
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(scroll);
                 searchResponse = esClient.scroll(scrollRequest, RequestOptions.DEFAULT);
                 scrollId = searchResponse.getScrollId();
-                result.addAll(parseSearchResponse(searchResponse));
                 searchHits = searchResponse.getHits().getHits();
             }
 

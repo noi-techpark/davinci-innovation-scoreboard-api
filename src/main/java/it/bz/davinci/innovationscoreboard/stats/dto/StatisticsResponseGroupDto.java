@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,5 @@ import java.util.HashMap;
 @Builder
 public class StatisticsResponseGroupDto {
     private String id;
-    private HashMap<String, BigDecimal> values;
+    private Map<String, BigDecimal> values;
 }

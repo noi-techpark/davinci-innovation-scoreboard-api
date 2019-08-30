@@ -60,9 +60,7 @@ public class ResearchAndDevelopmentAggregator {
                                         createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SETTISTSEC2010", entry.getSETTISTSEC2010(), entry.getValue());
                                     } else if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getGender()) && "total".equals(entry.getQualificationISCED())) {
                                         createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", entry.getPROFILO_PROF(), entry.getValue());
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", "99", statisticsResponsePerYearDto.getTotal().subtract(entry.getValue()));
-                                    } else if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getProfessionalStatus()) && "total".equals(entry.getGender())) {
-                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "TITOLO_STUDIO", entry.getTITOLO_STUDIO(), entry.getValue());
+                                        createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "PROFILO_PROF", "others", statisticsResponsePerYearDto.getTotal().subtract(entry.getValue()));
                                     } else if ("S1".equals(entry.getSETTISTSEC2010()) && "total".equals(entry.getProfessionalStatus()) && "total".equals(entry.getQualificationISCED())) {
                                         createOrUpdateGroup(statisticsResponsePerYearDto.getGroups(), "SEXISTAT1", entry.getSEXISTAT1(), entry.getValue());
                                     }

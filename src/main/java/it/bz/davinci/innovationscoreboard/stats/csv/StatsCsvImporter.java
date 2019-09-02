@@ -50,6 +50,7 @@ public class StatsCsvImporter<CSV, ES> {
             if (data.isEmpty() && !exceptions.isEmpty()) {
                 log.error("Failed to parse all rows for file: " + fileImportState.getSource());
                 fileImportState.setStatus(PROCESSED_WITH_ERRORS);
+                fileImportState.setLogs(parserResult.getExceptionLog());
             } else {
                 boolean indexCleaned = esDao.cleanIndex();
 
@@ -60,16 +61,19 @@ public class StatsCsvImporter<CSV, ES> {
                         fileImportState.setStatus(PROCESSED_WITH_SUCCESS);
                     } else {
                         fileImportState.setStatus(PROCESSED_WITH_WARNINGS);
+                        fileImportState.setLogs(parserResult.getExceptionLog());
                     }
                 } else {
                     log.error("Failed to clean index for file: " + fileImportState.getSource());
                     fileImportState.setStatus(PROCESSED_WITH_ERRORS);
+                    fileImportState.setLogs("Failed to delete index for file: " + fileImportState.getSource());
                 }
             }
 
         } catch (Exception e) {
             log.error("Failed to import stats for file: " + fileImportState.getSource(), e);
             fileImportState.setStatus(PROCESSED_WITH_ERRORS);
+            fileImportState.setLogs("Failed to open temp file: " + fileImportState.getSource());
         }
 
         fileImportService.save(fileImportState);

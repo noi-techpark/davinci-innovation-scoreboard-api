@@ -62,18 +62,45 @@ public class EmploymentDemographicCsvImporterTest {
 
     @Test
     public void shouldCleanAndUploadDataToIndex() throws IOException {
-        MultipartFile multipartFile = createFile("validEmploymentDemographic.csv");
-        final FileImportDto uploadedFile = fileImportService.save(FileImportDto.builder()
-                .source(multipartFile.getName())
-                .importDate(LocalDateTime.now())
-                .status(FileImport.Status.UPLOADED).build());
-
+        final FileImportDto uploadedFile = createUploadedFile("validEmploymentDemographic.csv");
         employmentDemographicCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
 
         verify(esDao, times(2)).index(Mockito.any(EmploymentDemographicEs.class));
         final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_SUCCESS));
+    }
+
+    @Test
+    public void shouldMarkUploadAsProcessedWithWarnings() throws IOException {
+        final FileImportDto uploadedFile = createUploadedFile("employmentDemographicWithFaultyRows.csv");
+        employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
+
+        verify(esDao, times(1)).index(Mockito.any(EmploymentDemographicEs.class));
+        final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
+
+        assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_WARNINGS));
+        assertThat(fileImport.getLogs(), equalTo("Line: 3, Message: Number of data fields does not match number of headers.\n"));
+    }
+
+    @Test
+    public void giveFileWithoutASingleProcessableRow_thenMarkUploadAsProcessedWithErrors() throws IOException {
+        final FileImportDto uploadedFile = createUploadedFile("employmentDemographicWithAllFaultyRows.csv");
+
+        employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithAllFaultyRows.csv", uploadedFile.getId());
+        final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
+
+        assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_ERRORS));
+        assertThat(fileImport.getLogs(), equalTo("Line: 2, Message: Conversion of 544a to java.math.BigDecimal failed.\n" +
+                "Line: 3, Message: Number of data fields does not match number of headers.\n"));
+    }
+
+    private FileImportDto createUploadedFile(String s) throws IOException {
+        MultipartFile multipartFile = createFile(s);
+        return fileImportService.save(FileImportDto.builder()
+                .source(multipartFile.getName())
+                .importDate(LocalDateTime.now())
+                .status(FileImport.Status.UPLOADED).build());
     }
 
     private MockMultipartFile createFile(String fileName) throws IOException {

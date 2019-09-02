@@ -52,7 +52,7 @@ public class EmploymentDemographicCsvImporterTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void shouldFailIfNoDBEntryIsPresent() throws IOException {
+    public void shouldFailIfNoDBEntryIsPresent() {
         employmentDemographicCsvImporter.importFile("src/test/resources/csv/validResearchAndDevelopment2.csv", 1);
     }
 

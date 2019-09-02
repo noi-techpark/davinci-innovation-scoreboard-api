@@ -7,7 +7,6 @@ import it.bz.davinci.innovationscoreboard.stats.mapper.CsvMapper;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -45,16 +44,16 @@ public class StatsCsvImporter<CSV, ES> {
                 data.forEach(record -> esDao.index(mapper.toEs(record)));
             } else {
                 log.error("Failed to clean index for file: " + fileImportState.getSource());
-                fileImportState.setStatus(FileImport.Status.ERROR);
+                fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_ERRORS);
                 fileImportService.save(fileImportState);
             }
 
-            fileImportState.setStatus(FileImport.Status.SUCCESS);
+            fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_SUCCESS);
             fileImportService.save(fileImportState);
             //file.delete();
         } catch (Exception e) {
             log.error("Failed to import stats for file: " + fileImportState.getSource(), e);
-            fileImportState.setStatus(FileImport.Status.ERROR);
+            fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_ERRORS);
             fileImportService.save(fileImportState);
         }
     }

@@ -39,7 +39,6 @@ public class StatsImporter {
 
             final FileImportDto uploadedFile = fileImportService.save(fileImportStatus);
 
-
             csvDataImporter.importFile(tempFilePath, uploadedFile.getId());
             return uploadedFile;
         }

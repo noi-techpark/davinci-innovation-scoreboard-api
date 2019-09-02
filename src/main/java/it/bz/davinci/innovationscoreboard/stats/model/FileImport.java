@@ -28,7 +28,7 @@ public class FileImport {
     private Status status;
 
     public enum Status {
-        UPLOADED, PROCESSING, SUCCESS, ERROR
+        UPLOADED, PROCESSING, PROCESSED_WITH_SUCCESS, PROCESSED_WITH_ERRORS, PROCESSED_WITH_WARNINGS
     }
 
     @CreationTimestamp

@@ -69,7 +69,7 @@ public class EmploymentDemographicCsvImporterTest {
         verify(esDao, times(2)).index(Mockito.any(EmploymentDemographicEs.class));
         final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
 
-        assertThat(fileImport.getStatus(), equalTo(FileImport.Status.SUCCESS));
+        assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_SUCCESS));
     }
 
     private MockMultipartFile createFile(String fileName) throws IOException {

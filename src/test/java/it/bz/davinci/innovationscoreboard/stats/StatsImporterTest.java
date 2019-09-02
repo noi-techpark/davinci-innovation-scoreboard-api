@@ -74,7 +74,7 @@ public class StatsImporterTest {
     @Test(expected = UnsupportedOperationException.class)
     public void givenUnsupportedFile_throwException() throws IOException {
 
-        MultipartFile multipartFile = new MockMultipartFile("invalidResearchAndDevelopment.csv", new FileInputStream(new File("src/test/resources/csv/invalidResearchAndDevelopment.csv")));
+        MultipartFile multipartFile = new MockMultipartFile("invalidResearchAndDevelopmentHeader.csv", new FileInputStream(new File("src/test/resources/csv/invalidResearchAndDevelopmentHeader.csv")));
         statsImporter.importFile(multipartFile);
     }
 }

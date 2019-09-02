@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -44,10 +45,13 @@ public class EmploymentDemographicCsvImporterTest {
     @Mock
     private EsDao<EmploymentDemographicEs> esDao;
 
+    @Mock
+    private ApplicationEventPublisher publisher;
+
     @Before
     public void setup() {
         when(esDao.cleanIndex()).thenReturn(true);
-        employmentDemographicCsvImporter = new EmploymentDemographicCsvImporter(fileImportService, esDao);
+        employmentDemographicCsvImporter = new EmploymentDemographicCsvImporter(fileImportService, esDao, publisher);
         fileImportRepository.deleteAll();
     }
 

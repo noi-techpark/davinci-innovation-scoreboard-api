@@ -9,9 +9,9 @@ import static org.junit.Assert.*;
 public class StatsCsvImporterFactoryTest {
 
     private StatsCsvImporterFactory statsCsvImporterFactory;
-    private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvImporter(null, null);
-    private final InnovationCsvImporter innovationCsvDataImporter = new InnovationCsvImporter(null, null);;
-    private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvImporter(null, null);
+    private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvImporter(null, null, null);
+    private final InnovationCsvImporter innovationCsvDataImporter = new InnovationCsvImporter(null, null, null);
+    private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvImporter(null, null, null);
 
 
     @Before

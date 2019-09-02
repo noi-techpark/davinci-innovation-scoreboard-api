@@ -1,10 +1,13 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
+import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvException;
 import org.apache.commons.io.input.BOMInputStream;
 
 import java.io.*;
 import java.util.List;
+import java.util.Locale;
 
 
 public class StatsCsvParser<T> {
@@ -15,15 +18,20 @@ public class StatsCsvParser<T> {
         this.typeParameterClass = typeParameterClass;
     }
 
-    public List<T> parse(File file) throws IOException {
+    public ParserResult<T> parse(File file) throws IOException {
         try (Reader reader = new InputStreamReader(new BOMInputStream(new FileInputStream(file)))) {
-            List<T> stats = new CsvToBeanBuilder<T>(reader)
+            final CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
                     .withSeparator('|')
                     .withType(typeParameterClass)
-                    .build()
-                    .parse();
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .withThrowExceptions(false)
+                    .withErrorLocale(Locale.ENGLISH)
+                    .build();
 
-            return stats;
+            final List<T> stats = csvToBean.parse();
+            final List<CsvException> capturedExceptions = csvToBean.getCapturedExceptions();
+
+            return new ParserResult<>(stats, capturedExceptions);
         }
     }
 

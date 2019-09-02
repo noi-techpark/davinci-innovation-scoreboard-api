@@ -1,16 +1,20 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
+import com.opencsv.exceptions.CsvException;
 import it.bz.davinci.innovationscoreboard.stats.FileImportService;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
 import it.bz.davinci.innovationscoreboard.stats.es.EsDao;
+import it.bz.davinci.innovationscoreboard.stats.events.StatsCsvIndexedEvent;
 import it.bz.davinci.innovationscoreboard.stats.mapper.CsvMapper;
-import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
+
+import static it.bz.davinci.innovationscoreboard.stats.model.FileImport.Status.*;
 
 @Slf4j
 public class StatsCsvImporter<CSV, ES> {
@@ -19,43 +23,57 @@ public class StatsCsvImporter<CSV, ES> {
     private final EsDao<ES> esDao;
     private final StatsCsvParser<CSV> statsCsvParser;
     private final CsvMapper<CSV, ES> mapper;
+    private final ApplicationEventPublisher publisher;
 
-    public StatsCsvImporter(FileImportService fileImportService, EsDao<ES> esDao, Class<CSV> typeParameterClass, CsvMapper<CSV, ES> mapper) {
+    public StatsCsvImporter(FileImportService fileImportService, EsDao<ES> esDao, Class<CSV> typeParameterClass, CsvMapper<CSV, ES> mapper, ApplicationEventPublisher publisher) {
         this.fileImportService = fileImportService;
         this.esDao = esDao;
         this.statsCsvParser = new StatsCsvParser<>(typeParameterClass);
         this.mapper = mapper;
+        this.publisher = publisher;
     }
 
     @Async
     @Transactional
     public void importFile(String fileName, int fileImportId) {
         FileImportDto fileImportState = fileImportService.getById(fileImportId);
-        fileImportState.setStatus(FileImport.Status.PROCESSING);
+        fileImportState.setStatus(PROCESSING);
         fileImportState = fileImportService.save(fileImportState);
 
         try {
             File file = new File(fileName);
-            List<CSV> data = statsCsvParser.parse(file);
+            final ParserResult<CSV> parserResult = statsCsvParser.parse(file);
 
-            boolean indexCleaned = esDao.cleanIndex();
+            final List<CSV> data = parserResult.getData();
+            final List<CsvException> exceptions = parserResult.getExceptions();
 
-            if (indexCleaned) {
-                data.forEach(record -> esDao.index(mapper.toEs(record)));
+            if (data.isEmpty() && !exceptions.isEmpty()) {
+                log.error("Failed to parse all rows for file: " + fileImportState.getSource());
+                fileImportState.setStatus(PROCESSED_WITH_ERRORS);
             } else {
-                log.error("Failed to clean index for file: " + fileImportState.getSource());
-                fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_ERRORS);
-                fileImportService.save(fileImportState);
+                boolean indexCleaned = esDao.cleanIndex();
+
+                if (indexCleaned) {
+                    parserResult.getData().forEach(record -> esDao.index(mapper.toEs(record)));
+
+                    if (parserResult.getExceptions().isEmpty()) {
+                        fileImportState.setStatus(PROCESSED_WITH_SUCCESS);
+                    } else {
+                        fileImportState.setStatus(PROCESSED_WITH_WARNINGS);
+                    }
+                } else {
+                    log.error("Failed to clean index for file: " + fileImportState.getSource());
+                    fileImportState.setStatus(PROCESSED_WITH_ERRORS);
+                }
             }
 
-            fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_SUCCESS);
-            fileImportService.save(fileImportState);
-            //file.delete();
         } catch (Exception e) {
             log.error("Failed to import stats for file: " + fileImportState.getSource(), e);
-            fileImportState.setStatus(FileImport.Status.PROCESSED_WITH_ERRORS);
-            fileImportService.save(fileImportState);
+            fileImportState.setStatus(PROCESSED_WITH_ERRORS);
         }
+
+        fileImportService.save(fileImportState);
+        publisher.publishEvent(new StatsCsvIndexedEvent(fileName));
     }
 
 }

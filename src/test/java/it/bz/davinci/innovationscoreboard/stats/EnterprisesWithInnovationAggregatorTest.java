@@ -2,6 +2,7 @@ package it.bz.davinci.innovationscoreboard.stats;
 
 import com.google.common.collect.ImmutableMap;
 import it.bz.davinci.innovationscoreboard.stats.csv.EmploymentDemographicCsv;
+import it.bz.davinci.innovationscoreboard.stats.csv.ParserResult;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvParser;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseGroupDto;
@@ -78,7 +79,7 @@ public class EnterprisesWithInnovationAggregatorTest {
 
         assertThat(it2016.getTotal(), equalTo(BigDecimal.valueOf(341388)));
 
-        HashMap<String, BigDecimal> values = new HashMap<String, BigDecimal>(){{
+        HashMap<String, BigDecimal> values = new HashMap<String, BigDecimal>() {{
             put("45", BigDecimal.valueOf(2089));
             put("46", BigDecimal.valueOf(9293));
             put("52_53", BigDecimal.valueOf(2177));
@@ -141,7 +142,7 @@ public class EnterprisesWithInnovationAggregatorTest {
 
     private List<EmploymentDemographicEs> generateData(String path) throws IOException {
         File file = new File(path);
-        final List<EmploymentDemographicCsv> data = csvParser.parse(file);
-        return data.stream().map(EmploymentDemographicMapper.INSTANCE::toEs).collect(Collectors.toList());
+        final ParserResult<EmploymentDemographicCsv> parserResult = csvParser.parse(file);
+        return parserResult.getData().stream().map(EmploymentDemographicMapper.INSTANCE::toEs).collect(Collectors.toList());
     }
 }

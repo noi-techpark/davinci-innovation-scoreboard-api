@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import com.google.common.collect.ImmutableMap;
+import it.bz.davinci.innovationscoreboard.stats.csv.ParserResult;
 import it.bz.davinci.innovationscoreboard.stats.csv.ResearchAndDevelopmentCsv;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvParser;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseDto;
@@ -145,7 +146,7 @@ public class ResearchAndDevelopmentAggregatorTest {
 
     private List<ResearchAndDevelopmentEs> generateData(String path) throws IOException {
         File file = new File(path);
-        final List<ResearchAndDevelopmentCsv> data = researchAndDevelopmentStatsCsvParser.parse(file);
-        return data.stream().map(ResearchAndDevelopmentMapper.INSTANCE::toEs).collect(Collectors.toList());
+        final ParserResult<ResearchAndDevelopmentCsv> parserResult = researchAndDevelopmentStatsCsvParser.parse(file);
+        return parserResult.getData().stream().map(ResearchAndDevelopmentMapper.INSTANCE::toEs).collect(Collectors.toList());
     }
 }

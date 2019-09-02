@@ -1,2 +1,2 @@
-insert into api_user (email, password, enabled, creation, last_update) values ('admin@noi.bz.it', '$2a$10$/dcPzH8pNF84qpri4HneP.osPDMnGHtrgIQOnDNqQN2FY10beYSwy', true, now(), now());
-insert into user_role (email, role) values ('admin@noi.bz.it', 'ROLE_ADMIN');
+insert into api_user (email, password, enabled, last_update, creation) values ('info@davinici.bz.it', '$2a$10$DKKUcKqQlNk.LaQLAeBZiejD2eG03vG86XeLuIwYKWeInN.Gs1nvm', true, now(), now());
+insert into user_role (email, role) values ('info@davinici.bz.it', 'ROLE_ADMIN');

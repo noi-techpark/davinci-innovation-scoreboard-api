@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.bz.davinci.innovationscoreboard.user.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,6 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/v1/statistics/**").permitAll()
+                .antMatchers("/v1/users/new").access("hasRole('" + Role.ROLE_ADMIN.name() + "')")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), new ObjectMapper()))

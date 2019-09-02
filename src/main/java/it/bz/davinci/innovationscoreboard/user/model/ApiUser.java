@@ -24,6 +24,8 @@ public class ApiUser {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private boolean enabled;
+
     @CreationTimestamp
     private Timestamp creation;
 

@@ -36,4 +36,6 @@ public class FileImport {
 
     @UpdateTimestamp
     private Timestamp lastUpdate;
+
+    private String logs;
 }

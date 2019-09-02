@@ -17,4 +17,5 @@ public class FileImportDto {
     private String source;
     private LocalDateTime importDate;
     private FileImport.Status status;
+    private String logs;
 }

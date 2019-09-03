@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmploymentDemographicCsv {
-
-    public static final String SUPPORTED_HEADER = "\"ITTER107\"|\"Territory\"|\"TIPO_DATO_CIS\"|\"Indicators\"|\"ATECO_2007\"|\"NACE 2007\"|\"CLLVT\"|\"Size classes of persons employed\"|\"FORMA_INNOVAZ\"|\"Information on the innovative enterprises\"|\"OBIETTIVI\"|\"Enterprises goals\"|\"STRATEGIE\"|\"Enterprises strategies\"|\"OSTACOLI\"|\"Obsacles\"|\"ORD_LIVELLO\"|\"Degree of importance\"|\"TIME\"|\"Select time\"|\"Value\"|\"Flag Codes\"|\"Flags\"";
-
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;
     @CsvBindByName(column = "Territory")

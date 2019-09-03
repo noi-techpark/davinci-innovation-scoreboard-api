@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InnovationCsv {
-
-    public static final String SUPPORTED_HEADER = "\"ITTER107\"|\"Territory\"|\"VARICT\"|\"Data type\"|\"ATECO_2007\"|\"NACE 2007\"|\"CLLVT\"|\"Size classes of persons employed\"|\"TIME\"|\"Select time\"|\"Value\"|\"Flag Codes\"|\"Flags\"";
-
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;
     @CsvBindByName(column = "Territory")

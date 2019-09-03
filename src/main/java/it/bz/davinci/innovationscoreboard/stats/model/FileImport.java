@@ -17,6 +17,11 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class FileImport {
+
+    public enum Status {
+        UPLOADED, PROCESSING, PROCESSED_WITH_SUCCESS, PROCESSED_WITH_ERRORS, PROCESSED_WITH_WARNINGS
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,10 +31,6 @@ public class FileImport {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    public enum Status {
-        UPLOADED, PROCESSING, PROCESSED_WITH_SUCCESS, PROCESSED_WITH_ERRORS, PROCESSED_WITH_WARNINGS
-    }
 
     @CreationTimestamp
     private Timestamp creation;

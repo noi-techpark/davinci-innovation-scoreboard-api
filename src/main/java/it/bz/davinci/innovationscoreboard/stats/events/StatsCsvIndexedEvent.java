@@ -6,5 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class StatsCsvIndexedEvent {
+    private Integer fileImportId;
     private String fileName;
 }

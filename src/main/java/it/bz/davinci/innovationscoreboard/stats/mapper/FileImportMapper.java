@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.mapper;
 
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;
@@ -13,5 +14,8 @@ public interface FileImportMapper {
     FileImportMapper INSTANCE = Mappers.getMapper(FileImportMapper.class);
 
     @Mappings({})
-    public FileImportDto toDto(FileImport fileImport);
+    FileImportDto toDto(FileImport fileImport);
+
+    @Mappings({})
+    FileImportResponseDto toResponseDto(FileImportDto fileImportDto);
 }

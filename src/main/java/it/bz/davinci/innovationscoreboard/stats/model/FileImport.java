@@ -42,4 +42,6 @@ public class FileImport {
 
     @Enumerated(EnumType.STRING)
     private StatsType type;
+
+    private String externalStorageLocation;
 }

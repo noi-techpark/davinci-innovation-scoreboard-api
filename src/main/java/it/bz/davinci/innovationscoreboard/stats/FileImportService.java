@@ -1,5 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
 import it.bz.davinci.innovationscoreboard.stats.mapper.FileImportMapper;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
@@ -22,8 +23,9 @@ public class FileImportService {
     private final FileImportRepository fileImportRepository;
 
     public UploadHistoryResponseDto findAll() {
-        List<FileImportDto> imports = fileImportRepository.findAll().stream()
+        List<FileImportResponseDto> imports = fileImportRepository.findAll().stream()
                 .map(FileImportMapper.INSTANCE::toDto)
+                .map(FileImportMapper.INSTANCE::toResponseDto)
                 .collect(Collectors.toList());
 
         return new UploadHistoryResponseDto(imports);
@@ -42,6 +44,7 @@ public class FileImportService {
         fileImport.setStatus(fileImportDto.getStatus());
         fileImport.setLogs(fileImportDto.getLogs());
         fileImport.setType(fileImportDto.getType());
+        fileImport.setExternalStorageLocation(fileImportDto.getExternalStorageLocation());
 
         return FileImportMapper.INSTANCE.toDto(fileImportRepository.save(fileImport));
     }

@@ -77,7 +77,7 @@ public class StatsCsvImporter<CSV, ES> {
         }
 
         fileImportService.save(fileImportState);
-        publisher.publishEvent(new StatsCsvIndexedEvent(fileName));
+        publisher.publishEvent(new StatsCsvIndexedEvent(fileImportState.getId(), fileName));
     }
 
 }

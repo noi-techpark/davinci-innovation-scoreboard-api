@@ -13,12 +13,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileImportDto {
+public class FileImportResponseDto {
     private Integer id;
     private String source;
     private LocalDateTime importDate;
     private FileImport.Status status;
     private String logs;
     private StatsType type;
-    private String externalStorageLocation;
 }

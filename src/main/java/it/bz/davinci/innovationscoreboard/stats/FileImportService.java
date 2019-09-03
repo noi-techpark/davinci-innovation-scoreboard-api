@@ -41,6 +41,7 @@ public class FileImportService {
         fileImport.setSource(fileImportDto.getSource());
         fileImport.setStatus(fileImportDto.getStatus());
         fileImport.setLogs(fileImportDto.getLogs());
+        fileImport.setType(fileImportDto.getType());
 
         return FileImportMapper.INSTANCE.toDto(fileImportRepository.save(fileImport));
     }

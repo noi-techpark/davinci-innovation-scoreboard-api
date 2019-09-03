@@ -1,0 +1,1 @@
+alter table file_import add column type varchar(100);

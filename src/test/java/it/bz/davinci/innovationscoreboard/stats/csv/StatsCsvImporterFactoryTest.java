@@ -20,25 +20,21 @@ public class StatsCsvImporterFactoryTest {
         statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void throwErrorIfHeaderParameterIsNull() {
-        statsCsvImporterFactory.getCsvDataImporter(null);
-    }
-
     @Test
     public void returnsResearchAndDevelopmentDataImporter() {
-        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(RESEARCH_AND_DEVELOPMENT.csvHeader);
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(RESEARCH_AND_DEVELOPMENT);
         assertThat(csvDataImporter, equalTo(researchAndDevelopmentDataImporter));
     }
 
     @Test
     public void returnsInnovationDataImporter() {
-        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES.csvHeader);
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES);
         assertThat(csvDataImporter, equalTo(innovationCsvDataImporter));
     }
+
     @Test
     public void returnsEmploymentDemographicDataImporter() {
-        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES.csvHeader);
+        final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES);
         assertThat(csvDataImporter, equalTo(employmentDemographicCsvDataImporter));
     }
 

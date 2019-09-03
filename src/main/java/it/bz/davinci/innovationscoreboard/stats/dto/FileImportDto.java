@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.dto;
 
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
+import it.bz.davinci.innovationscoreboard.stats.model.StatsType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class FileImportDto {
     private LocalDateTime importDate;
     private FileImport.Status status;
     private String logs;
+    private StatsType type;
 }

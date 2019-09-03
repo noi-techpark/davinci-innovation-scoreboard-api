@@ -39,4 +39,7 @@ public class FileImport {
     private Timestamp lastUpdate;
 
     private String logs;
+
+    @Enumerated(EnumType.STRING)
+    private StatsType type;
 }

@@ -12,6 +12,7 @@
     <artifactId>innovation-scoreboard</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>innovation-scoreboard</name>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -127,6 +128,13 @@
             <artifactId>s3</artifactId>
         </dependency>
 
+        <!-- Deployment -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -145,7 +153,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <build>
         <plugins>

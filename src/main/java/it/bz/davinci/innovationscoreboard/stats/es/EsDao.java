@@ -35,8 +35,9 @@ public abstract class EsDao<T> {
         }
     }
 
-    public boolean cleanIndex() {
+    public abstract boolean createIndex();
 
+    public boolean deleteIndex() {
         DeleteIndexRequest request = new DeleteIndexRequest(indexName);
         AcknowledgedResponse deleteIndexResponse;
 
@@ -54,6 +55,12 @@ public abstract class EsDao<T> {
         }
 
         return deleteIndexResponse.isAcknowledged();
+    }
+
+    public boolean cleanIndex() {
+        final boolean indexDeleted = deleteIndex();
+        final boolean indexCreated = createIndex();
+        return indexDeleted && indexCreated;
     }
 
 }

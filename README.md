@@ -1,8 +1,6 @@
-Replace all `ToDo` notes with the appropriate names, descriptions and commands.
-
 # Innovation Scoreboard
 
-ToDo: Description of the project.
+This repository contains the sourcecode for the innovation scoreboard backend REST API.
 
 ## Table of contents
 
@@ -23,8 +21,8 @@ To build the project, the following prerequisites must be met:
 
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
-- Postgres Database
-- Elasticsearch
+- Postgres Database 11
+- Elasticsearch 7.2
 - AWS account with S3 access
 - Kibana (optional)
 
@@ -70,6 +68,11 @@ For the project a Docker environment is already prepared and ready to use with a
 
 These Docker containers are the same as used by the continuous integration servers.
 
+There are two docker-compose files in this project:
+
+- **docker-compose.yml**: It will start all necessary dependencies and the spring boot application.
+- **docker-compose-dependencies.yml**: It will only start the dependencies. This is useful during development to be able to run the spring boot application in your IDE.
+
 ### Installation
 
 Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally on your machine.
@@ -78,13 +81,13 @@ Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally
 
 Before start working you have to start the Docker containers:
 
-```
+```bash
 docker-compose up --build --detach
 ```
 
 After finished working you can stop the Docker containers:
 
-```
+```bash
 docker-compose stop
 ```
 
@@ -104,6 +107,20 @@ docker-compose exec java /bin/sh -c "mvn clean install"
 # or
 
 docker-compose exec java /bin/sh -c "mvn clean test"
+```
+
+### Starting the application in IntelliJ or any other IDE for local development
+
+1. Startup external dependencies
+
+```bash
+docker-compose -f docker-compose-dependencies.yml up
+```
+
+2. Run application in your prefered IDE as a maven project
+
+```
+mvn:spring-boot run
 ```
 
 ## Information

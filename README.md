@@ -21,9 +21,12 @@ on your local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 
-- ToDo: Check the prerequisites
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
+- Postgres Database
+- Elasticsearch
+- AWS account with S3 access
+- Kibana (optional)
 
 For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
 

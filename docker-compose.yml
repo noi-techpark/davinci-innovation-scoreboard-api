@@ -7,7 +7,10 @@ services:
     volumes:
        - ./:/code
     working_dir: /code
-    command: tail -f /dev/null
+    command: ["mvn spring-boot:run"]
+    depends_on:
+      - postgres
+      - elasticsearch
     tty: true
     ports:
       - "8080:8080"

@@ -1,7 +1,7 @@
 # Database
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/innovation-scoreboard
-spring.datasource.username=innovation-scoreboard
+spring.datasource.username=username
 spring.datasource.password=password
 spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false
 
@@ -20,6 +20,6 @@ spring.servlet.multipart.max-file-size=30MB
 spring.servlet.multipart.max-request-size=30MB
 
 # AWS
-aws.credentials.accessKey=AKIA27AWTTCUHQ2SQOOO
-aws.credentials.secretKey=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
+aws.credentials.accessKey=access_key
+aws.credentials.secretKey=secret_key
 aws.bucket.fileImport=noi-innovation-scoreboard-dev

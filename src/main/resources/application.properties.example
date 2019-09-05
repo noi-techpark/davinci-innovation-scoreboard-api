@@ -1,6 +1,6 @@
 # Database
 spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://localhost:5432/innovation-scoreboard
+spring.datasource.url=jdbc:postgresql://postgres:5432/innovation-scoreboard
 spring.datasource.username=username
 spring.datasource.password=password
 spring.datasource.continue-on-error=true
@@ -11,7 +11,7 @@ flyway.user=innovation-scoreboard
 flyway.password=password
 
 # Elasticsearch
-elasticsearch.host=localhost
+elasticsearch.host=elasticsearch
 elasticsearch.port=9200
 elasticsearch.user=user
 elasticsearch.password=password

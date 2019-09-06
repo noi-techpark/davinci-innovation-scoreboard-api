@@ -52,7 +52,7 @@ public class CsvStatsUploaderTest {
         MultipartFile multipartFile = new MockMultipartFile("validInnovation.csv", new FileInputStream(new File("src/test/resources/csv/validInnovation.csv")));
         csvStatsUploader.importFile(multipartFile);
 
-        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
+        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CsvStatsUploaderTest {
         MultipartFile multipartFile = new MockMultipartFile("validEmploymentDemographic.csv", new FileInputStream(new File("src/test/resources/csv/validEmploymentDemographic.csv")));
         csvStatsUploader.importFile(multipartFile);
 
-        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
+        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
     }
 
     @Test(expected = UnsupportedOperationException.class)

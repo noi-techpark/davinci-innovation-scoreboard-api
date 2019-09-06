@@ -5,14 +5,12 @@ import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 @AllArgsConstructor
 public class StatsCsvImporterFactory {
 
     private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter;
-    private final InnovationCsvImporter innovationCsvDataImporter;
+    private final IctInCompaniesWithAtLeast10EmployeesCsvImporter innovationCsvDataImporter;
     private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter;
 
     public StatsCsvImporter getCsvDataImporter(@NotNull StatsType statsType) {

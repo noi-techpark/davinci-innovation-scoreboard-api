@@ -16,10 +16,10 @@ import java.io.IOException;
 
 @Slf4j
 @Service
-public class InnovationEsDao extends EsDao<InnovationEs> {
+public class IctInCompaniesWithAtLeast10EmployeesEsDao extends EsDao<IctInCompaniesWithAtLeast10EmployeesEs> {
 
-    public InnovationEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
-        super("innovation", esClient, objectMapper);
+    public IctInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
+        super("ict-in-companies-with-at-least-10-employees", esClient, objectMapper);
     }
 
     @Override

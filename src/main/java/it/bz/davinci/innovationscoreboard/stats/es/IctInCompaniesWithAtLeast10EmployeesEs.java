@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class InnovationEs {
+public class IctInCompaniesWithAtLeast10EmployeesEs {
     private String ITTER107;
     private String Territory;
     private String VARICT;

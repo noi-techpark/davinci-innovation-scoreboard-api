@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class InnovationCsv {
+public class IctInCompaniesWithAtLeast10EmployeesCsv {
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;
     @CsvBindByName(column = "Territory")
@@ -30,7 +32,7 @@ public class InnovationCsv {
     @CsvBindByName(column = "Select time")
     private String selectTime;
     @CsvBindByName(column = "Value")
-    private String value;
+    private BigDecimal value;
     @CsvBindByName(column = "Flag Codes")
     private String flagCodes;
     @CsvBindByName(column = "Flags")

@@ -5,13 +5,13 @@ import org.junit.Test;
 
 import static it.bz.davinci.innovationscoreboard.stats.model.StatsType.*;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class StatsCsvImporterFactoryTest {
 
     private StatsCsvImporterFactory statsCsvImporterFactory;
     private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvImporter(null, null, null);
-    private final InnovationCsvImporter innovationCsvDataImporter = new InnovationCsvImporter(null, null, null);
+    private final IctInCompaniesWithAtLeast10EmployeesCsvImporter innovationCsvDataImporter = new IctInCompaniesWithAtLeast10EmployeesCsvImporter(null, null, null);
     private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvImporter(null, null, null);
 
 

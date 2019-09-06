@@ -1,14 +1,14 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import com.google.common.collect.ImmutableMap;
-import it.bz.davinci.innovationscoreboard.stats.csv.EmploymentDemographicCsv;
+import it.bz.davinci.innovationscoreboard.stats.csv.InnovationInCompaniesWithAtLeast10EmployeesCsv;
 import it.bz.davinci.innovationscoreboard.stats.csv.ParserResult;
 import it.bz.davinci.innovationscoreboard.stats.csv.StatsCsvParser;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseGroupDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponsePerYearDto;
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEsDao;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEs;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEsDao;
 import it.bz.davinci.innovationscoreboard.stats.mapper.EmploymentDemographicMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,13 +19,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.when;
@@ -33,21 +31,21 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class EnterprisesWithInnovationAggregatorTest {
 
-    private final StatsCsvParser<EmploymentDemographicCsv> csvParser = new StatsCsvParser<>(EmploymentDemographicCsv.class);
+    private final StatsCsvParser<InnovationInCompaniesWithAtLeast10EmployeesCsv> csvParser = new StatsCsvParser<>(InnovationInCompaniesWithAtLeast10EmployeesCsv.class);
 
     @Mock
-    private EmploymentDemographicEsDao employmentDemographicEsDao;
+    private InnovationInCompaniesWithAtLeast10EmployeesEsDao innovationInCompaniesWithAtLeast10EmployeesEsDao;
 
     private EnterprisesWithInnovationAggregator enterprisesWithInnovationAggregator;
 
     @Before
     public void setup() {
-        enterprisesWithInnovationAggregator = new EnterprisesWithInnovationAggregator(employmentDemographicEsDao);
+        enterprisesWithInnovationAggregator = new EnterprisesWithInnovationAggregator(innovationInCompaniesWithAtLeast10EmployeesEsDao);
     }
 
     @Test
     public void givenValidEnterprisesWithInnovationActivitiesDividedByTerritory_returnGroupedData() throws IOException {
-        when(employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesDividedByTerritory())
+        when(innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesWithInnovationActivitiesDividedByTerritory())
                 .thenReturn(generateData("src/test/resources/csv/employment-demographic/enterprises-with-innovation-activities-divided-by-territory.csv"));
 
         final StatisticsResponseDto result = enterprisesWithInnovationAggregator.getEnterprisesWithInnovationActivitiesDividedByTerritory();
@@ -67,7 +65,7 @@ public class EnterprisesWithInnovationAggregatorTest {
 
     @Test
     public void giveValidData_groupByATECO_2007() throws IOException {
-        when(employmentDemographicEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace())
+        when(innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace())
                 .thenReturn(generateData("src/test/resources/csv/employment-demographic/enterprises-with-innovation-activities-in-italy-divided-by-NACE.csv"));
 
         final StatisticsResponseDto result = enterprisesWithInnovationAggregator.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
@@ -140,9 +138,9 @@ public class EnterprisesWithInnovationAggregatorTest {
         ));
     }
 
-    private List<EmploymentDemographicEs> generateData(String path) throws IOException {
+    private List<InnovationInCompaniesWithAtLeast10EmployeesEs> generateData(String path) throws IOException {
         File file = new File(path);
-        final ParserResult<EmploymentDemographicCsv> parserResult = csvParser.parse(file);
+        final ParserResult<InnovationInCompaniesWithAtLeast10EmployeesCsv> parserResult = csvParser.parse(file);
         return parserResult.getData().stream().map(EmploymentDemographicMapper.INSTANCE::toEs).collect(Collectors.toList());
     }
 }

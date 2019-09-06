@@ -26,13 +26,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
+public class InnovationInCompaniesWithAtLeast10EmployeesEsDao extends EsDao<InnovationInCompaniesWithAtLeast10EmployeesEs> {
 
-    public EmploymentDemographicEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
-        super("employment-demographic", esClient, objectMapper);
+    public InnovationInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
+        super("innovation-in-companies-with-at-least-10-employees", esClient, objectMapper);
     }
 
-    public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesDividedByTerritory() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getEnterprisesWithInnovationActivitiesDividedByTerritory() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "POPI"))
                 .filter(QueryBuilders.termQuery("ATECO_2007", "00100"))
@@ -41,7 +41,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "POPI"))
                 .filter(QueryBuilders.termQuery("ITTER107", "IT"))
@@ -51,7 +51,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "PTCS"))
                 .filter(QueryBuilders.termQuery("ATECO_2007", "00100"))
@@ -60,7 +60,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "PTCS"))
                 .filter(QueryBuilders.termQuery("ITTER107", "IT"))
@@ -70,7 +70,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getInnovationExpenditureDividedByTerritory() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getInnovationExpenditureDividedByTerritory() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "RALLX"))
                 .filter(QueryBuilders.termQuery("ATECO_2007", "00100"))
@@ -79,7 +79,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getInnovationExpenditureInItalyDividedByNace() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getInnovationExpenditureInItalyDividedByNace() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "RALLX"))
                 .filter(QueryBuilders.termQuery("ITTER107", "IT"))
@@ -89,7 +89,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "RXEPPI"))
                 .filter(QueryBuilders.termQuery("ATECO_2007", "00100"))
@@ -98,7 +98,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    public List<EmploymentDemographicEs> getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace() {
+    public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace() {
         final BoolQueryBuilder filter = QueryBuilders.boolQuery()
                 .filter(QueryBuilders.termQuery("TIPO_DATO_CIS", "RXEPPI"))
                 .filter(QueryBuilders.termQuery("ITTER107", "IT"))
@@ -108,7 +108,7 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         return searchByQuery(filter);
     }
 
-    private List<EmploymentDemographicEs> searchByQuery(BoolQueryBuilder query) {
+    private List<InnovationInCompaniesWithAtLeast10EmployeesEs> searchByQuery(BoolQueryBuilder query) {
         SearchRequest searchRequest = new SearchRequest(this.indexName);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(query);
@@ -124,12 +124,12 @@ public class EmploymentDemographicEsDao extends EsDao<EmploymentDemographicEs> {
         }
     }
 
-    private List<EmploymentDemographicEs> parseSearchResponse(SearchResponse searchResponse) {
+    private List<InnovationInCompaniesWithAtLeast10EmployeesEs> parseSearchResponse(SearchResponse searchResponse) {
         final SearchHits hits = searchResponse.getHits();
-        final List<EmploymentDemographicEs> result = new ArrayList<>();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> result = new ArrayList<>();
         for (SearchHit hit : hits) {
             try {
-                result.add(objectMapper.readValue(hit.getSourceAsString(), EmploymentDemographicEs.class));
+                result.add(objectMapper.readValue(hit.getSourceAsString(), InnovationInCompaniesWithAtLeast10EmployeesEs.class));
             } catch (IOException e) {
                 log.error("Failed to parse document", e);
             }

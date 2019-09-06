@@ -3,8 +3,8 @@ package it.bz.davinci.innovationscoreboard.stats;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponseGroupDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.StatisticsResponsePerYearDto;
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEsDao;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEs;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEsDao;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ import static java.util.Objects.isNull;
 @AllArgsConstructor
 public class EnterprisesWithInnovationAggregator {
 
-    private final EmploymentDemographicEsDao employmentDemographicEsDao;
+    private final InnovationInCompaniesWithAtLeast10EmployeesEsDao innovationInCompaniesWithAtLeast10EmployeesEsDao;
 
     public StatisticsResponseDto getEnterprisesWithInnovationActivitiesDividedByTerritory() {
         StatisticsResponseDto result = new StatisticsResponseDto();
 
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesDividedByTerritory();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesWithInnovationActivitiesDividedByTerritory();
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(data, BigDecimal.ONE);
 
         result.setStatistics(statistics);
@@ -34,7 +34,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getEnterprisesWithInnovationActivitiesInItalyDividedByNACE() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getEnterprisesWithInnovationActivitiesInItalyDividedByNACE();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesWithInnovationActivitiesInItalyDividedByNACE();
 
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(data, BigDecimal.ONE);
 
@@ -45,7 +45,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsDividedByTerritory();
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(data, BigDecimal.ONE);
 
         result.setStatistics(statistics);
@@ -55,7 +55,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getEnterprisesThatHaveIntroducedProductOrProcessInnovationsInItalyDividedByNace();
 
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(data, BigDecimal.ONE);
 
@@ -66,7 +66,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getInnovationExpenditureDividedByTerritory() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditureDividedByTerritory();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getInnovationExpenditureDividedByTerritory();
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(data, BigDecimal.valueOf(1000));
 
         result.setStatistics(statistics);
@@ -76,7 +76,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getInnovationExpenditureInItalyDividedByNace() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditureInItalyDividedByNace();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getInnovationExpenditureInItalyDividedByNace();
 
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(data, BigDecimal.valueOf(1000));
 
@@ -87,7 +87,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedDividedByTerritory();
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByFORMA_INNOVAZ(data, BigDecimal.ONE);
 
         result.setStatistics(statistics);
@@ -97,7 +97,7 @@ public class EnterprisesWithInnovationAggregator {
 
     public StatisticsResponseDto getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace() {
         StatisticsResponseDto result = new StatisticsResponseDto();
-        final List<EmploymentDemographicEs> data = employmentDemographicEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace();
+        final List<InnovationInCompaniesWithAtLeast10EmployeesEs> data = innovationInCompaniesWithAtLeast10EmployeesEsDao.getInnovationExpenditurePerNumberOfPersonsEmployedInItalyDividedByNace();
 
         final Map<String, Collection<StatisticsResponsePerYearDto>> statistics = groupByATECO_2007(data, BigDecimal.ONE);
 
@@ -106,10 +106,10 @@ public class EnterprisesWithInnovationAggregator {
         return result;
     }
 
-    private Map<String, Collection<StatisticsResponsePerYearDto>> groupByATECO_2007(List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory, BigDecimal multiplier) {
+    private Map<String, Collection<StatisticsResponsePerYearDto>> groupByATECO_2007(List<InnovationInCompaniesWithAtLeast10EmployeesEs> enterprisesWithInnovationActivitiesDividedByTerritory, BigDecimal multiplier) {
         return enterprisesWithInnovationActivitiesDividedByTerritory.stream()
                 .collect(Collectors.groupingBy(
-                        EmploymentDemographicEs::getITTER107))
+                        InnovationInCompaniesWithAtLeast10EmployeesEs::getITTER107))
                 .entrySet().stream().collect(Collectors.toMap(
                         Map.Entry::getKey,
                         row -> {
@@ -157,10 +157,10 @@ public class EnterprisesWithInnovationAggregator {
                 ));
     }
 
-    private Map<String, Collection<StatisticsResponsePerYearDto>> groupByFORMA_INNOVAZ(List<EmploymentDemographicEs> enterprisesWithInnovationActivitiesDividedByTerritory, BigDecimal multiplier) {
+    private Map<String, Collection<StatisticsResponsePerYearDto>> groupByFORMA_INNOVAZ(List<InnovationInCompaniesWithAtLeast10EmployeesEs> enterprisesWithInnovationActivitiesDividedByTerritory, BigDecimal multiplier) {
         return enterprisesWithInnovationActivitiesDividedByTerritory.stream()
                 .collect(Collectors.groupingBy(
-                        EmploymentDemographicEs::getITTER107))
+                        InnovationInCompaniesWithAtLeast10EmployeesEs::getITTER107))
                 .entrySet().stream().collect(Collectors.toMap(
                         Map.Entry::getKey,
                         row -> {

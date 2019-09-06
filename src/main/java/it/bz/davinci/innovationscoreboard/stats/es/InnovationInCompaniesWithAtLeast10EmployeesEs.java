@@ -1,7 +1,6 @@
 package it.bz.davinci.innovationscoreboard.stats.es;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmploymentDemographicEs {
+public class InnovationInCompaniesWithAtLeast10EmployeesEs {
     @JsonProperty("ITTER107")
     private String ITTER107;
     private String territory;

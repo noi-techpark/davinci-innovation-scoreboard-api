@@ -11,13 +11,13 @@ public class StatsCsvImporterFactoryTest {
 
     private StatsCsvImporterFactory statsCsvImporterFactory;
     private final ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter = new ResearchAndDevelopmentCsvImporter(null, null, null);
-    private final IctInCompaniesWithAtLeast10EmployeesCsvImporter innovationCsvDataImporter = new IctInCompaniesWithAtLeast10EmployeesCsvImporter(null, null, null);
-    private final EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter = new EmploymentDemographicCsvImporter(null, null, null);
+    private final IctInCompaniesWithAtLeast10EmployeesCsvImporter ictInCompaniesWithAtLeast10EmployeesCsvImporter = new IctInCompaniesWithAtLeast10EmployeesCsvImporter(null, null, null);
+    private final InnovationInCompaniesWithAtLeast10EmployeesCsvImporter innovationInCompaniesWithAtLeast10EmployeesCsvImporter = new InnovationInCompaniesWithAtLeast10EmployeesCsvImporter(null, null, null);
 
 
     @Before
     public void setUp() {
-        statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
+        statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, ictInCompaniesWithAtLeast10EmployeesCsvImporter, innovationInCompaniesWithAtLeast10EmployeesCsvImporter);
     }
 
     @Test
@@ -29,14 +29,13 @@ public class StatsCsvImporterFactoryTest {
     @Test
     public void returnsInnovationDataImporter() {
         final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES);
-        assertThat(csvDataImporter, equalTo(innovationCsvDataImporter));
+        assertThat(csvDataImporter, equalTo(innovationInCompaniesWithAtLeast10EmployeesCsvImporter));
     }
 
     @Test
     public void returnsEmploymentDemographicDataImporter() {
         final StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES);
-        assertThat(csvDataImporter, equalTo(employmentDemographicCsvDataImporter));
+        assertThat(csvDataImporter, equalTo(ictInCompaniesWithAtLeast10EmployeesCsvImporter));
     }
-
 
 }

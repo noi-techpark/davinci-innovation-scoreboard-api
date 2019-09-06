@@ -2,8 +2,8 @@ package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
-import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
-import it.bz.davinci.innovationscoreboard.stats.es.EsDao;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEs;
+import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEsDao;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import org.junit.Before;
@@ -32,9 +32,9 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Import({FileImportLogService.class})
-public class EmploymentDemographicCsvImporterTest {
+public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
 
-    private EmploymentDemographicCsvImporter employmentDemographicCsvImporter;
+    private InnovationInCompaniesWithAtLeast10EmployeesCsvImporter innovationInCompaniesWithAtLeast10EmployeesCsvImporter;
 
     @Autowired
     private FileImportRepository fileImportRepository;
@@ -43,7 +43,7 @@ public class EmploymentDemographicCsvImporterTest {
     private FileImportLogService fileImportLogService;
 
     @Mock
-    private EsDao<EmploymentDemographicEs> esDao;
+    private InnovationInCompaniesWithAtLeast10EmployeesEsDao esDao;
 
     @Mock
     private ApplicationEventPublisher publisher;
@@ -51,21 +51,21 @@ public class EmploymentDemographicCsvImporterTest {
     @Before
     public void setup() {
         when(esDao.cleanIndex()).thenReturn(true);
-        employmentDemographicCsvImporter = new EmploymentDemographicCsvImporter(fileImportLogService, esDao, publisher);
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter = new InnovationInCompaniesWithAtLeast10EmployeesCsvImporter(fileImportLogService, esDao, publisher);
         fileImportRepository.deleteAll();
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void shouldFailIfNoDBEntryIsPresent() {
-        employmentDemographicCsvImporter.importFile("src/test/resources/csv/validResearchAndDevelopment2.csv", 1);
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/validResearchAndDevelopment2.csv", 1);
     }
 
     @Test
     public void shouldCleanAndUploadDataToIndex() throws IOException {
         final FileImportLogDto uploadedFile = createUploadedFile("validEmploymentDemographic.csv");
-        employmentDemographicCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
 
-        verify(esDao, times(2)).index(Mockito.any(EmploymentDemographicEs.class));
+        verify(esDao, times(2)).index(Mockito.any(InnovationInCompaniesWithAtLeast10EmployeesEs.class));
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_SUCCESS));
@@ -74,9 +74,9 @@ public class EmploymentDemographicCsvImporterTest {
     @Test
     public void shouldMarkUploadAsProcessedWithWarnings() throws IOException {
         final FileImportLogDto uploadedFile = createUploadedFile("employmentDemographicWithFaultyRows.csv");
-        employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
 
-        verify(esDao, times(1)).index(Mockito.any(EmploymentDemographicEs.class));
+        verify(esDao, times(1)).index(Mockito.any(InnovationInCompaniesWithAtLeast10EmployeesEs.class));
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_WARNINGS));
@@ -87,7 +87,7 @@ public class EmploymentDemographicCsvImporterTest {
     public void giveFileWithoutASingleProcessableRow_thenMarkUploadAsProcessedWithErrors() throws IOException {
         final FileImportLogDto uploadedFile = createUploadedFile("employmentDemographicWithAllFaultyRows.csv");
 
-        employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithAllFaultyRows.csv", uploadedFile.getId());
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithAllFaultyRows.csv", uploadedFile.getId());
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_ERRORS));

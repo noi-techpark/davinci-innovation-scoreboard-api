@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmploymentDemographicCsv {
+public class InnovationInCompaniesWithAtLeast10EmployeesCsv {
     @CsvBindByName(column = "ITTER107")
     private String ITTER107;
     @CsvBindByName(column = "Territory")

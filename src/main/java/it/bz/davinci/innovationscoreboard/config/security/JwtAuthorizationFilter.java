@@ -3,6 +3,7 @@ package it.bz.davinci.innovationscoreboard.config.security;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,10 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+
+    private static final Pattern authorizationPattern = Pattern.compile(
+            "^Bearer (?<token>[a-zA-Z0-9-._~+/]+)=*$",
+            Pattern.CASE_INSENSITIVE);
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -38,14 +47,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
-        if (StringUtils.isNotEmpty(token) && token.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+        String token = resolveFromAuthorizationHeader(request);
+
+        if (isNull(token)) {
+            token = resolveFromRequestParameters(request);
+        }
+
+        if (StringUtils.isNotEmpty(token)) {
             try {
                 byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
                 Jws<Claims> parsedToken = Jwts.parser()
                         .setSigningKey(signingKey)
-                        .parseClaimsJws(token.replace("Bearer ", ""));
+                        .parseClaimsJws(token);
 
                 String email = parsedToken
                         .getBody()
@@ -68,6 +82,33 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             } catch (IllegalArgumentException exception) {
                 log.warn("Request to parse empty or null JWT : {} failed : {}", token, exception.getMessage());
             }
+        }
+
+        return null;
+    }
+
+    private String resolveFromAuthorizationHeader(HttpServletRequest request) {
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.startsWithIgnoreCase(authorization, "bearer")) {
+            Matcher matcher = authorizationPattern.matcher(authorization);
+
+            if (!matcher.matches()) {
+                return null;
+            }
+
+            return matcher.group("token");
+        }
+        return null;
+    }
+
+    private static String resolveFromRequestParameters(HttpServletRequest request) {
+        String[] values = request.getParameterValues("access_token");
+        if (values == null || values.length == 0) {
+            return null;
+        }
+
+        if (values.length == 1) {
+            return values[0];
         }
 
         return null;

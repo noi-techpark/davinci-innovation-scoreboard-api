@@ -1,4 +1,4 @@
-package it.bz.davinci.innovationscoreboard;
+package it.bz.davinci.innovationscoreboard.it;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

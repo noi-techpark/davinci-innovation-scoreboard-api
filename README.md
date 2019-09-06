@@ -66,7 +66,7 @@ ToDo: A detailed description about how the application must be deployed.
 
 For the project a Docker environment is already prepared and ready to use with all necessary prerequisites.
 
-These Docker containers are the same as used by the continuous integration servers.
+These Docker containers are the same as used by the continuous it.bz.davinci.innovationscoreboard.it servers.
 
 There are two docker-compose files in this project:
 

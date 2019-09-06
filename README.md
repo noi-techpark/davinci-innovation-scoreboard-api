@@ -33,13 +33,13 @@ For a ready to use Docker environment with all prerequisites already installed a
 Get a copy of the repository:
 
 ```bash
-ToDo: git clone https://github.com/noi-techpark/project-name.git
+git clone https://github.com/noi-techpark/davinci-innovation-scoreboard-api.git
 ```
 
 Change directory:
 
 ```bash
-ToDo: cd project-name/
+cd davinci-innovation-scoreboard-api/
 ```
 
 ### Build

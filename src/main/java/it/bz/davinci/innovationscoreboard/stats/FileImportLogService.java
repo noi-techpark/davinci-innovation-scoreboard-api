@@ -2,11 +2,13 @@ package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportResponseDto;
+import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
 import it.bz.davinci.innovationscoreboard.stats.mapper.FileImportMapper;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
-import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
+import it.bz.davinci.innovationscoreboard.stats.model.StatsType;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,13 @@ public class FileImportLogService {
                 .collect(Collectors.toList());
 
         return new UploadHistoryResponseDto(imports);
+    }
+
+    @NotNull
+    public List<FileImportLogDto> findAllByType(@NotNull StatsType type) {
+        return fileImportRepository.findAllByType(type).stream()
+                .map(FileImportMapper.INSTANCE::toDto)
+                .collect(Collectors.toList());
     }
 
     public FileImportLogDto save(FileImportLogDto fileImportLogDto) {

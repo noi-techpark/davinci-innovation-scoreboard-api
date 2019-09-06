@@ -25,7 +25,6 @@ public class ReplacePreviousUploadedFiles {
     public void onStatsCsvIndexed(StatsCsvIndexedEvent event) {
         final Integer fileImportId = event.getFileImportId();
         replacePreviouslyUploadedFilesStatus(fileImportId);
-
     }
 
     public void replacePreviouslyUploadedFilesStatus(Integer fileImportId) {

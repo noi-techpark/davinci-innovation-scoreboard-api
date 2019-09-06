@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.transaction.Transactional;
+import java.io.File;
 
 import static java.util.Objects.isNull;
 
@@ -31,6 +32,16 @@ public class FileImportStorageService {
         final FileImportLogDto fileImportLogDto = fileImportLogService.getById(event.getFileImportId());
         fileImportLogDto.setExternalStorageLocation(s3FileName);
         fileImportLogService.save(fileImportLogDto);
+        deleteTempfile(event.getFileName());
+    }
+
+    private void deleteTempfile(String fileName) {
+        try {
+            File file = new File(fileName);
+            file.delete();
+        } catch (Exception e) {
+            log.warn("Failed to delete temp file: " + fileName, e);
+        }
     }
 
     public InMemoryFile download(Integer fileImportId) {

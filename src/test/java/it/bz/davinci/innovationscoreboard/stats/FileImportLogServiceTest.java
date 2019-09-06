@@ -20,14 +20,14 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import(FileImportService.class)
-public class FileImportServiceTest {
+@Import(FileImportLogService.class)
+public class FileImportLogServiceTest {
 
     @Autowired
     FileImportRepository fileImportRepository;
 
     @Autowired
-    FileImportService fileImportService;
+    FileImportLogService fileImportLogService;
 
     @Before
     public void setUp() {
@@ -36,7 +36,7 @@ public class FileImportServiceTest {
 
     @Test
     public void findEmpty() {
-        UploadHistoryResponseDto result = fileImportService.findAll();
+        UploadHistoryResponseDto result = fileImportLogService.findAll();
         assertThat(result.getUploadedStats(), is(empty()));
     }
 
@@ -49,7 +49,7 @@ public class FileImportServiceTest {
                 .build()
         );
 
-        UploadHistoryResponseDto result = fileImportService.findAll();
+        UploadHistoryResponseDto result = fileImportLogService.findAll();
         assertThat(result.getUploadedStats(), hasSize(1));
         assertThat(result.getUploadedStats().get(0).getStatus(), is(equalTo(FileImport.Status.UPLOADED)));
     }

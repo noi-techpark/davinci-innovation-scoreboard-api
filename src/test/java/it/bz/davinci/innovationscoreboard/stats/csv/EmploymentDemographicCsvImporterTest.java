@@ -1,7 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
-import it.bz.davinci.innovationscoreboard.stats.FileImportService;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.es.EmploymentDemographicEs;
 import it.bz.davinci.innovationscoreboard.stats.es.EsDao;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import({FileImportService.class})
+@Import({FileImportLogService.class})
 public class EmploymentDemographicCsvImporterTest {
 
     private EmploymentDemographicCsvImporter employmentDemographicCsvImporter;
@@ -40,7 +40,7 @@ public class EmploymentDemographicCsvImporterTest {
     private FileImportRepository fileImportRepository;
 
     @Autowired
-    private FileImportService fileImportService;
+    private FileImportLogService fileImportLogService;
 
     @Mock
     private EsDao<EmploymentDemographicEs> esDao;
@@ -51,7 +51,7 @@ public class EmploymentDemographicCsvImporterTest {
     @Before
     public void setup() {
         when(esDao.cleanIndex()).thenReturn(true);
-        employmentDemographicCsvImporter = new EmploymentDemographicCsvImporter(fileImportService, esDao, publisher);
+        employmentDemographicCsvImporter = new EmploymentDemographicCsvImporter(fileImportLogService, esDao, publisher);
         fileImportRepository.deleteAll();
     }
 
@@ -62,22 +62,22 @@ public class EmploymentDemographicCsvImporterTest {
 
     @Test
     public void shouldCleanAndUploadDataToIndex() throws IOException {
-        final FileImportDto uploadedFile = createUploadedFile("validEmploymentDemographic.csv");
+        final FileImportLogDto uploadedFile = createUploadedFile("validEmploymentDemographic.csv");
         employmentDemographicCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
 
         verify(esDao, times(2)).index(Mockito.any(EmploymentDemographicEs.class));
-        final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
+        final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_SUCCESS));
     }
 
     @Test
     public void shouldMarkUploadAsProcessedWithWarnings() throws IOException {
-        final FileImportDto uploadedFile = createUploadedFile("employmentDemographicWithFaultyRows.csv");
+        final FileImportLogDto uploadedFile = createUploadedFile("employmentDemographicWithFaultyRows.csv");
         employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
 
         verify(esDao, times(1)).index(Mockito.any(EmploymentDemographicEs.class));
-        final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
+        final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_WARNINGS));
         assertThat(fileImport.getLogs(), equalTo("Line: 3, Message: Number of data fields does not match number of headers.\n"));
@@ -85,19 +85,19 @@ public class EmploymentDemographicCsvImporterTest {
 
     @Test
     public void giveFileWithoutASingleProcessableRow_thenMarkUploadAsProcessedWithErrors() throws IOException {
-        final FileImportDto uploadedFile = createUploadedFile("employmentDemographicWithAllFaultyRows.csv");
+        final FileImportLogDto uploadedFile = createUploadedFile("employmentDemographicWithAllFaultyRows.csv");
 
         employmentDemographicCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithAllFaultyRows.csv", uploadedFile.getId());
-        final FileImportDto fileImport = fileImportService.getById(uploadedFile.getId());
+        final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_ERRORS));
         assertThat(fileImport.getLogs(), equalTo("Line: 2, Message: Conversion of 544a to java.math.BigDecimal failed.\n" +
                 "Line: 3, Message: Number of data fields does not match number of headers.\n"));
     }
 
-    private FileImportDto createUploadedFile(String s) throws IOException {
+    private FileImportLogDto createUploadedFile(String s) throws IOException {
         MultipartFile multipartFile = createFile(s);
-        return fileImportService.save(FileImportDto.builder()
+        return fileImportLogService.save(FileImportLogDto.builder()
                 .source(multipartFile.getName())
                 .importDate(LocalDateTime.now())
                 .status(FileImport.Status.UPLOADED).build());

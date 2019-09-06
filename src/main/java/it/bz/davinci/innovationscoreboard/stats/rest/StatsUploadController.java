@@ -1,8 +1,8 @@
 package it.bz.davinci.innovationscoreboard.stats.rest;
 
-import it.bz.davinci.innovationscoreboard.stats.FileImportService;
+import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
 import it.bz.davinci.innovationscoreboard.stats.StatsImporter;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.storage.FileImportStorageService;
 import it.bz.davinci.innovationscoreboard.utils.rest.RestResponseFactory;
@@ -18,25 +18,25 @@ import java.io.IOException;
 public class StatsUploadController {
 
     private final StatsImporter statsService;
-    private final FileImportService fileImportService;
+    private final FileImportLogService fileImportLogService;
     private final FileImportStorageService fileImportStorageService;
     private final RestResponseFactory restResponseFactory;
 
-    public StatsUploadController(StatsImporter statsService, FileImportService fileImportService, FileImportStorageService fileImportStorageService, RestResponseFactory restResponseFactory) {
+    public StatsUploadController(StatsImporter statsService, FileImportLogService fileImportLogService, FileImportStorageService fileImportStorageService, RestResponseFactory restResponseFactory) {
         this.statsService = statsService;
-        this.fileImportService = fileImportService;
+        this.fileImportLogService = fileImportLogService;
         this.fileImportStorageService = fileImportStorageService;
         this.restResponseFactory = restResponseFactory;
     }
 
     @PostMapping(value = "/upload/csv")
-    public FileImportDto upload(@RequestParam("file") MultipartFile file) throws IOException {
+    public FileImportLogDto upload(@RequestParam("file") MultipartFile file) throws IOException {
         return statsService.importFile(file);
     }
 
     @GetMapping(value = "/upload/history")
     public UploadHistoryResponseDto getHistory() {
-        return fileImportService.findAll();
+        return fileImportLogService.findAll();
     }
 
     @GetMapping(value = "/download/{id}")

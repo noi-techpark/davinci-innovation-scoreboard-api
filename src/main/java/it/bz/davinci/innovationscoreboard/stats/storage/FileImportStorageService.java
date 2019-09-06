@@ -1,7 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.storage;
 
-import it.bz.davinci.innovationscoreboard.stats.FileImportService;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.events.StatsCsvIndexedEvent;
 import it.bz.davinci.innovationscoreboard.utils.io.InMemoryFile;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import static java.util.Objects.isNull;
 public class FileImportStorageService {
 
     private final FileImportStorageS3 fileImportStorageS3;
-    private final FileImportService fileImportService;
+    private final FileImportLogService fileImportLogService;
 
     @Async
     @Transactional
@@ -28,17 +28,17 @@ public class FileImportStorageService {
     public void onStatsCsvIndexed(StatsCsvIndexedEvent event) {
         String s3FileName = fileImportStorageS3.upload(event.getFileName());
 
-        final FileImportDto fileImportDto = fileImportService.getById(event.getFileImportId());
-        fileImportDto.setExternalStorageLocation(s3FileName);
-        fileImportService.save(fileImportDto);
+        final FileImportLogDto fileImportLogDto = fileImportLogService.getById(event.getFileImportId());
+        fileImportLogDto.setExternalStorageLocation(s3FileName);
+        fileImportLogService.save(fileImportLogDto);
     }
 
     public InMemoryFile download(Integer fileImportId) {
-        final FileImportDto fileImportDto = fileImportService.getById(fileImportId);
-        if (isNull(fileImportDto.getExternalStorageLocation())) {
+        final FileImportLogDto fileImportLogDto = fileImportLogService.getById(fileImportId);
+        if (isNull(fileImportLogDto.getExternalStorageLocation())) {
             throw new NoLinkToExternalStorageFoundException("The requested import file is not stored on an external storage.");
         }
-        return fileImportStorageS3.download(fileImportDto.getExternalStorageLocation());
+        return fileImportStorageS3.download(fileImportLogDto.getExternalStorageLocation());
     }
 
 }

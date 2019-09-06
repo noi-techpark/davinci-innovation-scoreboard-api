@@ -1,24 +1,21 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
 import it.bz.davinci.innovationscoreboard.stats.mapper.FileImportMapper;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
 import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class FileImportService {
+public class FileImportLogService {
 
     private final FileImportRepository fileImportRepository;
 
@@ -31,25 +28,25 @@ public class FileImportService {
         return new UploadHistoryResponseDto(imports);
     }
 
-    public FileImportDto save(FileImportDto fileImportDto) {
+    public FileImportLogDto save(FileImportLogDto fileImportLogDto) {
         FileImport fileImport;
-        if (Objects.isNull(fileImportDto.getId())) {
+        if (Objects.isNull(fileImportLogDto.getId())) {
             fileImport = new FileImport();
         } else {
-            fileImport = fileImportRepository.getOne(fileImportDto.getId());
+            fileImport = fileImportRepository.getOne(fileImportLogDto.getId());
         }
 
-        fileImport.setImportDate(fileImportDto.getImportDate());
-        fileImport.setSource(fileImportDto.getSource());
-        fileImport.setStatus(fileImportDto.getStatus());
-        fileImport.setLogs(fileImportDto.getLogs());
-        fileImport.setType(fileImportDto.getType());
-        fileImport.setExternalStorageLocation(fileImportDto.getExternalStorageLocation());
+        fileImport.setImportDate(fileImportLogDto.getImportDate());
+        fileImport.setSource(fileImportLogDto.getSource());
+        fileImport.setStatus(fileImportLogDto.getStatus());
+        fileImport.setLogs(fileImportLogDto.getLogs());
+        fileImport.setType(fileImportLogDto.getType());
+        fileImport.setExternalStorageLocation(fileImportLogDto.getExternalStorageLocation());
 
         return FileImportMapper.INSTANCE.toDto(fileImportRepository.save(fileImport));
     }
 
-    public FileImportDto getById(int id) {
+    public FileImportLogDto getById(int id) {
         final FileImport result = fileImportRepository.getOne(id);
         return FileImportMapper.INSTANCE.toDto(result);
     }

@@ -1,8 +1,8 @@
 package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import com.opencsv.exceptions.CsvException;
-import it.bz.davinci.innovationscoreboard.stats.FileImportService;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.es.EsDao;
 import it.bz.davinci.innovationscoreboard.stats.events.StatsCsvIndexedEvent;
 import it.bz.davinci.innovationscoreboard.stats.mapper.CsvMapper;
@@ -19,14 +19,14 @@ import static it.bz.davinci.innovationscoreboard.stats.model.FileImport.Status.*
 @Slf4j
 public class StatsCsvImporter<CSV, ES> {
 
-    private final FileImportService fileImportService;
+    private final FileImportLogService fileImportLogService;
     private final EsDao<ES> esDao;
     private final StatsCsvParser<CSV> statsCsvParser;
     private final CsvMapper<CSV, ES> mapper;
     private final ApplicationEventPublisher publisher;
 
-    public StatsCsvImporter(FileImportService fileImportService, EsDao<ES> esDao, Class<CSV> typeParameterClass, CsvMapper<CSV, ES> mapper, ApplicationEventPublisher publisher) {
-        this.fileImportService = fileImportService;
+    public StatsCsvImporter(FileImportLogService fileImportLogService, EsDao<ES> esDao, Class<CSV> typeParameterClass, CsvMapper<CSV, ES> mapper, ApplicationEventPublisher publisher) {
+        this.fileImportLogService = fileImportLogService;
         this.esDao = esDao;
         this.statsCsvParser = new StatsCsvParser<>(typeParameterClass);
         this.mapper = mapper;
@@ -36,9 +36,9 @@ public class StatsCsvImporter<CSV, ES> {
     @Async
     @Transactional
     public void importFile(String fileName, int fileImportId) {
-        FileImportDto fileImportState = fileImportService.getById(fileImportId);
+        FileImportLogDto fileImportState = fileImportLogService.getById(fileImportId);
         fileImportState.setStatus(PROCESSING);
-        fileImportState = fileImportService.save(fileImportState);
+        fileImportState = fileImportLogService.save(fileImportState);
 
         try {
             File file = new File(fileName);
@@ -76,7 +76,7 @@ public class StatsCsvImporter<CSV, ES> {
             fileImportState.setLogs("Failed to open temp file: " + fileImportState.getSource());
         }
 
-        fileImportService.save(fileImportState);
+        fileImportLogService.save(fileImportState);
         publisher.publishEvent(new StatsCsvIndexedEvent(fileImportState.getId(), fileName));
     }
 

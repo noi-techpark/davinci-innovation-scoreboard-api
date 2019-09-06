@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileImportDto {
+public class FileImportLogDto {
     private Integer id;
     private String source;
     private LocalDateTime importDate;

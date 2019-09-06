@@ -1,7 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
 import it.bz.davinci.innovationscoreboard.stats.csv.*;
-import it.bz.davinci.innovationscoreboard.stats.dto.FileImportDto;
+import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,21 +30,21 @@ public class StatsImporterTest {
     private EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter;
 
     @Mock
-    private FileImportService fileImportService;
+    private FileImportLogService fileImportLogService;
 
     private StatsImporter statsImporter;
 
     @Before
     public void setUp() {
         StatsCsvImporterFactory statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
-        statsImporter = new StatsImporter(statsCsvImporterFactory, fileImportService);
+        statsImporter = new StatsImporter(statsCsvImporterFactory, fileImportLogService);
     }
 
 
     @Test
     public void givenSupportedFile_startUpload() throws IOException {
 
-        when(fileImportService.save(any())).thenReturn(FileImportDto.builder().id(1).build());
+        when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
         statsImporter.importFile(multipartFile);
 
@@ -54,7 +54,7 @@ public class StatsImporterTest {
     @Test
     public void givenValidInnovationFile_startUpload() throws IOException {
 
-        when(fileImportService.save(any())).thenReturn(FileImportDto.builder().id(1).build());
+        when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validInnovation.csv", new FileInputStream(new File("src/test/resources/csv/validInnovation.csv")));
         statsImporter.importFile(multipartFile);
 
@@ -64,7 +64,7 @@ public class StatsImporterTest {
     @Test
     public void givenValidEmploymentDemographicFile_startUpload() throws IOException {
 
-        when(fileImportService.save(any())).thenReturn(FileImportDto.builder().id(1).build());
+        when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validEmploymentDemographic.csv", new FileInputStream(new File("src/test/resources/csv/validEmploymentDemographic.csv")));
         statsImporter.importFile(multipartFile);
 

@@ -1,6 +1,5 @@
 package it.bz.davinci.innovationscoreboard.stats.storage;
 
-import it.bz.davinci.innovationscoreboard.utils.io.InMemoryFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class FileImportStorageS3 {
         }
     }
 
-    InMemoryFile download(String s3FileKey) {
+    byte[] download(String s3FileKey) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(s3FileKey)
@@ -52,10 +51,6 @@ public class FileImportStorageS3 {
 
         final ResponseBytes<GetObjectResponse> object = s3Client.getObject(getObjectRequest, ResponseTransformer.toBytes());
 
-        return InMemoryFile.builder()
-                .content(object.asByteArray())
-                .contentType("text/csv")
-                .filename(s3FileKey)
-                .build();
+        return object.asByteArray();
     }
 }

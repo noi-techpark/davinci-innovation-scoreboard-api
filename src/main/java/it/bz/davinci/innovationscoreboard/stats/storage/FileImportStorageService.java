@@ -49,7 +49,12 @@ public class FileImportStorageService {
         if (isNull(fileImportLogDto.getExternalStorageLocation())) {
             throw new NoLinkToExternalStorageFoundException("The requested import file is not stored on an external storage.");
         }
-        return fileImportStorageS3.download(fileImportLogDto.getExternalStorageLocation());
+
+        return InMemoryFile.builder()
+                .content(fileImportStorageS3.download(fileImportLogDto.getExternalStorageLocation()))
+                .contentType("text/csv")
+                .filename(fileImportLogDto.getSource())
+                .build();
     }
 
 }

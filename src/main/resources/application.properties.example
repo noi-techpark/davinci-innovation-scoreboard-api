@@ -27,3 +27,4 @@ aws.bucket.fileImport=noi-innovation-scoreboard-dev
 
 # Security
 security.jwt.secret=2NjjFYdGyvkuEPjKh@p.a7CXh!q69!!MMpmEmqJzPsY4K**8isfhwcETPAXK@WVh
+security.cors.allowedOrigins=http://localhost:3000,http://localhost:3001

@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static it.bz.davinci.innovationscoreboard.stats.model.FileImport.Status.*;
 
@@ -53,9 +54,13 @@ public class StatsCsvImporter<CSV, ES> {
                 boolean indexCleaned = esDao.cleanIndex();
 
                 if (indexCleaned) {
-                    parserResult.getData().forEach(record -> esDao.index(mapper.toEs(record)));
-
-                    if (parserResult.getExceptions().isEmpty()) {
+                    final boolean indexed = esDao.bulkIndex(parserResult.getData().stream()
+                            .map(mapper::toEs)
+                            .collect(Collectors.toList()));
+                    if (!indexed) {
+                        fileImportState.setStatus(PROCESSED_WITH_ERRORS);
+                        fileImportState.setLogs("Failed to index documents in ES");
+                    } else if (parserResult.getExceptions().isEmpty()) {
                         fileImportState.setStatus(PROCESSED_WITH_SUCCESS);
                     } else {
                         fileImportState.setStatus(PROCESSED_WITH_WARNINGS);

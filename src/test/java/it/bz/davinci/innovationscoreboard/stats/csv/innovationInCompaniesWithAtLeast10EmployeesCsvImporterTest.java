@@ -2,7 +2,6 @@ package it.bz.davinci.innovationscoreboard.stats.csv;
 
 import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
-import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEs;
 import it.bz.davinci.innovationscoreboard.stats.es.InnovationInCompaniesWithAtLeast10EmployeesEsDao;
 import it.bz.davinci.innovationscoreboard.stats.jpa.FileImportRepository;
 import it.bz.davinci.innovationscoreboard.stats.model.FileImport;
@@ -10,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,7 +25,8 @@ import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -63,9 +62,9 @@ public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
     @Test
     public void shouldCleanAndUploadDataToIndex() throws IOException {
         final FileImportLogDto uploadedFile = createUploadedFile("validEmploymentDemographic.csv");
-        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
+        when(esDao.bulkIndex(anyList())).thenReturn(true);
 
-        verify(esDao, times(2)).index(Mockito.any(InnovationInCompaniesWithAtLeast10EmployeesEs.class));
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/validEmploymentDemographic.csv", uploadedFile.getId());
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_SUCCESS));
@@ -74,9 +73,9 @@ public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
     @Test
     public void shouldMarkUploadAsProcessedWithWarnings() throws IOException {
         final FileImportLogDto uploadedFile = createUploadedFile("employmentDemographicWithFaultyRows.csv");
-        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
+        when(esDao.bulkIndex(anyList())).thenReturn(true);
 
-        verify(esDao, times(1)).index(Mockito.any(InnovationInCompaniesWithAtLeast10EmployeesEs.class));
+        innovationInCompaniesWithAtLeast10EmployeesCsvImporter.importFile("src/test/resources/csv/employmentDemographicWithFaultyRows.csv", uploadedFile.getId());
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_WARNINGS));

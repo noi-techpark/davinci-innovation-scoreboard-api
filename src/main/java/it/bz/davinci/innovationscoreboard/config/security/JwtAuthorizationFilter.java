@@ -29,8 +29,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             "^Bearer (?<token>[a-zA-Z0-9-._~+/]+)=*$",
             Pattern.CASE_INSENSITIVE);
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private String jwtSecret;
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, String jwtSecret) {
         super(authenticationManager);
+        this.jwtSecret = jwtSecret;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (StringUtils.isNotEmpty(token)) {
             try {
-                byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
+                byte[] signingKey = jwtSecret.getBytes();
 
                 Jws<Claims> parsedToken = Jwts.parser()
                         .setSigningKey(signingKey)

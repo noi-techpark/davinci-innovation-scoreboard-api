@@ -3,6 +3,7 @@ package it.bz.davinci.innovationscoreboard.config.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.davinci.innovationscoreboard.user.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Value("${security.jwt.secret}")
+    private String jwtSecret;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
@@ -34,8 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/users/new").access("hasRole('" + Role.ROLE_ADMIN.name() + "')")
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), new ObjectMapper()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), new ObjectMapper(), jwtSecret))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

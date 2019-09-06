@@ -26,9 +26,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
+    private final String jwtSecret;
+
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   ObjectMapper objectMapper,
+                                   String jwtSecret) {
         this.authenticationManager = authenticationManager;
         this.objectMapper = objectMapper;
+        this.jwtSecret = jwtSecret;
 
         setFilterProcessesUrl("/v1/authenticate");
     }
@@ -61,7 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        byte[] jwtSecretBytes = SecurityConstants.JWT_SECRET.getBytes();
+        byte[] jwtSecretBytes = jwtSecret.getBytes();
 
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(jwtSecretBytes), SignatureAlgorithm.HS512)

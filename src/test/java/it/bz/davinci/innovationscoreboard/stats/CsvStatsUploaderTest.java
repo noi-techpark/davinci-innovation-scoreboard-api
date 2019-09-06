@@ -1,7 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats;
 
-import it.bz.davinci.innovationscoreboard.stats.csv.*;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
+import it.bz.davinci.innovationscoreboard.stats.model.StatsType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,37 +18,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StatsImporterTest {
-
-    @Mock
-    private ResearchAndDevelopmentCsvImporter researchAndDevelopmentDataImporter;
-
-    @Mock
-    private InnovationCsvImporter innovationCsvDataImporter;
-
-    @Mock
-    private EmploymentDemographicCsvImporter employmentDemographicCsvDataImporter;
+public class CsvStatsUploaderTest {
 
     @Mock
     private FileImportLogService fileImportLogService;
 
-    private StatsImporter statsImporter;
+    @Mock
+    private CsvStatsProcessor csvStatsProcessor;
+
+    private CsvStatsUploader csvStatsUploader;
 
     @Before
     public void setUp() {
-        StatsCsvImporterFactory statsCsvImporterFactory = new StatsCsvImporterFactory(researchAndDevelopmentDataImporter, innovationCsvDataImporter, employmentDemographicCsvDataImporter);
-        statsImporter = new StatsImporter(statsCsvImporterFactory, fileImportLogService);
+        csvStatsUploader = new CsvStatsUploader(csvStatsProcessor, fileImportLogService);
     }
 
 
     @Test
     public void givenSupportedFile_startUpload() throws IOException {
 
-        when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
+        final FileImportLogDto fileImportDto = FileImportLogDto.builder().id(1).build();
+        when(fileImportLogService.save(any())).thenReturn(fileImportDto);
         MultipartFile multipartFile = new MockMultipartFile("validResearchAndDevelopment2.csv", new FileInputStream(new File("src/test/resources/csv/validResearchAndDevelopment2.csv")));
-        statsImporter.importFile(multipartFile);
+        csvStatsUploader.importFile(multipartFile);
 
-        verify(researchAndDevelopmentDataImporter, times(1)).importFile(anyString(), anyInt());
+        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.RESEARCH_AND_DEVELOPMENT));
     }
 
     @Test
@@ -56,9 +50,9 @@ public class StatsImporterTest {
 
         when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validInnovation.csv", new FileInputStream(new File("src/test/resources/csv/validInnovation.csv")));
-        statsImporter.importFile(multipartFile);
+        csvStatsUploader.importFile(multipartFile);
 
-        verify(innovationCsvDataImporter, times(1)).importFile(anyString(), anyInt());
+        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.INNOVATION_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
     }
 
     @Test
@@ -66,15 +60,15 @@ public class StatsImporterTest {
 
         when(fileImportLogService.save(any())).thenReturn(FileImportLogDto.builder().id(1).build());
         MultipartFile multipartFile = new MockMultipartFile("validEmploymentDemographic.csv", new FileInputStream(new File("src/test/resources/csv/validEmploymentDemographic.csv")));
-        statsImporter.importFile(multipartFile);
+        csvStatsUploader.importFile(multipartFile);
 
-        verify(employmentDemographicCsvDataImporter, times(1)).importFile(anyString(), anyInt());
+        verify(csvStatsProcessor, times(1)).process(anyString(), anyInt(), eq(StatsType.ICT_IN_COMPANIES_WITH_AT_LEAST_10_EMPLOYEES));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void givenUnsupportedFile_throwException() throws IOException {
 
         MultipartFile multipartFile = new MockMultipartFile("invalidResearchAndDevelopmentHeader.csv", new FileInputStream(new File("src/test/resources/csv/invalidResearchAndDevelopmentHeader.csv")));
-        statsImporter.importFile(multipartFile);
+        csvStatsUploader.importFile(multipartFile);
     }
 }

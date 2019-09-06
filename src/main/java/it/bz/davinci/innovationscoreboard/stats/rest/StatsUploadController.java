@@ -1,7 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.rest;
 
 import it.bz.davinci.innovationscoreboard.stats.FileImportLogService;
-import it.bz.davinci.innovationscoreboard.stats.StatsImporter;
+import it.bz.davinci.innovationscoreboard.stats.CsvStatsUploader;
 import it.bz.davinci.innovationscoreboard.stats.dto.FileImportLogDto;
 import it.bz.davinci.innovationscoreboard.stats.dto.UploadHistoryResponseDto;
 import it.bz.davinci.innovationscoreboard.stats.storage.FileImportStorageService;
@@ -17,12 +17,12 @@ import java.io.IOException;
 @RequestMapping(value = "v1/stats")
 public class StatsUploadController {
 
-    private final StatsImporter statsService;
+    private final CsvStatsUploader statsService;
     private final FileImportLogService fileImportLogService;
     private final FileImportStorageService fileImportStorageService;
     private final RestResponseFactory restResponseFactory;
 
-    public StatsUploadController(StatsImporter statsService, FileImportLogService fileImportLogService, FileImportStorageService fileImportStorageService, RestResponseFactory restResponseFactory) {
+    public StatsUploadController(CsvStatsUploader statsService, FileImportLogService fileImportLogService, FileImportStorageService fileImportStorageService, RestResponseFactory restResponseFactory) {
         this.statsService = statsService;
         this.fileImportLogService = fileImportLogService;
         this.fileImportStorageService = fileImportStorageService;

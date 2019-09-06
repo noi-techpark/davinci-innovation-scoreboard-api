@@ -21,9 +21,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @AllArgsConstructor
-public class StatsImporter {
+public class CsvStatsUploader {
 
-    private final StatsCsvImporterFactory statsCsvImporterFactory;
+    private final CsvStatsProcessor csvStatsProcessor;
     private final FileImportLogService fileImportLogService;
 
     public FileImportLogDto importFile(MultipartFile file) throws IOException {
@@ -34,8 +34,6 @@ public class StatsImporter {
 
             StatsType csvType = StatsType.findByCsvHeader(formattedHeader)
                     .orElseThrow(() -> new UnsupportedOperationException("Header is not supported: " + formattedHeader));
-
-            StatsCsvImporter csvDataImporter = statsCsvImporterFactory.getCsvDataImporter(csvType);
 
             String tempFilePath = TempFileUtil.saveMultipartFileToTempFile(file, "csv-stats-", ".csv");
 
@@ -48,7 +46,7 @@ public class StatsImporter {
 
             final FileImportLogDto uploadedFile = fileImportLogService.save(fileImportStatus);
 
-            csvDataImporter.importFile(tempFilePath, uploadedFile.getId());
+            csvStatsProcessor.process(tempFilePath, uploadedFile.getId(), csvType);
             return uploadedFile;
         }
     }

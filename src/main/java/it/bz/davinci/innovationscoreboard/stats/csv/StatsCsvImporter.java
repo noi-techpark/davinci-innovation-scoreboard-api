@@ -34,11 +34,9 @@ public class StatsCsvImporter<CSV, ES> {
     }
 
     @Async
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void importFile(String fileName, int fileImportId) {
         FileImportLogDto fileImportState = fileImportLogService.getById(fileImportId);
-        fileImportState.setStatus(PROCESSING);
-        fileImportState = fileImportLogService.save(fileImportState);
 
         try {
             File file = new File(fileName);

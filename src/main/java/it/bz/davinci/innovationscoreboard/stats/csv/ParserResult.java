@@ -21,7 +21,7 @@ public class ParserResult<T> {
         }
 
         return exceptions.stream()
-                .map(exception -> "Line: " + exception.getLineNumber() + ", Message: " + exception.getMessage() + "\n")
+                .map(exception -> "Line " + exception.getLineNumber() + ": " + exception.getMessage() + "\n")
                 .reduce("", String::concat);
     }
 }

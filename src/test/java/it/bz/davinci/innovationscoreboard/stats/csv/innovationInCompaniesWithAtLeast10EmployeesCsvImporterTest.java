@@ -79,7 +79,7 @@ public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_WARNINGS));
-        assertThat(fileImport.getLogs(), equalTo("Line: 3, Message: Number of data fields does not match number of headers.\n"));
+        assertThat(fileImport.getLogs(), equalTo("Line 3: Number of data fields does not match number of headers.\n"));
     }
 
     @Test
@@ -90,8 +90,8 @@ public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
         final FileImportLogDto fileImport = fileImportLogService.getById(uploadedFile.getId());
 
         assertThat(fileImport.getStatus(), equalTo(FileImport.Status.PROCESSED_WITH_ERRORS));
-        assertThat(fileImport.getLogs(), equalTo("Line: 2, Message: Conversion of 544a to java.math.BigDecimal failed.\n" +
-                "Line: 3, Message: Number of data fields does not match number of headers.\n"));
+        assertThat(fileImport.getLogs(), equalTo("Line 2: Conversion of 544a to java.math.BigDecimal failed.\n" +
+                "Line 3: Number of data fields does not match number of headers.\n"));
     }
 
     private FileImportLogDto createUploadedFile(String s) throws IOException {

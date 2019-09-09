@@ -4,10 +4,11 @@ This repository contains the sourcecode for the innovation scoreboard backend RE
 
 ## Table of contents
 
-- [Gettings started](#getting-started)
+- [Getting started](#getting-started)
 - [Running tests](#running-tests)
 - [Deployment](#deployment)
 - [Docker environment](#docker-environment)
+- [User management](#user-management)
 - [Information](#information)
 
 ## Getting started
@@ -122,6 +123,22 @@ docker-compose -f docker-compose-dependencies.yml up
 ```
 mvn:spring-boot run
 ```
+
+## User management
+
+**IMPORTANT!!**
+
+Reset the password of the admin account as soon as you setup the application for the first time.
+Check out the swagger documentation `/swagger-ui.html` on how to reset a users password.
+
+In order to retrieve a valid token to use in the swagger UI make a request to the login endpoint.
+
+```
+curl -d '{"email": "info@davinci.bz.it", "password": "password"}' -H "Content-Type: application/json" -X POST http://localhost:8080/v1/authenticate
+```
+
+Copy the token and paste it in the swagger authentication popup, prefixing the token with `Bearer ${token}`.
+Now you can use the UI to reset your users password and as an *ADMIN* you can also create new accounts.
 
 ## Information
 

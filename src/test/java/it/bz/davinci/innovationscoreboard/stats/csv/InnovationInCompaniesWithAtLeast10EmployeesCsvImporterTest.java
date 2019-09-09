@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Import({FileImportLogService.class})
-public class innovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
+public class InnovationInCompaniesWithAtLeast10EmployeesCsvImporterTest {
 
     private InnovationInCompaniesWithAtLeast10EmployeesCsvImporter innovationInCompaniesWithAtLeast10EmployeesCsvImporter;
 

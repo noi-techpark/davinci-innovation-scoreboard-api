@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @IsAdmin
+    @ApiOperation(value = "Delete a user by id. Admins only.", authorizations = {@Authorization(value = "apiKey")})
     @DeleteMapping(value = "/{id}")
     public void deleteUser(@PathVariable("id") Integer id) {
         userService.deleteUser(id);

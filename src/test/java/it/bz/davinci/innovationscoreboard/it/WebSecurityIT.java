@@ -54,8 +54,18 @@ public class WebSecurityIT {
         final UserRole adminRole = new UserRole();
         adminRole.setEmail("info@davinici.bz.it");
         adminRole.setRole(Role.ROLE_ADMIN);
-
         userRoleRepository.save(adminRole);
+
+        final ApiUser user = new ApiUser();
+        user.setPassword("$2a$10$DKKUcKqQlNk.LaQLAeBZiejD2eG03vG86XeLuIwYKWeInN.Gs1nvm");
+        user.setEmail("user@davinici.bz.it");
+        user.setEnabled(true);
+        userRepository.save(user);
+
+        final UserRole userRole = new UserRole();
+        userRole.setEmail("user@davinici.bz.it");
+        userRole.setRole(Role.ROLE_USER);
+        userRoleRepository.save(userRole);
 
     }
 
@@ -93,6 +103,19 @@ public class WebSecurityIT {
         assertThat(createNewUserResponse.getBody().getEmail(), equalTo(newUserRequest.getEmail()));
     }
 
+    @Test
+    public void givenUserToken_disallowAdminProtectedEndpoints() {
+        final ResponseEntity<LoginResponseBody> responseEntity = loginAsUser();
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + responseEntity.getBody().getToken());
+        final NewUserRequest newUserRequest = getNewUserRequest();
+
+        final ResponseEntity<UserResponse> createNewUserResponse = template.postForEntity("/v1/users/new", new HttpEntity<>(newUserRequest, headers), UserResponse.class);
+        assertThat(createNewUserResponse.getStatusCode(), equalTo(HttpStatus.FORBIDDEN));
+    }
+
+
     @NotNull
     private NewUserRequest getNewUserRequest() {
         final NewUserRequest newUserRequest = new NewUserRequest();
@@ -103,6 +126,10 @@ public class WebSecurityIT {
 
     private ResponseEntity<LoginResponseBody> loginAsAdmin() {
         return template.postForEntity("/v1/authenticate", new Credentials("info@davinici.bz.it", "password"), LoginResponseBody.class);
+    }
+
+    private ResponseEntity<LoginResponseBody> loginAsUser() {
+        return template.postForEntity("/v1/authenticate", new Credentials("user@davinici.bz.it", "password"), LoginResponseBody.class);
     }
 
 

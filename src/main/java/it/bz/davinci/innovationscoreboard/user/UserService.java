@@ -8,6 +8,7 @@ import it.bz.davinci.innovationscoreboard.user.jpa.UserRoleRepository;
 import it.bz.davinci.innovationscoreboard.user.model.ApiUser;
 import it.bz.davinci.innovationscoreboard.user.model.Role;
 import it.bz.davinci.innovationscoreboard.user.model.UserRole;
+import it.bz.davinci.innovationscoreboard.utils.rest.CollectionResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +17,9 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -51,5 +54,20 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
 
         userRepository.save(user);
+    }
+
+    public CollectionResponse<UserResponse> findAll() {
+        final List<UserResponse> users = userRepository.findAll().stream()
+                .map(UserMapper.INSTANCE::to)
+                .collect(Collectors.toList());
+
+        return new CollectionResponse<>(users);
+    }
+
+    @Transactional
+    public void deleteUser(Integer id) {
+        final ApiUser userToDelete = userRepository.getOne(id);
+        userRoleRepository.deleteAllByEmail(userToDelete.getEmail());
+        userRepository.delete(userToDelete);
     }
 }

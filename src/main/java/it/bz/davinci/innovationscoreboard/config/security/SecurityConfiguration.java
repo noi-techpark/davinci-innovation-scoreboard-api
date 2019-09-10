@@ -20,7 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -39,7 +42,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/configuration/**",
                         "/v2/api-docs",
                         "/webjars/**").permitAll()
-                .antMatchers("/v1/users/new").access("hasRole('" + Role.ROLE_ADMIN.name() + "')")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), new ObjectMapper(), jwtSecret))

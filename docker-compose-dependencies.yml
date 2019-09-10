@@ -1,0 +1,26 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: innovation-scoreboard
+      POSTGRES_USER: innovation-scoreboard
+      POSTGRES_PASSWORD: password
+    #    volumes:
+    #      - ./docker/postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  elasticsearch:
+    image: elasticsearch:7.2.0
+    environment:
+      discovery.type: single-node
+      #    volumes:
+      #      - ./docker/elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    ports:
+      - "5601:5601"

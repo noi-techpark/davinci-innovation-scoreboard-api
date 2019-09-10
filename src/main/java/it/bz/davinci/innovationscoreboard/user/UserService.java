@@ -51,6 +51,17 @@ public class UserService {
         final Optional<ApiUser> optionalApiUser = userRepository.findByEmail(email);
 
         final ApiUser user = optionalApiUser.orElseThrow(() -> new UsernameNotFoundException("User with email: " + email + " not found"));
+        savePassword(resetPasswordRequest, user);
+    }
+
+    public void resetPassword(Integer id, @Valid ResetPasswordRequest resetPasswordRequest) {
+        final Optional<ApiUser> optionalApiUser = userRepository.findById(id);
+
+        final ApiUser user = optionalApiUser.orElseThrow(() -> new UsernameNotFoundException("User with id: " + id + " not found"));
+        savePassword(resetPasswordRequest, user);
+    }
+
+    private void savePassword(@Valid ResetPasswordRequest resetPasswordRequest, ApiUser user) {
         user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
 
         userRepository.save(user);

@@ -51,4 +51,11 @@ public class UserController {
     public void resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest, Principal principal) {
         userService.resetPassword(principal.getName(), resetPasswordRequest);
     }
+
+    @IsAdmin
+    @ApiOperation(value = "Reset the password of a user. Admin only.", authorizations = {@Authorization(value = "apiKey")})
+    @PutMapping(value = "/reset-password/{id}")
+    public void resetPassword(@PathVariable("id") Integer id, @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        userService.resetPassword(id, resetPasswordRequest);
+    }
 }

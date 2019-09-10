@@ -1,6 +1,8 @@
 # Innovation Scoreboard
 
-This repository contains the sourcecode for the innovation scoreboard backend REST API.
+The innovation scoreboard is a project that aims to visualize the innovation data form South Tyrol and other Italien regions in a user friendly way.
+
+This repository contains the source code for the innovation scoreboard backend.
 
 ## Table of contents
 
@@ -43,13 +45,21 @@ Change directory:
 cd davinci-innovation-scoreboard-api/
 ```
 
-### Build
+### Configure
+
+Copy the file `src/main/resources/application.properties.example` to `src/main/resources/application.properties` and adjust the settings if needed.
+
+The defaults are already configured, that the you can use the Docker environment right away without any modifications.
+
+### Development
 
 Build the project:
 
 ```bash
 mvn clean install
 ```
+
+The website will be available at [http://localhost:8080](http://localhost:8080).
 
 ## Running tests
 
@@ -110,7 +120,9 @@ docker-compose exec java /bin/sh -c "mvn clean install"
 docker-compose exec java /bin/sh -c "mvn clean test"
 ```
 
-### Starting the application in IntelliJ or any other IDE for local development
+### Running the application in IntelliJ or any other IDE for local development
+
+If you want to run the application from an IDE and don't use the Docker container for it, then you still have the possibility to start all dependencies using Docker.
 
 1. Startup external dependencies
 

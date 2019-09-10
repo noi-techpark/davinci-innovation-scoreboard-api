@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'mvn -B -U clean test verify'
+                sh 'mvn -B -U clean test'
             }
         }
     }

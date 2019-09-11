@@ -2,6 +2,7 @@ package it.bz.davinci.innovationscoreboard.stats.es;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.davinci.innovationscoreboard.utils.es.DynamicTemplatesUtil;
+import it.bz.davinci.innovationscoreboard.utils.es.EsIndexName;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -28,8 +29,8 @@ import java.util.List;
 @Service
 public class InnovationInCompaniesWithAtLeast10EmployeesEsDao extends EsDao<InnovationInCompaniesWithAtLeast10EmployeesEs> {
 
-    public InnovationInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
-        super("innovation-in-companies-with-at-least-10-employees", esClient, objectMapper);
+    public InnovationInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, EsIndexName esIndexName, ObjectMapper objectMapper) {
+        super(esIndexName.getPrefixedIndexName("innovation-in-companies-with-at-least-10-employees"), esClient, objectMapper);
     }
 
     public List<InnovationInCompaniesWithAtLeast10EmployeesEs> getEnterprisesWithInnovationActivitiesDividedByTerritory() {

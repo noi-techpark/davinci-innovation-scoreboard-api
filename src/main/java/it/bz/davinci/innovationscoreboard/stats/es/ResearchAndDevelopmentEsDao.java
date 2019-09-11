@@ -2,6 +2,7 @@ package it.bz.davinci.innovationscoreboard.stats.es;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.davinci.innovationscoreboard.utils.es.DynamicTemplatesUtil;
+import it.bz.davinci.innovationscoreboard.utils.es.EsIndexName;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
@@ -28,8 +29,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class ResearchAndDevelopmentEsDao extends EsDao<ResearchAndDevelopmentEs> {
-    public ResearchAndDevelopmentEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
-        super("research-and-development", esClient, objectMapper);
+    public ResearchAndDevelopmentEsDao(RestHighLevelClient esClient, EsIndexName esIndexName, ObjectMapper objectMapper) {
+        super(esIndexName.getPrefixedIndexName("research-and-development"), esClient, objectMapper);
     }
 
     public List<ResearchAndDevelopmentEs> getResearchAndDevelopmentPersonnelInHouseDividedByTerritory() {

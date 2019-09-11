@@ -2,6 +2,7 @@ package it.bz.davinci.innovationscoreboard.stats.es;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.davinci.innovationscoreboard.utils.es.DynamicTemplatesUtil;
+import it.bz.davinci.innovationscoreboard.utils.es.EsIndexName;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -18,8 +19,8 @@ import java.io.IOException;
 @Service
 public class IctInCompaniesWithAtLeast10EmployeesEsDao extends EsDao<IctInCompaniesWithAtLeast10EmployeesEs> {
 
-    public IctInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, ObjectMapper objectMapper) {
-        super("ict-in-companies-with-at-least-10-employees", esClient, objectMapper);
+    public IctInCompaniesWithAtLeast10EmployeesEsDao(RestHighLevelClient esClient, EsIndexName esIndexName, ObjectMapper objectMapper) {
+        super(esIndexName.getPrefixedIndexName("ict-in-companies-with-at-least-10-employees"), esClient, objectMapper);
     }
 
     @Override

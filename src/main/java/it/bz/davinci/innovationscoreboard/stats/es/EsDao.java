@@ -1,6 +1,7 @@
 package it.bz.davinci.innovationscoreboard.stats.es;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.bz.davinci.innovationscoreboard.utils.es.EsIndexName;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.ElasticsearchException;

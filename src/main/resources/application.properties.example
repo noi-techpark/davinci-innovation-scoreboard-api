@@ -15,6 +15,7 @@ elasticsearch.host=elasticsearch
 elasticsearch.port=9200
 elasticsearch.user=user
 elasticsearch.password=password
+elasticsearch.namespace.prefix=innovation-scoreboard
 
 # File upload (default is 1MB)
 spring.servlet.multipart.max-file-size=30MB

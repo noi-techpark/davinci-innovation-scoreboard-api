@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.isEmpty;
 import static org.hamcrest.CoreMatchers.not;
@@ -56,16 +57,6 @@ public class UserServiceTest {
 
         assertThat(user.getEmail(), equalTo(email));
         assertThat(user.getId(), is(notNullValue()));
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    public void preventCreationOfDuplicateUser() {
-        String email = "test@noi.bz.it";
-        String password = "abcdefgh";
-        NewUserRequest newUserRequest = getNewUserRequest(email, password);
-
-        userService.createUser(newUserRequest);
-        userService.createUser(newUserRequest);
     }
 
     @Test

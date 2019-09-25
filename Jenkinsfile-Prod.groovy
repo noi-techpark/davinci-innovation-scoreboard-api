@@ -1,7 +1,6 @@
 pipeline {
     agent {
         dockerfile {
-            dir 'backend'
             filename 'docker/dockerfile-java'
             additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
         }
@@ -14,14 +13,14 @@ pipeline {
 
         ELASTICSEARCH_HOST = ""
         ELASTICSEARCH_PORT = ""
-        ELASTICSEARCH_USERNAME = ""
-        ELASTICSEARCH_PASSWORD = ""
+        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-prod-elasticsearch-username')
+        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-prod-elasticsearch-password')
 
-        S3_BUCKET_NAME = ""
-        S3_ACCESS_KEY = ""
-        S3_SECRET_KEY = ""
+        S3_BUCKET_NAME = "prod-innovation-api"
+        S3_ACCESS_KEY = credentials('innovation-scoreboard-prod-s3-access-key')
+        S3_SECRET_KEY = credentials('innovation-scoreboard-prod-s3-secret-key')
 
-        SECURITY_JWT_SECRET = ""
+        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-prod-jwt-secret')
         SECURITY_CORS = "https://innovation-scoreboard.davinci.bz.it"
     }
 

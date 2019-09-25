@@ -1,31 +1,30 @@
 pipeline {
     agent {
         dockerfile {
-            dir 'backend'
             filename 'docker/dockerfile-java'
             additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
         }
     }
 
     environment {
-        TESTSERVER_TOMCAT_ENDPOINT = "http://api.innovation-scoreboard.tomcat02.testingmachine.eu:8080/manager/text"
+        TESTSERVER_TOMCAT_ENDPOINT = "http://api.innovation.tomcat02.testingmachine.eu:8080/manager/text"
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
 
-        POSTGRES_URL = ""
+        POSTGRES_URL = "jdbc:test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com://postgres:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-test-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-test-postgres-password')
 
-        ELASTICSEARCH_HOST = ""
-        ELASTICSEARCH_PORT = ""
-        ELASTICSEARCH_USERNAME = ""
-        ELASTICSEARCH_PASSWORD = ""
+        ELASTICSEARCH_HOST = "a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
+        ELASTICSEARCH_PORT = "9243"
+        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-test-elasticsearch-username')
+        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-test-elasticsearch-password')
 
-        S3_BUCKET_NAME = ""
-        S3_ACCESS_KEY = ""
-        S3_SECRET_KEY = ""
+        S3_BUCKET_NAME = "test-innovation-api"
+        S3_ACCESS_KEY = credentials('innovation-scoreboard-test-s3-access-key')
+        S3_SECRET_KEY = credentials('innovation-scoreboard-test-s3-secret-key')
 
-        SECURITY_JWT_SECRET = ""
-        SECURITY_CORS = "https://innovation-scoreboard.davinci.testingmachine.eu"
+        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-test-jwt-secret')
+        SECURITY_CORS = "https://innovation.davinci.testingmachine.eu"
     }
 
     stages {

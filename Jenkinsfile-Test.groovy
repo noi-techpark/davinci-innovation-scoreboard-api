@@ -14,7 +14,8 @@ pipeline {
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-test-postgres-password')
 
-        ELASTICSEARCH_HOST = "https://a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
+        ELASTICSEARCH_SCHEME = "https"
+        ELASTICSEARCH_HOST = "a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
         ELASTICSEARCH_PORT = "9243"
         ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-test-elasticsearch-username')
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')
@@ -47,9 +48,10 @@ pipeline {
                 sh 'sed -i -e "s%\\(flyway.user\\s*=\\).*\\$%\\1${POSTGRES_USERNAME}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(flyway.password\\s*=\\).*\\$%\\1${POSTGRES_PASSWORD}%" src/main/resources/application.properties'
                 
+                sh 'sed -i -e "s%\\(elasticsearch.scheme\\s*=\\).*\\$%\\1${ELASTICSEARCH_SCHEME}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.host\\s*=\\).*\\$%\\1${ELASTICSEARCH_HOST}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.port\\s*=\\).*\\$%\\1${ELASTICSEARCH_PORT}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.username\\s*=\\).*\\$%\\1${ELASTICSEARCH_USERNAME}%" src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(elasticsearch.user\\s*=\\).*\\$%\\1${ELASTICSEARCH_USERNAME}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.password\\s*=\\).*\\$%\\1${ELASTICSEARCH_PASSWORD}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.namespace.prefix\\s*=\\).*\\$%\\1${ELASTICSEARCH_NAMESPACE_PREFIX}%" src/main/resources/application.properties'
                 

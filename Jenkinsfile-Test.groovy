@@ -14,7 +14,7 @@ pipeline {
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-test-postgres-password')
 
-        ELASTICSEARCH_HOST = "a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
+        ELASTICSEARCH_HOST = "https://a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
         ELASTICSEARCH_PORT = "9243"
         ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-test-elasticsearch-username')
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')

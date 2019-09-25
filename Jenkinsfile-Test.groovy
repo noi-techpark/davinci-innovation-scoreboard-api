@@ -20,6 +20,7 @@ pipeline {
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')
         ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreborard-test"
 
+        S3_REGION = "eu-west-1"
         S3_BUCKET_NAME = "test-innovation-scoreboard-api"
         S3_ACCESS_KEY = credentials('innovation-scoreboard-api-test-s3-access-key')
         S3_SECRET_KEY = credentials('innovation-scoreboard-api-test-s3-secret-key')
@@ -55,7 +56,8 @@ pipeline {
                 sh 'sed -i -e "s%\\(aws.credentials.accessKey\\s*=\\).*\\$%\\1${S3_ACCESS_KEY}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(aws.credentials.secretKey\\s*=\\).*\\$%\\1${S3_SECRET_KEY}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(aws.bucket.fileImport\\s*=\\).*\\$%\\1${S3_BUCKET_NAME}%" src/main/resources/application.properties'
-                
+                sh 'sed -i -e "s%\\(aws.s3.region\\s*=\\).*\\$%\\1${S3_REGION}%" src/main/resources/application.properties'
+
                 sh 'sed -i -e "s%\\(security.jwt.secret\\s*=\\).*\\$%\\1${SECURITY_JWT_SECRET}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(security.cors.allowedOrigins\\s*=\\).*\\$%\\1${SECURITY_CORS}%" src/main/resources/application.properties'
             }

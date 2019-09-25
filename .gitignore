@@ -1,0 +1,9 @@
+# Editors
+.idea
+innovation-scoreboard.iml
+
+# Project
+target
+
+# Files
+src/main/resources/application.properties

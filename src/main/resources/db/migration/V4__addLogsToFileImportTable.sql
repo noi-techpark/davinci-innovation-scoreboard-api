@@ -1,0 +1,1 @@
+alter table file_import add column logs text;

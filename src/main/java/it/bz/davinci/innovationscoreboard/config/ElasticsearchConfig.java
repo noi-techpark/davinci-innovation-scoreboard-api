@@ -22,6 +22,9 @@ public class ElasticsearchConfig {
     @Value("${elasticsearch.host}")
     private String host;
 
+    @Value("${elasticsearch.scheme}")
+    private String scheme;
+
     @Value("${elasticsearch.user}")
     private String user;
 
@@ -36,7 +39,7 @@ public class ElasticsearchConfig {
                 new UsernamePasswordCredentials(user, password));
 
         RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(new HttpHost(host, port, "http")).setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+                RestClient.builder(new HttpHost(host, port, scheme)).setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
                     @Override
                     public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
                         return httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);

@@ -11,6 +11,7 @@ flyway.user=innovation-scoreboard
 flyway.password=password
 
 # Elasticsearch
+elasticsearch.scheme=http
 elasticsearch.host=elasticsearch
 elasticsearch.port=9200
 elasticsearch.user=user

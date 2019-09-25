@@ -10,7 +10,7 @@ pipeline {
         TESTSERVER_TOMCAT_ENDPOINT = "http://api.innovation.tomcat02.testingmachine.eu:8080/manager/text"
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
 
-        POSTGRES_URL = "jdbc:test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com://postgres:5432/innovation_scoreboard"
+        POSTGRES_URL = "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-test-postgres-password')
 

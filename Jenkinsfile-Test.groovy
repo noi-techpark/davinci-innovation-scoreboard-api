@@ -20,7 +20,7 @@ pipeline {
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')
         ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreborard-test"
 
-        S3_BUCKET_NAME = "test-innovation-api"
+        S3_BUCKET_NAME = "test-innovation-scoreboard-api"
         S3_ACCESS_KEY = credentials('innovation-scoreboard-api-test-s3-access-key')
         S3_SECRET_KEY = credentials('innovation-scoreboard-api-test-s3-secret-key')
 

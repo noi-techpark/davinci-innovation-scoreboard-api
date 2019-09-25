@@ -8,19 +8,20 @@ pipeline {
 
     environment {
         POSTGRES_URL = ""
-        POSTGRES_USERNAME = credentials('innovation-scoreboard-prod-postgres-username')
-        POSTGRES_PASSWORD = credentials('innovation-scoreboard-prod-postgres-password')
+        POSTGRES_USERNAME = credentials('innovation-scoreboard-api-prod-postgres-username')
+        POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-prod-postgres-password')
 
         ELASTICSEARCH_HOST = ""
         ELASTICSEARCH_PORT = ""
-        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-prod-elasticsearch-username')
-        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-prod-elasticsearch-password')
+        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-prod-elasticsearch-username')
+        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-prod-elasticsearch-password')
+        ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreborard-prod"
 
         S3_BUCKET_NAME = "prod-innovation-api"
-        S3_ACCESS_KEY = credentials('innovation-scoreboard-prod-s3-access-key')
-        S3_SECRET_KEY = credentials('innovation-scoreboard-prod-s3-secret-key')
+        S3_ACCESS_KEY = credentials('innovation-scoreboard-api-prod-s3-access-key')
+        S3_SECRET_KEY = credentials('innovation-scoreboard-api-prod-s3-secret-key')
 
-        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-prod-jwt-secret')
+        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-api-prod-jwt-secret')
         SECURITY_CORS = "https://innovation-scoreboard.davinci.bz.it"
     }
 
@@ -46,7 +47,8 @@ pipeline {
                 sh 'sed -i -e "s%\\(elasticsearch.port\\s*=\\).*\\$%\\1${ELASTICSEARCH_PORT}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.username\\s*=\\).*\\$%\\1${ELASTICSEARCH_USERNAME}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.password\\s*=\\).*\\$%\\1${ELASTICSEARCH_PASSWORD}%" src/main/resources/application.properties'
-                
+                sh 'sed -i -e "s%\\(elasticsearch.namespace.prefix\\s*=\\).*\\$%\\1${ELASTICSEARCH_NAMESPACE_PREFIX}%" src/main/resources/application.properties'
+
                 sh 'sed -i -e "s%\\(aws.credentials.accessKey\\s*=\\).*\\$%\\1${S3_ACCESS_KEY}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(aws.credentials.secretKey\\s*=\\).*\\$%\\1${S3_SECRET_KEY}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(aws.bucket.fileImport\\s*=\\).*\\$%\\1${S3_BUCKET_NAME}%" src/main/resources/application.properties'

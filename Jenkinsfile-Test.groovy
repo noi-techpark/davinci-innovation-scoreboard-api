@@ -11,19 +11,20 @@ pipeline {
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
 
         POSTGRES_URL = "jdbc:test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com://postgres:5432/innovation_scoreboard"
-        POSTGRES_USERNAME = credentials('innovation-scoreboard-test-postgres-username')
-        POSTGRES_PASSWORD = credentials('innovation-scoreboard-test-postgres-password')
+        POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
+        POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-test-postgres-password')
 
         ELASTICSEARCH_HOST = "a2d53654bfcc40d5aa46c18627520e1d.eu-west-1.aws.found.io"
         ELASTICSEARCH_PORT = "9243"
-        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-test-elasticsearch-username')
-        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-test-elasticsearch-password')
+        ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-test-elasticsearch-username')
+        ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')
+        ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreborard-test"
 
         S3_BUCKET_NAME = "test-innovation-api"
-        S3_ACCESS_KEY = credentials('innovation-scoreboard-test-s3-access-key')
-        S3_SECRET_KEY = credentials('innovation-scoreboard-test-s3-secret-key')
+        S3_ACCESS_KEY = credentials('innovation-scoreboard-api-test-s3-access-key')
+        S3_SECRET_KEY = credentials('innovation-scoreboard-api-test-s3-secret-key')
 
-        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-test-jwt-secret')
+        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-api-test-jwt-secret')
         SECURITY_CORS = "https://innovation.davinci.testingmachine.eu"
     }
 
@@ -49,6 +50,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(elasticsearch.port\\s*=\\).*\\$%\\1${ELASTICSEARCH_PORT}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.username\\s*=\\).*\\$%\\1${ELASTICSEARCH_USERNAME}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(elasticsearch.password\\s*=\\).*\\$%\\1${ELASTICSEARCH_PASSWORD}%" src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(elasticsearch.namespace.prefix\\s*=\\).*\\$%\\1${ELASTICSEARCH_NAMESPACE_PREFIX}%" src/main/resources/application.properties'
                 
                 sh 'sed -i -e "s%\\(aws.credentials.accessKey\\s*=\\).*\\$%\\1${S3_ACCESS_KEY}%" src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(aws.credentials.secretKey\\s*=\\).*\\$%\\1${S3_SECRET_KEY}%" src/main/resources/application.properties'

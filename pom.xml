@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>it.bz.davinci</groupId>
-    <artifactId>ROOT</artifactId>
+    <artifactId>innovation-scoreboard</artifactId>
     <name>innovation-scoreboard</name>
     <packaging>war</packaging>
 
@@ -172,6 +172,7 @@
     </dependencies>
 
     <build>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

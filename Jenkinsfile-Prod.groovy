@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'target/innovation-scoreboard.war', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'target/ROOT.war', onlyIfSuccessful: true
             }
         }
     }

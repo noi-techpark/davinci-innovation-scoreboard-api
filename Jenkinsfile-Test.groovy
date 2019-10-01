@@ -19,7 +19,7 @@ pipeline {
         ELASTICSEARCH_PORT = "9243"
         ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-test-elasticsearch-username')
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-test-elasticsearch-password')
-        ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreborard-test"
+        ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreboard-test"
 
         S3_REGION = "eu-west-1"
         S3_BUCKET_NAME = "test-innovation-scoreboard-api"

@@ -10,7 +10,6 @@
     </parent>
     <groupId>it.bz.davinci</groupId>
     <artifactId>ROOT</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>innovation-scoreboard</name>
     <packaging>war</packaging>
 

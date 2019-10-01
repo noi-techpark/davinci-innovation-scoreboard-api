@@ -7,13 +7,13 @@ pipeline {
     }
 
     environment {
-        POSTGRES_URL = ""
+        POSTGRES_URL = "jdbc:postgresql://postgres-prod.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-prod-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-prod-postgres-password')
 
         ELASTICSEARCH_SCHEME = "https"
-        ELASTICSEARCH_HOST = ""
-        ELASTICSEARCH_PORT = ""
+        ELASTICSEARCH_HOST = "05068ca494804a0b86352e68fadb3457.eu-west-1.aws.found.io"
+        ELASTICSEARCH_PORT = "9243"
         ELASTICSEARCH_USERNAME = credentials('innovation-scoreboard-api-prod-elasticsearch-username')
         ELASTICSEARCH_PASSWORD = credentials('innovation-scoreboard-api-prod-elasticsearch-password')
         ELASTICSEARCH_NAMESPACE_PREFIX = "innovation-scoreboard-prod"
@@ -24,7 +24,7 @@ pipeline {
         S3_SECRET_KEY = credentials('innovation-scoreboard-api-prod-s3-secret-key')
 
         SECURITY_JWT_SECRET = credentials('innovation-scoreboard-api-prod-jwt-secret')
-        SECURITY_CORS = "https://innovation-scoreboard.davinci.bz.it"
+        SECURITY_CORS = "https://innovation.davinci.bz.it"
     }
 
     stages {
@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'target/innovation-scoreboard.war', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'target/ROOT.war', onlyIfSuccessful: true
             }
         }
     }

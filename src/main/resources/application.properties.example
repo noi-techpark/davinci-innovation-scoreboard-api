@@ -1,3 +1,5 @@
+spring.jmx.enabled=false
+
 # Database
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://postgres:5432/innovation-scoreboard
@@ -11,6 +13,7 @@ flyway.user=innovation-scoreboard
 flyway.password=password
 
 # Elasticsearch
+elasticsearch.scheme=http
 elasticsearch.host=elasticsearch
 elasticsearch.port=9200
 elasticsearch.user=user
@@ -25,6 +28,7 @@ spring.servlet.multipart.max-request-size=30MB
 aws.credentials.accessKey=access_key
 aws.credentials.secretKey=secret_key
 aws.bucket.fileImport=noi-innovation-scoreboard-dev
+aws.s3.region=eu-central-1
 
 # Security
 security.jwt.secret=2NjjFYdGyvkuEPjKh@p.a7CXh!q69!!MMpmEmqJzPsY4K**8isfhwcETPAXK@WVh

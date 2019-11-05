@@ -71,7 +71,13 @@ mvn clean test
 
 ## Deployment
 
-ToDo: A detailed description about how the application must be deployed.
+To build the application you have to first adjust the configuation to your needs and then create a war file using the following command:
+
+```bash
+mvn clean package
+```
+
+The resulting war file can then be executed using a Tomcat server.
 
 ## Docker environment
 

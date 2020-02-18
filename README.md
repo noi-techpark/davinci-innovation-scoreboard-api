@@ -146,6 +146,13 @@ docker-compose -f docker-compose-dependencies.yml up
 mvn:spring-boot run -Dspring-boot.run.profiles=local
 ```
 
+## User management
+
+User management is handled by the NOI Authentication server.
+This application offers 1 role, that is used to protect CSV upload endpoints.
+
+- project_manager
+
 ## Information
 
 ### Support

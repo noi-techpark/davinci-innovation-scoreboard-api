@@ -4,10 +4,8 @@ services:
     image: postgres:11
     environment:
       POSTGRES_DB: innovation-scoreboard
-      POSTGRES_USER: innovation-scoreboard
+      POSTGRES_USERNAME: innovation-scoreboard
       POSTGRES_PASSWORD: password
-    #    volumes:
-    #      - ./docker/postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -15,8 +13,6 @@ services:
     image: elasticsearch:7.2.0
     environment:
       discovery.type: single-node
-      #    volumes:
-      #      - ./docker/elasticsearch-data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
 

@@ -30,7 +30,7 @@ pipeline {
         KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu/auth"
         KEYCLOAK_REALM = "NOI"
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
-        KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-id')
+        KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-secret')
     }
 
     stages {

@@ -6,4 +6,5 @@ innovation-scoreboard.iml
 target
 
 # Files
-src/main/resources/application.properties
+src/main/resources/application-local.properties
+.env

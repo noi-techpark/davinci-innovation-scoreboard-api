@@ -22,6 +22,7 @@ on your local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 
+- [Running authentication server](https://github.com/noi-techpark/authentication-server)
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
 - Postgres Database 11
@@ -30,6 +31,7 @@ To build the project, the following prerequisites must be met:
 - Kibana (optional)
 
 For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
+The [authentication server](https://github.com/noi-techpark/authentication-server) is not part of the the docker environment and needs to be started separately.
 
 ### Source code
 
@@ -47,7 +49,7 @@ cd davinci-innovation-scoreboard-api/
 
 ### Configure
 
-Copy the file `src/main/resources/application.properties.example` to `src/main/resources/application.properties` and adjust the settings if needed.
+Copy the file `.env.example` to `.env` and adjust the settings if needed.
 
 The defaults are already configured, that the you can use the Docker environment right away without any modifications.
 
@@ -130,33 +132,26 @@ docker-compose exec java /bin/sh -c "mvn clean test"
 
 If you want to run the application from an IDE and don't use the Docker container for it, then you still have the possibility to start all dependencies using Docker.
 
-1. Startup external dependencies
+1. Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties` and adjust the settings if needed.
+
+2. Startup external dependencies
 
 ```bash
 docker-compose -f docker-compose-dependencies.yml up
 ```
 
-2. Run application in your prefered IDE as a maven project
+3. Run application in your prefered IDE as a maven project
 
 ```
-mvn:spring-boot run
+mvn:spring-boot run -Dspring-boot.run.profiles=local
 ```
 
 ## User management
 
-**IMPORTANT!!**
+User management is handled by the NOI Authentication server.
+This application offers 1 role, that is used to protect CSV upload endpoints.
 
-Reset the password of the admin account as soon as you setup the application for the first time.
-Check out the swagger documentation `/swagger-ui.html` on how to reset a users password.
-
-In order to retrieve a valid token to use in the swagger UI make a request to the login endpoint.
-
-```
-curl -d '{"email": "info@davinci.bz.it", "password": "password"}' -H "Content-Type: application/json" -X POST http://localhost:8080/v1/authenticate
-```
-
-Copy the token and paste it in the swagger authentication popup, prefixing the token with `Bearer ${token}`.
-Now you can use the UI to reset your users password and as an *ADMIN* you can also create new accounts.
+- project_manager
 
 ## Information
 

@@ -7,6 +7,12 @@ pipeline {
     }
 
     environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+		DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
+		DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
+		DOCKER_TAG = "prod-$BUILD_NUMBER"
+
         POSTGRES_URL = "jdbc:postgresql://postgres-prod.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-prod-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-prod-postgres-password')
@@ -23,57 +29,73 @@ pipeline {
         S3_ACCESS_KEY = credentials('innovation-scoreboard-api-prod-s3-access-key')
         S3_SECRET_KEY = credentials('innovation-scoreboard-api-prod-s3-secret-key')
 
-        SECURITY_JWT_SECRET = credentials('innovation-scoreboard-api-prod-jwt-secret')
-        SECURITY_CORS = "https://innovation.davinci.bz.it"
+        SECURITY_ALLOWED_ORIGINS = "https://innovation.davinci.bz.it"
+        KEYCLOAK_URL = "https://auth.opendatahub.bz.it/auth"
+        KEYCLOAK_REALM = "NOI"
+        KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
+        KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-prod-keycloak-client-secret')
     }
 
-    stages {
+	stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
-                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
-                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
-                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
-                sh 'echo "</settings>" >> ~/.m2/settings.xml'
+                sh """
+					rm -f .env
+					cp .env.example .env
+                	echo 'COMPOSE_PROJECT_NAME=${DOCKER_PROJECT_NAME}' >> .env
+                	echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
+                	echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
 
-                sh 'cp src/main/resources/application.properties.example src/main/resources/application.properties'
-                
-                sh 'sed -i -e "s%\\(spring.datasource.url\\s*=\\).*\\$%\\1${POSTGRES_URL}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(spring.datasource.username\\s*=\\).*\\$%\\1${POSTGRES_USERNAME}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(spring.datasource.password\\s*=\\).*\\$%\\1${POSTGRES_PASSWORD}%" src/main/resources/application.properties'
-                
-                sh 'sed -i -e "s%\\(flyway.user\\s*=\\).*\\$%\\1${POSTGRES_USERNAME}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(flyway.password\\s*=\\).*\\$%\\1${POSTGRES_PASSWORD}%" src/main/resources/application.properties'
-                
-                sh 'sed -i -e "s%\\(elasticsearch.scheme\\s*=\\).*\\$%\\1${ELASTICSEARCH_SCHEME}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.host\\s*=\\).*\\$%\\1${ELASTICSEARCH_HOST}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.port\\s*=\\).*\\$%\\1${ELASTICSEARCH_PORT}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.user\\s*=\\).*\\$%\\1${ELASTICSEARCH_USERNAME}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.password\\s*=\\).*\\$%\\1${ELASTICSEARCH_PASSWORD}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(elasticsearch.namespace.prefix\\s*=\\).*\\$%\\1${ELASTICSEARCH_NAMESPACE_PREFIX}%" src/main/resources/application.properties'
+					echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env
+        			echo 'POSTGRES_USERNAME=${POSTGRES_USERNAME}' >> .env
+        			echo 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}' >> .env
 
-                sh 'sed -i -e "s%\\(aws.credentials.accessKey\\s*=\\).*\\$%\\1${S3_ACCESS_KEY}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(aws.credentials.secretKey\\s*=\\).*\\$%\\1${S3_SECRET_KEY}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(aws.bucket.fileImport\\s*=\\).*\\$%\\1${S3_BUCKET_NAME}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(aws.s3.region\\s*=\\).*\\$%\\1${S3_REGION}%" src/main/resources/application.properties'
-                
-                sh 'sed -i -e "s%\\(security.jwt.secret\\s*=\\).*\\$%\\1${SECURITY_JWT_SECRET}%" src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(security.cors.allowedOrigins\\s*=\\).*\\$%\\1${SECURITY_CORS}%" src/main/resources/application.properties'
+        			echo 'ELASTICSEARCH_SCHEME=${ELASTICSEARCH_SCHEME}' >> .env
+        			echo 'ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}' >> .env
+        			echo 'ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}' >> .env
+        			echo 'ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}' >> .env
+        			echo 'ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}' >> .env
+        			echo 'ELASTICSEARCH_NAMESPACE_PREFIX=${ELASTICSEARCH_NAMESPACE_PREFIX}' >> .env
+
+        			echo 'S3_REGION=${S3_REGION}' >> .env
+        			echo 'S3_BUCKET_NAME=${S3_BUCKET_NAME}' >> .env
+        			echo 'S3_ACCESS_KEY=${S3_ACCESS_KEY}' >> .env
+        			echo 'S3_SECRET_KEY=${S3_SECRET_KEY}' >> .env
+
+        			echo 'SECURITY_ALLOWED_ORIGINS=${SECURITY_ALLOWED_ORIGINS}' >> .env
+        			echo 'KEYCLOAK_URL=${KEYCLOAK_URL}' >> .env
+        			echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
+        			echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
+        			echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
+				"""
             }
         }
+
         stage('Test') {
             steps {
-                sh 'mvn -B -U clean test'
+				sh '''
+					docker-compose --no-ansi build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+					docker-compose --no-ansi run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) app mvn clean test
+				'''
             }
         }
-        stage('Build') {
+		stage('Build') {
             steps {
-                sh 'mvn -B -U clean package'
+				sh '''
+					aws ecr get-login --region eu-west-1 --no-include-email | bash
+					docker-compose --no-ansi -f docker-compose.build.yml build --pull
+					docker-compose --no-ansi -f docker-compose.build.yml push
+				'''
             }
         }
-        stage('Archive') {
+		stage('Deploy') {
             steps {
-                archiveArtifacts artifacts: 'target/ROOT.war', onlyIfSuccessful: true
+               sshagent(['jenkins-ssh-key']) {
+                    sh """
+						ansible-galaxy install --force -r ansible/requirements.yml
+						ansible-playbook --limit=docker02.opendatahub.bz.it ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
+					"""
+                }
             }
         }
     }

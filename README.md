@@ -1,6 +1,6 @@
 # Innovation Scoreboard
 
-The innovation scoreboard is a project that aims to visualize the innovation data form South Tyrol and other Italien regions in a user friendly way.
+The innovation scoreboard is a project that aims to visualize the innovation data from South Tyrol and other Italien regions in a user friendly way.
 
 This repository contains the source code for the innovation scoreboard backend.
 
@@ -9,7 +9,6 @@ This repository contains the source code for the innovation scoreboard backend.
 - [Getting started](#getting-started)
 - [Running tests](#running-tests)
 - [Deployment](#deployment)
-- [Docker environment](#docker-environment)
 - [User management](#user-management)
 - [Information](#information)
 
@@ -22,16 +21,83 @@ on your local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 
-- [Running authentication server](https://github.com/noi-techpark/authentication-server)
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
 - Postgres Database 11
 - Elasticsearch 7.2
 - AWS account with S3 access
 - Kibana (optional)
+- [Authentication server](https://github.com/noi-techpark/authentication-server)
 
-For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
-The [authentication server](https://github.com/noi-techpark/authentication-server) is not part of the the docker environment and needs to be started separately.
+If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all dependencies for you. You only have to install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) and follow the instruction in the [dedicated section](#execute-with-docker).
+
+However, the [authentication server](https://github.com/noi-techpark/authentication-server) is not part of the Docker environment and needs to be started separately.
+
+### How to setup NOI Authentication Server locally?
+
+- [Here](https://github.com/noi-techpark/authentication-server) you can find how to run the server locally
+- Create a new realm following these [steps](https://github.com/noi-techpark/authentication-server/blob/master/docs/noi-authentication-server.md#realm)
+
+#### How to register this application in your local authentication server?
+
+1. Open the previously created realm
+2. Create a new client (Clients -> Create)
+
+| Property | Value           |
+| -------- | --------------- |
+| ClientID | davinci-innovation-scoreboard-api |
+
+3. Client Settings
+
+| Property | Value               |
+| -------- | ------------------- |
+| Access Type | bearer-only |
+
+4. Navigate to Roles
+
+Add following roles: project_manager
+
+#### How to create a user or assign a user the necessary roles for this application?
+
+1. Go to users
+2. Create user or select user (View users)
+3. Assign roles: Role Mappings -> Client Roles -> davinci-innovation-scoreboard-api
+
+#### How to create a client to generate tokens for testing purposes?
+
+1. Open the previously created realm
+2. Create a new client (Clients -> Create)
+
+| Property | Value               |
+| -------- | ------------------- |
+| ClientID | davinci-innovation-scoreboard-api-client |
+
+3. Client Settings
+
+| Property                     | Value  |
+| ---------------------------- | ------ |
+| Access Type                  | public |
+| Standard Flow Enabled        | Off    |
+| Implicit Flow Enabled        | Off    |
+| Direct Access Grants Enabled | On     |
+
+4. Navigate to Scope
+
+| Property                                          | Value                                |
+| ------------------------------------------------- | ------------------------------------ |
+| Full Scope Allowed                                | Off                                  |
+| Client Roles -> odh-mobility-v2 -> Assigned Roles | Move available roles to assigned roles |
+
+5. Generate a new token
+
+```sh
+curl --location --request POST 'http://localhost:8080/auth/realms/NOI/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'username={USERNAME}' \
+--data-urlencode 'password={PASSWORD}' \
+--data-urlencode 'client_id=davinci-innovation-scoreboard-api-client'
+```
 
 ### Source code
 
@@ -47,88 +113,49 @@ Change directory:
 cd davinci-innovation-scoreboard-api/
 ```
 
-### Configure
+### Execute without Docker
 
-Copy the file `.env.example` to `.env` and adjust the settings if needed.
-
-The defaults are already configured, that the you can use the Docker environment right away without any modifications.
-
-### Development
+Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties` and adjust the variables that get their values from environment variables. You can take a look at the `.env.example` for some help.
 
 Build the project:
 
 ```bash
-mvn clean install
+mvn -Dspring.profiles.active=local clean install
 ```
 
-The website will be available at [http://localhost:8080](http://localhost:8080).
+Run the project:
 
-## Running tests
+```bash
+mvn -Dspring.profiles.active=local spring-boot:run
+```
 
-The unit tests can be executed with the following command:
+The service will be available at localhost and your specified server port.
+
+To execute the test you can run the following command:
 
 ```bash
 mvn clean test
 ```
 
-## Deployment
+### Execute with Docker
 
-To build the application you have to first adjust the configuation to your needs and then create a war file using the following command:
+Copy the file `.env.example` to `.env` and adjust the configuration parameters.
 
-```bash
-mvn clean package
-```
-
-The resulting war file can then be executed using a Tomcat server.
-
-## Docker environment
-
-For the project a Docker environment is already prepared and ready to use with all necessary prerequisites.
-
-These Docker containers are the same as used by the continuous integration servers.
-
-There are two docker-compose files in this project:
-
-- **docker-compose.yml**: It will start all necessary dependencies and the spring boot application.
-- **docker-compose-dependencies.yml**: It will only start the dependencies. This is useful during development to be able to run the spring boot application in your IDE.
-
-### Installation
-
-Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally on your machine.
-
-### Start and stop the containers
-
-Before start working you have to start the Docker containers:
+Then you can start the application using the following command:
 
 ```bash
-docker-compose up --build --detach
+docker-compose up
 ```
 
-After finished working you can stop the Docker containers:
+The service will be available at localhost and your specified server port.
+
+To execute the test you can run the following command:
 
 ```bash
-docker-compose stop
+docker-compose run --rm app mvn clean test
 ```
 
-### Running commands inside the container
-
-When the containers are running, you can execute any command inside the environment. Just replace the dots `...` in the following example with the command you wish to execute:
-
-```bash
-docker-compose exec java /bin/sh -c "..."
-```
-
-Some examples are:
-
-```bash
-docker-compose exec java /bin/sh -c "mvn clean install"
-
-# or
-
-docker-compose exec java /bin/sh -c "mvn clean test"
-```
-
-### Running the application in IntelliJ or any other IDE for local development
+### Execute with IntelliJ or another IDE
 
 If you want to run the application from an IDE and don't use the Docker container for it, then you still have the possibility to start all dependencies using Docker.
 
@@ -137,7 +164,7 @@ If you want to run the application from an IDE and don't use the Docker containe
 2. Startup external dependencies
 
 ```bash
-docker-compose -f docker-compose-dependencies.yml up
+docker-compose -f docker-compose.dependencies.yml up
 ```
 
 3. Run application in your prefered IDE as a maven project
@@ -148,8 +175,7 @@ mvn:spring-boot run -Dspring-boot.run.profiles=local
 
 ## User management
 
-User management is handled by the NOI Authentication server.
-This application offers 1 role, that is used to protect CSV upload endpoints.
+User management is handled by the NOI Authentication server. This application offers 1 role, that is used to protect CSV upload endpoints.
 
 - project_manager
 

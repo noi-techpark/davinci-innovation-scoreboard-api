@@ -1,10 +1,18 @@
+# General
+.DS_Store
+
 # Editors
 .idea
-innovation-scoreboard.iml
+*.iws
+*.iml
+*.ipr
+.vscode
 
 # Project
-target
-
-# Files
-src/main/resources/application-local.properties
-.env
+/.env
+/src/main/resources/application-local.properties
+/.mvn
+/target
+.settings
+.project
+.classpath

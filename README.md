@@ -33,6 +33,72 @@ If you want to run the application using [Docker](https://www.docker.com/), the 
 
 However, the [authentication server](https://github.com/noi-techpark/authentication-server) is not part of the Docker environment and needs to be started separately.
 
+### How to setup NOI Authentication Server locally?
+
+- [Here](https://github.com/noi-techpark/authentication-server) you can find how to run the server locally
+- Create a new realm following these [steps](https://github.com/noi-techpark/authentication-server/blob/master/docs/noi-authentication-server.md#realm)
+
+#### How to register this application in your local authentication server?
+
+1. Open the previously created realm
+2. Create a new client (Clients -> Create)
+
+| Property | Value           |
+| -------- | --------------- |
+| ClientID | davinci-innovation-scoreboard-api |
+
+3. Client Settings
+
+| Property | Value               |
+| -------- | ------------------- |
+| Access Type | bearer-only |
+
+4. Navigate to Roles
+
+Add following roles: project_manager
+
+#### How to create a user or assign a user the necessary roles for this application?
+
+1. Go to users
+2. Create user or select user (View users)
+3. Assign roles: Role Mappings -> Client Roles -> davinci-innovation-scoreboard-api
+
+#### How to create a client to generate tokens for testing purposes?
+
+1. Open the previously created realm
+2. Create a new client (Clients -> Create)
+
+| Property | Value               |
+| -------- | ------------------- |
+| ClientID | davinci-innovation-scoreboard-api-client |
+
+3. Client Settings
+
+| Property                     | Value  |
+| ---------------------------- | ------ |
+| Access Type                  | public |
+| Standard Flow Enabled        | Off    |
+| Implicit Flow Enabled        | Off    |
+| Direct Access Grants Enabled | On     |
+
+4. Navigate to Scope
+
+| Property                                          | Value                                |
+| ------------------------------------------------- | ------------------------------------ |
+| Full Scope Allowed                                | Off                                  |
+| Client Roles -> odh-mobility-v2 -> Assigned Roles | Move available roles to assigned roles |
+
+5. Generate a new token
+
+```sh
+curl --location --request POST 'http://localhost:8080/auth/realms/NOI/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'username={USERNAME}' \
+--data-urlencode 'password={PASSWORD}' \
+--data-urlencode 'client_id=davinci-innovation-scoreboard-api-client'
+```
+
 ### Source code
 
 Get a copy of the repository:

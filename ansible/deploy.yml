@@ -1,0 +1,12 @@
+---
+- hosts: all
+  roles:
+    - role: ansible-docker-deployment
+      vars:
+        docker_deployment_project_name: innovation-scoreboard-api
+        docker_deployment_release_name: '{{ build_number }}'
+        docker_deployment_release_files:
+          - local: docker-compose.run.yml
+            remote: docker-compose.yml
+          - local: .env
+            remote: .env

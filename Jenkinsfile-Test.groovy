@@ -5,8 +5,6 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 		DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
-		DOCKER_SERVER_IP = "63.33.73.203"
-        DOCKER_SERVER_DIRECTORY = "/var/docker/innovation-scoreboard-api"
 		DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
 		DOCKER_TAG = "test-$BUILD_NUMBER"
 
@@ -89,22 +87,8 @@ pipeline {
             steps {
                sshagent(['jenkins-ssh-key']) {
                     sh """
-					    ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER_IP} bash -euc "'
-							mkdir -p ${DOCKER_SERVER_DIRECTORY}
-							ls -1t ${DOCKER_SERVER_DIRECTORY}/releases/ | tail -n +10 | grep -v `readlink -f ${DOCKER_SERVER_DIRECTORY}/current | xargs basename --` -- | xargs -r printf \"${DOCKER_SERVER_DIRECTORY}/releases/%s\\n\" | xargs -r rm -rf --
-							mkdir -p ${DOCKER_SERVER_DIRECTORY}/releases/${BUILD_NUMBER}
-						'"
-
-						scp -o StrictHostKeyChecking=no docker-compose.run.yml ${DOCKER_SERVER_IP}:${DOCKER_SERVER_DIRECTORY}/releases/${BUILD_NUMBER}/docker-compose.yml
-						scp -o StrictHostKeyChecking=no .env ${DOCKER_SERVER_IP}:${DOCKER_SERVER_DIRECTORY}/releases/${BUILD_NUMBER}/.env
-
-						ssh -o StrictHostKeyChecking=no ${DOCKER_SERVER_IP} bash -euc "'
-							AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" aws ecr get-login --region eu-west-1 --no-include-email | bash
-							cd ${DOCKER_SERVER_DIRECTORY}/releases/${BUILD_NUMBER} && docker-compose --no-ansi pull
-							[ -d \"${DOCKER_SERVER_DIRECTORY}/current\" ] && (cd ${DOCKER_SERVER_DIRECTORY}/current && docker-compose --no-ansi down) || true
-							ln -sfn ${DOCKER_SERVER_DIRECTORY}/releases/${BUILD_NUMBER} ${DOCKER_SERVER_DIRECTORY}/current
-							cd ${DOCKER_SERVER_DIRECTORY}/current && docker-compose --no-ansi up --detach
-						'"
+						ansible-galaxy install --force -r ansible/requirements.yml
+						ansible-playbook --limit=docker02.testingmachine.eu ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
 					"""
                 }
             }

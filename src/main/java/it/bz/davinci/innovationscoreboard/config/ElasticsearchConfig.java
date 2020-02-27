@@ -50,4 +50,11 @@ public class ElasticsearchConfig {
         return client;
     }
 
+    // We need to expose the underlying rest client as well in order to support the actuator health check
+    // https://github.com/spring-projects/spring-boot/issues/16049
+    @Bean
+    public RestClient esRestClient() {
+        return client().getLowLevelClient();
+    }
+
 }

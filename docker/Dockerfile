@@ -22,3 +22,5 @@ WORKDIR /code
 
 COPY src /code/src
 COPY pom.xml /code/pom.xml
+
+CMD [ "mvn", "spring-boot:run" ]

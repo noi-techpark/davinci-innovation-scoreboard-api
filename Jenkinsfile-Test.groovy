@@ -8,6 +8,8 @@ pipeline {
 		DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
 		DOCKER_TAG = "test-$BUILD_NUMBER"
 
+		SERVER_PORT = "1001"
+
         POSTGRES_URL = "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
         POSTGRES_PASSWORD = credentials('innovation-scoreboard-api-test-postgres-password')
@@ -40,6 +42,8 @@ pipeline {
                 	echo 'COMPOSE_PROJECT_NAME=${DOCKER_PROJECT_NAME}' >> .env
                 	echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                 	echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
+
+					echo 'SERVER_PORT=${SERVER_PORT}' >> .env
 
 					echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env
         			echo 'POSTGRES_USERNAME=${POSTGRES_USERNAME}' >> .env

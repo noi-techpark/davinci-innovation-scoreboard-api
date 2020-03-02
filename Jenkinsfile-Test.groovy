@@ -31,6 +31,15 @@ pipeline {
         KEYCLOAK_REALM = "noi"
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
         KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-secret')
+
+		// Since we use the API behind our Lets Encrypt Proxy, the proxy itself handles SSL termination
+		// The connection between the proxy and the API is not secure by definition, hence we need to
+		// deactivate it for Keycloak otherwise we get an error "o.k.adapters.RequestAuthenticator :
+		// SSL is required to authenticate. Remote address 34.255.139.75 is secure: false, SSL required
+		// for: EXTERNAL ."
+		//
+		// Possible values: "none", "external", "all"
+		// Source: https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config
 		KEYCLOAK_SSL_REQUIRED = "none"
     }
 

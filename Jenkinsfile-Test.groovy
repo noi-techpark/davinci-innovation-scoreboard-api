@@ -31,6 +31,7 @@ pipeline {
         KEYCLOAK_REALM = "noi"
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
         KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-secret')
+		KEYCLOAK_SSL_REQUIRED = "none"
     }
 
 	stages {
@@ -66,6 +67,7 @@ pipeline {
         			echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
         			echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
         			echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
+					echo 'KEYCLOAK_SSL_REQUIRED=${KEYCLOAK_SSL_REQUIRED}' >> .env
 				"""
             }
         }

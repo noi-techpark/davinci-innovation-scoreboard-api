@@ -4,11 +4,11 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-		DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
-		DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
-		DOCKER_TAG = "test-$BUILD_NUMBER"
+        DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
+        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
+        DOCKER_TAG = "test-$BUILD_NUMBER"
 
-		SERVER_PORT = "1001"
+        SERVER_PORT = "1001"
 
         POSTGRES_URL = "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-test-postgres-username')
@@ -32,80 +32,80 @@ pipeline {
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
         KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-secret')
 
-		// Since we use the API behind our Lets Encrypt Proxy, the proxy itself handles SSL termination
-		// The connection between the proxy and the API is not secure by definition, hence we need to
-		// deactivate it for Keycloak otherwise we get an error "o.k.adapters.RequestAuthenticator :
-		// SSL is required to authenticate. Remote address 34.255.139.75 is secure: false, SSL required
-		// for: EXTERNAL ."
-		//
-		// Possible values: "none", "external", "all"
-		// Source: https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config
-		KEYCLOAK_SSL_REQUIRED = "none"
+        // Since we use the API behind our Lets Encrypt Proxy, the proxy itself handles SSL termination
+        // The connection between the proxy and the API is not secure by definition, hence we need to
+        // deactivate it for Keycloak otherwise we get an error "o.k.adapters.RequestAuthenticator :
+        // SSL is required to authenticate. Remote address 34.255.139.75 is secure: false, SSL required
+        // for: EXTERNAL ."
+        //
+        // Possible values: "none", "external", "all"
+        // Source: https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config
+        KEYCLOAK_SSL_REQUIRED = "none"
     }
 
-	stages {
+    stages {
         stage('Configure') {
             steps {
                 sh """
-					rm -f .env
-					cp .env.example .env
-                	echo 'COMPOSE_PROJECT_NAME=${DOCKER_PROJECT_NAME}' >> .env
-                	echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
-                	echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
+                    rm -f .env
+                    cp .env.example .env
+                    echo 'COMPOSE_PROJECT_NAME=${DOCKER_PROJECT_NAME}' >> .env
+                    echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
+                    echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
 
-					echo 'SERVER_PORT=${SERVER_PORT}' >> .env
+                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
 
-					echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env
-        			echo 'POSTGRES_USERNAME=${POSTGRES_USERNAME}' >> .env
-        			echo 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}' >> .env
+                    echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env
+                    echo 'POSTGRES_USERNAME=${POSTGRES_USERNAME}' >> .env
+                    echo 'POSTGRES_PASSWORD=${POSTGRES_PASSWORD}' >> .env
 
-        			echo 'ELASTICSEARCH_SCHEME=${ELASTICSEARCH_SCHEME}' >> .env
-        			echo 'ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}' >> .env
-        			echo 'ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}' >> .env
-        			echo 'ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}' >> .env
-        			echo 'ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}' >> .env
-        			echo 'ELASTICSEARCH_NAMESPACE_PREFIX=${ELASTICSEARCH_NAMESPACE_PREFIX}' >> .env
+                    echo 'ELASTICSEARCH_SCHEME=${ELASTICSEARCH_SCHEME}' >> .env
+                    echo 'ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}' >> .env
+                    echo 'ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT}' >> .env
+                    echo 'ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}' >> .env
+                    echo 'ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}' >> .env
+                    echo 'ELASTICSEARCH_NAMESPACE_PREFIX=${ELASTICSEARCH_NAMESPACE_PREFIX}' >> .env
 
-        			echo 'S3_REGION=${S3_REGION}' >> .env
-        			echo 'S3_BUCKET_NAME=${S3_BUCKET_NAME}' >> .env
-        			echo 'S3_ACCESS_KEY=${S3_ACCESS_KEY}' >> .env
-        			echo 'S3_SECRET_KEY=${S3_SECRET_KEY}' >> .env
+                    echo 'S3_REGION=${S3_REGION}' >> .env
+                    echo 'S3_BUCKET_NAME=${S3_BUCKET_NAME}' >> .env
+                    echo 'S3_ACCESS_KEY=${S3_ACCESS_KEY}' >> .env
+                    echo 'S3_SECRET_KEY=${S3_SECRET_KEY}' >> .env
 
-        			echo 'SECURITY_ALLOWED_ORIGINS=${SECURITY_ALLOWED_ORIGINS}' >> .env
-        			echo 'KEYCLOAK_URL=${KEYCLOAK_URL}' >> .env
-        			echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
-        			echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
-        			echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
-					echo 'KEYCLOAK_SSL_REQUIRED=${KEYCLOAK_SSL_REQUIRED}' >> .env
-				"""
+                    echo 'SECURITY_ALLOWED_ORIGINS=${SECURITY_ALLOWED_ORIGINS}' >> .env
+                    echo 'KEYCLOAK_URL=${KEYCLOAK_URL}' >> .env
+                    echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
+                    echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
+                    echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
+                    echo 'KEYCLOAK_SSL_REQUIRED=${KEYCLOAK_SSL_REQUIRED}' >> .env
+                """
             }
         }
 
         stage('Test') {
             steps {
-				sh '''
-					docker network create authentication || true
-					docker-compose --no-ansi build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
-					docker-compose --no-ansi run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) app mvn clean test
-				'''
+                sh '''
+                    docker network create authentication || true
+                    docker-compose --no-ansi build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+                    docker-compose --no-ansi run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) app mvn clean test
+                '''
             }
         }
-		stage('Build') {
+        stage('Build') {
             steps {
-				sh '''
-					aws ecr get-login --region eu-west-1 --no-include-email | bash
-					docker-compose --no-ansi -f docker-compose.build.yml build --pull
-					docker-compose --no-ansi -f docker-compose.build.yml push
-				'''
+                sh '''
+                    aws ecr get-login --region eu-west-1 --no-include-email | bash
+                    docker-compose --no-ansi -f docker-compose.build.yml build --pull
+                    docker-compose --no-ansi -f docker-compose.build.yml push
+                '''
             }
         }
-		stage('Deploy') {
+        stage('Deploy') {
             steps {
                sshagent(['jenkins-ssh-key']) {
                     sh """
-						ansible-galaxy install --force -r ansible/requirements.yml
-						ansible-playbook --limit=docker02.testingmachine.eu ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
-					"""
+                        ansible-galaxy install --force -r ansible/requirements.yml
+                        ansible-playbook --limit=docker02.testingmachine.eu ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
+                    """
                 }
             }
         }

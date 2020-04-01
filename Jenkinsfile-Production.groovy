@@ -1,14 +1,7 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'docker/dockerfile-java'
-            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
-        }
-    }
+    agent any
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
@@ -33,9 +26,10 @@ pipeline {
 
         SECURITY_ALLOWED_ORIGINS = "https://innovation.davinci.bz.it"
         KEYCLOAK_URL = "https://auth.opendatahub.bz.it/auth"
-        KEYCLOAK_REALM = "NOI"
+        KEYCLOAK_REALM = "noi"
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
         KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-prod-keycloak-client-secret')
+        KEYCLOAK_SSL_REQUIRED = "none"
     }
 
     stages {
@@ -98,7 +92,7 @@ pipeline {
                sshagent(['jenkins-ssh-key']) {
                     sh """
                         ansible-galaxy install --force -r ansible/requirements.yml
-                        ansible-playbook --limit=docker02.opendatahub.bz.it ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
+                        ansible-playbook --limit=prod ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
                     """
                 }
             }

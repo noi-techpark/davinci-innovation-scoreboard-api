@@ -6,9 +6,12 @@ This repository contains the source code for the innovation scoreboard backend.
 
 ## Table of contents
 
-- [Getting started](#getting-started)
-- [Running tests](#running-tests)
-- [Deployment](#deployment)
+- [Gettings started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Source code](#source-code)
+  - [Setup authentication server](#setup-authentication-server)
+  - [Execute without Docker](#execute-without-docker)
+  - [Execute with Docker](#execute-with-docker)
 - [User management](#user-management)
 - [Information](#information)
 
@@ -33,12 +36,14 @@ If you want to run the application using [Docker](https://www.docker.com/), the 
 
 However, the [authentication server](https://github.com/noi-techpark/authentication-server) is not part of the Docker environment and needs to be started separately.
 
-### How to setup NOI Authentication Server locally?
+### Setup authentication server
+
+#### How to setup NOI authentication server locally?
 
 - [Here](https://github.com/noi-techpark/authentication-server) you can find how to run the server locally
 - Create a new realm following these [steps](https://github.com/noi-techpark/authentication-server/blob/master/docs/noi-authentication-server.md#realm)
 
-#### How to register this application in your local authentication server?
+##### How to register this application in your local authentication server?
 
 1. Open the previously created realm
 2. Create a new client (Clients -> Create)
@@ -57,7 +62,7 @@ However, the [authentication server](https://github.com/noi-techpark/authenticat
 
 Add following roles: project_manager
 
-#### How to create a user or assign a user the necessary roles for this application?
+##### How to create a user or assign a user the necessary roles for this application?
 
 1. Go to users
 2. Create user or select user (View users)

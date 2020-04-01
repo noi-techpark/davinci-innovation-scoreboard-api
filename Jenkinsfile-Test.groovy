@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         DOCKER_PROJECT_NAME = "innovation-scoreboard-api"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
         DOCKER_TAG = "test-$BUILD_NUMBER"
@@ -31,15 +29,6 @@ pipeline {
         KEYCLOAK_REALM = "noi"
         KEYCLOAK_CLIENT_ID = "davinci-innovation-scoreboard-api"
         KEYCLOAK_CLIENT_SECRET = credentials('innovation-scoreboard-api-test-keycloak-client-secret')
-
-        // Since we use the API behind our Lets Encrypt Proxy, the proxy itself handles SSL termination
-        // The connection between the proxy and the API is not secure by definition, hence we need to
-        // deactivate it for Keycloak otherwise we get an error "o.k.adapters.RequestAuthenticator :
-        // SSL is required to authenticate. Remote address 34.255.139.75 is secure: false, SSL required
-        // for: EXTERNAL ."
-        //
-        // Possible values: "none", "external", "all"
-        // Source: https://www.keycloak.org/docs/latest/securing_apps/index.html#_java_adapter_config
         KEYCLOAK_SSL_REQUIRED = "none"
     }
 
@@ -104,7 +93,7 @@ pipeline {
                sshagent(['jenkins-ssh-key']) {
                     sh """
                         ansible-galaxy install --force -r ansible/requirements.yml
-                        ansible-playbook --limit=docker02.testingmachine.eu ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
+                        ansible-playbook --limit=test ansible/deploy.yml --extra-vars "build_number=${BUILD_NUMBER}"
                     """
                 }
             }

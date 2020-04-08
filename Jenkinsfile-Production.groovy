@@ -65,6 +65,7 @@ pipeline {
                     echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
                     echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
                     echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
+                    echo 'KEYCLOAK_SSL_REQUIRED=${KEYCLOAK_SSL_REQUIRED}' >> .env
                 """
             }
         }

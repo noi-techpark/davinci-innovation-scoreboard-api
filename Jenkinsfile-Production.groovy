@@ -7,6 +7,7 @@ pipeline {
         DOCKER_TAG = "prod-$BUILD_NUMBER"
 
         SERVER_PORT = "1001"
+        LOG_APPLICATION_NAME = "innovation-scoreboard-api"
 
         POSTGRES_URL = "jdbc:postgresql://postgres-prod.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
         POSTGRES_USERNAME = credentials('innovation-scoreboard-api-prod-postgres-username')
@@ -43,6 +44,7 @@ pipeline {
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
 
                     echo 'SERVER_PORT=${SERVER_PORT}' >> .env
+                    echo 'LOG_APPLICATION_NAME=${LOG_APPLICATION_NAME}' >> .env
 
                     echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env
                     echo 'POSTGRES_USERNAME=${POSTGRES_USERNAME}' >> .env

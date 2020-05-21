@@ -91,7 +91,7 @@ pipeline {
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
 
-					echo 'SERVER_PORT=${SERVER_PORT}' >> .env
+                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
                     echo 'LOG_APPLICATION_NAME=${LOG_APPLICATION_NAME}' >> .env
 
                     echo 'POSTGRES_URL=${POSTGRES_URL}' >> .env

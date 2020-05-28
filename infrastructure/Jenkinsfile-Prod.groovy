@@ -94,8 +94,8 @@ pipeline {
             steps {
                sshagent(['jenkins-ssh-key']) {
                     sh """
-                        ansible-galaxy install -f -r infrastructure/ansible/requirements.yml
-                        ansible-playbook --limit=prod infrastructure/ansible/deploy.yml --extra-vars "release_name=${BUILD_NUMBER}"
+                        (cd infrastructure/ansible && ansible-galaxy install -f -r requirements.yml)
+                        (cd infrastructure/ansible && ansible-playbook --limit=prod deploy.yml --extra-vars "release_name=${BUILD_NUMBER}")
                     """
                 }
             }

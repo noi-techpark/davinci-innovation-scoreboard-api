@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/innovation-scoreboard-api'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
 
-        SERVER_PORT = "1001"
+        SERVER_PORT = "1002"
         LOG_APPLICATION_NAME = "innovation-scoreboard-api"
 
         POSTGRES_URL = "jdbc:postgresql://postgres-prod.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"

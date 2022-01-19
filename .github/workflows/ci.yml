@@ -1,15 +1,15 @@
-name: CI davinci-innovation-scoreboard-api
+name: ci davinci-innovation-scoreboard-api
 
 on:
   push:
     branches: [ development, master ]
-    paths:
-      - "!README.md"
+    paths-ignore:
+      - "README.md"
 
   pull_request:
     branches: [ development, master ]
-    paths:
-      - "!README.md"
+    paths-ignore:
+      - "README.md"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

@@ -1,10 +1,9 @@
 # Innovation Scoreboard
-
-[![ci davinci-innovation-scoreboard-api](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml/badge.svg)](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml)
-
 The innovation scoreboard is a project that aims to visualize the innovation data from South Tyrol and other Italien regions in a user friendly way.
 
 This repository contains the source code for the innovation scoreboard backend.
+
+[![ci davinci-innovation-scoreboard-api](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml/badge.svg)](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml)
 
 ## Table of contents
 

@@ -3,7 +3,7 @@ The innovation scoreboard is a project that aims to visualize the innovation dat
 
 This repository contains the source code for the innovation scoreboard backend.
 
-[![ci davinci-innovation-scoreboard-api](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml/badge.svg)](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml)
+[![CI](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml/badge.svg)](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/ci.yml)
 
 ## Table of contents
 

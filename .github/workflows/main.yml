@@ -36,8 +36,8 @@ jobs:
         uses: noi-techpark/github-actions/env-file@v2
         env:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.X_DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.X_DOCKER_TAG }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
           X_SERVER_PORT: 1001
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
           X_POSTGRES_URL: "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
@@ -86,8 +86,8 @@ jobs:
         uses: noi-techpark/github-actions/env-file@v2
         env:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.X_DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.X_DOCKER_TAG }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
           X_SERVER_PORT: 1002
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
           X_POSTGRES_URL: "jdbc:postgresql://postgres-prod.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"

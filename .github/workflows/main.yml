@@ -51,7 +51,7 @@ jobs:
           X_ELASTICSEARCH_NAMESPACE_PREFIX: "innovation-scoreboard-test"
           X_S3_REGION: "eu-west-1"
           X_S3_BUCKET_NAME: "test-innovation-scoreboard-api"
-          X_S3_ACCESS_KEY: "AKIA3AASLDBIAMRSZA6W"
+          X_S3_ACCESS_KEY: ${{ secrets.TEST_AWS_S3_ACCESS_KEY_ID }}
           X_S3_SECRET_KEY: ${{ secrets.TEST_AWS_S3_ACCESS_KEY_SECRET }}
           X_SECURITY_ALLOWED_ORIGINS: "https://innovation.davinci.testingmachine.eu"
           X_KEYCLOAK_URL: "https://auth.opendatahub.testingmachine.eu/auth"
@@ -101,7 +101,7 @@ jobs:
           X_ELASTICSEARCH_NAMESPACE_PREFIX: "innovation-scoreboard-prod"
           X_S3_REGION: "eu-west-1"
           X_S3_BUCKET_NAME: "prod-innovation-scoreboard-api"
-          X_S3_ACCESS_KEY: "AKIA3AASLDBIAMRSZA6W"
+          X_S3_ACCESS_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_ID }}
           X_S3_SECRET_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_SECRET }}
           X_SECURITY_ALLOWED_ORIGINS: "https://innovation.davinci.bz.it"
           X_KEYCLOAK_URL: "https://auth.opendatahub.bz.it/auth"

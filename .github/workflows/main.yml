@@ -21,7 +21,7 @@ jobs:
         uses: noi-techpark/github-actions/maven-test@v2
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          test-command: mvn test
+          test-command: mvn -B test
 
   # Deploy test
   deploy-test:

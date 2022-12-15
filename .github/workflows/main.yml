@@ -104,7 +104,7 @@ jobs:
           X_S3_ACCESS_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_ID }}
           X_S3_SECRET_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_SECRET }}
           X_SECURITY_ALLOWED_ORIGINS: "https://innovation.davinci.bz.it"
-          X_KEYCLOAK_URL: "https://auth.opendatahub.bz.it/auth"
+          X_KEYCLOAK_URL: "https://auth.opendatahub.com/auth"
           X_KEYCLOAK_REALM: "noi"
           X_KEYCLOAK_CLIENT_ID: "davinci-innovation-scoreboard-ap"
           X_KEYCLOAK_CLIENT_SECRET: ${{ secrets.PROD_KEYCLOAK_CLIENT_SECRET }}

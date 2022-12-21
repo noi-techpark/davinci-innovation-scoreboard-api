@@ -94,7 +94,7 @@ jobs:
           X_POSTGRES_USERNAME: "innovation_scoreboard"
           X_POSTGRES_PASSWORD: ${{ secrets.PROD_POSTGRES_PASSWORD }}
           X_ELASTICSEARCH_SCHEME: "https"
-          X_ELASTICSEARCH_HOST: "05068ca494804a0b86352e68fadb3457.eu-west-1.aws.found.io"
+          X_ELASTICSEARCH_HOST: "16587ef4ae8f4a23b477025805374935.eu-west-1.aws.found.io"
           X_ELASTICSEARCH_PORT: "9243"
           X_ELASTICSEARCH_USERNAME: "innovation_scoreboard"
           X_ELASTICSEARCH_PASSWORD: ${{ secrets.PROD_ELASTICSEARCH_PASSWORD }}

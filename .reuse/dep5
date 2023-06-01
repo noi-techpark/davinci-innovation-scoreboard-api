@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: davinci-innovation-scoreboard-api
+Upstream-Contact: NOI Techpark <digital@noi.bz.it>
+Source: https://github.com/noi-techpark/davinci-innovation-scoreboard-api
+
+Files: .github/* infrastructure/* .gitignore LICENSE.md .env.example src/**/*.properties src/test/resources/csv/*
+Copyright: (c) NOI Techpark <digital@noi.bz.it>
+License: CC0-1.0

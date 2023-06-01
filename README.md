@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Innovation Scoreboard
 The innovation scoreboard is a project that aims to visualize the innovation data from South Tyrol and other Italien regions in a user friendly way.
 

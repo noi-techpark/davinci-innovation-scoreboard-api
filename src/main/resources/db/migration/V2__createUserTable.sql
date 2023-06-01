@@ -1,7 +1,3 @@
--- SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
---
--- SPDX-License-Identifier: AGPL-3.0-or-later
-
 create table if not exists api_user (
     id serial primary key,
     email varchar not null unique,

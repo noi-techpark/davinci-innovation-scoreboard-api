@@ -6,3 +6,7 @@ Source: https://github.com/noi-techpark/davinci-innovation-scoreboard-api
 Files: .github/* infrastructure/* .gitignore LICENSE.md .env.example src/**/*.properties src/test/resources/csv/*
 Copyright: (c) NOI Techpark <digital@noi.bz.it>
 License: CC0-1.0
+
+Files: src/main/resources/db/migration/*
+Copyright: (c) NOI Techpark <digital@noi.bz.it>
+License: AGPL-3.0-or-later

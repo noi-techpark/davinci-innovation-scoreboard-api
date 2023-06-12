@@ -3,7 +3,7 @@ Upstream-Name: davinci-innovation-scoreboard-api
 Upstream-Contact: NOI Techpark <digital@noi.bz.it>
 Source: https://github.com/noi-techpark/davinci-innovation-scoreboard-api
 
-Files: .github/* infrastructure/* .gitignore LICENSE.md .env.example src/**/*.properties src/test/resources/csv/*
+Files: .github/* infrastructure/* .gitignore LICENSE.md .pre-commit-config.yaml .env.example src/**/*.properties src/test/resources/csv/*
 Copyright: (c) NOI Techpark <digital@noi.bz.it>
 License: CC0-1.0
 

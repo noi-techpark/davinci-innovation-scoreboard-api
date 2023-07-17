@@ -10,7 +10,7 @@ The innovation scoreboard is a project that aims to visualize the innovation dat
 
 This repository contains the source code for the innovation scoreboard backend.
 
-![REUSE Compliance](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/reuse.yml/badge.svg)
+[![REUSE Compliance](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/reuse.yml/badge.svg)](https://github.com/noi-techpark/odh-docs/wiki/REUSE#badges)
 [![CI](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/main.yml/badge.svg)](https://github.com/noi-techpark/davinci-innovation-scoreboard-api/actions/workflows/main.yml)
 
 ## Table of contents

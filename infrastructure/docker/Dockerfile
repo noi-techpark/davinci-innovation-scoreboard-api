@@ -11,6 +11,6 @@ FROM base as build
 
 COPY src /code/src
 COPY pom.xml /code/pom.xml
-RUN mvn -DskipTests install
+RUN mvn -B -DskipTests install
 
-CMD [ "mvn", "spring-boot:run" ]
+CMD [ "mvn", "-B", "spring-boot:run" ]

@@ -13,7 +13,7 @@ services:
     volumes:
        - ./:/code
     working_dir: /code
-    command: ["mvn spring-boot:run"]
+    command: ["mvn -B spring-boot:run"]
     depends_on:
       - postgres
       - elasticsearch

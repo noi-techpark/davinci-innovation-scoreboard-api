@@ -44,7 +44,7 @@ jobs:
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
           X_SERVER_PORT: 1001
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
-          X_POSTGRES_URL: "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
+          X_POSTGRES_URL: "jdbc:postgresql://test-pg-misc.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/innovation_scoreboard"
           X_POSTGRES_USERNAME: "innovation_scoreboard"
           X_POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           X_ELASTICSEARCH_SCHEME: "https"
